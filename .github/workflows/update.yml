@@ -1,0 +1,89 @@
+name: 自动采集（每 6 小时）
+
+# 每 6 小时跑一轮全量（UTC 整点 0/6/12/18，合北京时间 2/8/14/20 点），
+# 也可以在 Actions 页手动触发
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# 同一时间只跑一个，防重入
+concurrency:
+  group: radar-update
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取仓库
+        uses: actions/checkout@v4
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 采集刷新 data.json
+        env:
+          # 仓库自带令牌，只用来给 GitHub API 提限额，不用任何私人令牌
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/collect.py
+
+      - name: 门禁校验（不过就不提交）
+        run: python scripts/validate.py
+
+      # 额度护栏：先 diff，数据没变化就不提交——不提交就不触发 Pages 构建，
+      # 省下每月 500 次的构建额度（满打满算每 6 小时一轮也才约 120 次/月）
+      - name: 提交前 diff（没变化就跳过）
+        id: diff
+        run: |
+          if [ -z "$(git status --porcelain -- data.json scripts/state.json)" ]; then
+            echo "数据没有变化：跳过提交，不触发 Pages 构建（省构建次数）。"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git diff --stat -- data.json scripts/state.json | tail -5
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 提交并推送
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json scripts/state.json
+          if [ -s changes.txt ]; then
+            git commit -m "自动采集更新 $(TZ=Asia/Shanghai date +%F)" -m "$(cat changes.txt)"
+          else
+            git commit -m "自动采集更新 $(TZ=Asia/Shanghai date +%F)"
+          fi
+          git push
+
+      # 提交后复查线上站：首页 + 线上 data.json 随机抽 3 个栏目，
+      # 确认新数据真的上线可读；不过只在日志里标红，不回滚数据
+      # （Pages 部署延迟属正常，下一轮会自愈）
+      - name: 站点自检（首页 + 数据抽查 3 个栏目，只标红不回滚）
+        if: always()
+        continue-on-error: true
+        run: |
+          sleep 60
+          ok=1
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 https://leida.1m.us.ci/ || echo 000)
+          echo "首页状态码：$code"
+          [ "$code" = "200" ] || ok=0
+          if curl -s --max-time 30 https://leida.1m.us.ci/data.json -o /tmp/live_data.json; then
+            python3 -c "import json,random; d=json.load(open('/tmp/live_data.json',encoding='utf-8')); cats=d['categories']; picks=random.sample(sorted(cats),3); print('抽查栏目：', [(s, len(cats[s]['items'])) for s in picks]); print('线上数据可读，栏目数', len(cats))" || ok=0
+          else
+            echo "线上 data.json 拉不到"
+            ok=0
+          fi
+          echo "## 站点自检" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$ok" = "1" ]; then
+            echo "✅ 线上站首页正常，数据抽查通过，新数据已上线可读。" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::error title=站点自检未通过::线上站首页或数据抽查异常（数据提交不回滚，多半是 Pages 部署延迟，下一轮自愈）"
+            echo "❌ 自检未通过（数据提交不回滚，多半是部署延迟，下一轮自愈）。" >> "$GITHUB_STEP_SUMMARY"
+          fi
