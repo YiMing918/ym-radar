@@ -569,108 +569,55 @@
    }
   ],
   "proxy": [
+       {
+        "type": "github_repo",
+        "repo": "MetaCubeX/mihomo",
+        "section": "all",
+        "parse": "代理内核 mihomo 官方仓库"
+       },
    {
-    "type": "github_search",
-    "query": "clash android client",
-    "section": "android",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "v2rayng",
-    "section": "android",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "sing-box android client",
-    "section": "android",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "ios proxy client shadowrocket",
-    "section": "ios",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "surge ios client",
-    "section": "ios",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "clash windows client",
-    "section": "windows",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "v2ray windows client",
-    "section": "windows",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "clash macos client",
-    "section": "mac",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "clash linux client",
-    "section": "linux",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "openwrt clash proxy",
-    "section": "router",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "router proxy firmware",
-    "section": "router",
-    "parse": "取仓库名+主页+简介作候选"
-   },
-   {
-    "type": "github_search",
-    "query": "MetaCubeX mihomo",
-    "section": "all",
-    "parse": "代理内核 mihomo 官方仓库"
-   },
-   {
-    "type": "github_search",
-    "query": "SagerNet sing-box",
+      "type": "github_repo",
+    "repo": "SagerNet/sing-box",
     "section": "all",
     "parse": "代理内核 sing-box 官方仓库"
    },
    {
-    "type": "github_search",
-    "query": "XTLS Xray-core",
+      "type": "github_repo",
+    "repo": "XTLS/Xray-core",
     "section": "all",
     "parse": "代理内核 Xray 官方仓库"
    },
    {
-    "type": "github_search",
-    "query": "sub-store subscription manager",
-    "section": "all",
-    "parse": "订阅管理工具 sub-store"
+      "type": "github_repo",
+    "repo": "2dust/v2rayNG",
+    "section": "android",
+    "parse": "安卓 v2rayNG 客户端"
    },
    {
-    "type": "github_search",
-    "query": "subconverter",
+      "type": "github_repo",
+    "repo": "Dreamacro/clash",
+    "section": "all",
+    "parse": "Clash 核心"
+   },
+   {
+      "type": "github_repo",
+    "repo": "Fndroid/clash_for_windows",
+    "section": "windows",
+    "parse": "Windows 版 Clash 客户端"
+   },
+   {
+      "type": "github_repo",
+    "repo": "tindy2013/subconverter",
     "section": "all",
     "parse": "订阅转换工具 subconverter"
    },
    {
-    "type": "github_search",
-    "query": "proxy client",
+      "type": "github_repo",
+    "repo": "sub-store-org/Sub-Store",
     "section": "all",
-    "parse": "取仓库名+主页+简介作候选"
+    "parse": "订阅管理工具 Sub-Store"
    }
+        
   ]
  }
 }
