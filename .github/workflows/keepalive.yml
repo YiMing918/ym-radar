@@ -3,7 +3,7 @@ name: 每月心跳保活
 # GitHub 会停用 60 天没活动的仓库里的定时任务；每月写一次心跳文件防停用
 on:
   schedule:
-    - cron: '0 0 1 * *'
+    - cron: '0 3 1 * *'
   workflow_dispatch:
 
 permissions:
@@ -19,10 +19,10 @@ jobs:
     steps:
       - name: 拉取仓库
         uses: actions/checkout@v4
-
       - name: 写心跳并提交
         run: |
           TZ=Asia/Shanghai date +%F > heartbeat.txt
+          git add -N heartbeat.txt
           if git diff --quiet -- heartbeat.txt; then
             echo "心跳无变化，不提交。"
             exit 0
