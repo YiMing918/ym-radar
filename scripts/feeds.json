@@ -345,11 +345,6 @@
   ],
   "live": [
    {
-    "parse": "iptv-org 官方播放列表索引，取 name+url 作候选",
-    "type": "repo_json",
-    "url": "https://iptv-org.github.io/api/playlists.json"
-   },
-   {
     "parse": "取仓库名+主页+简介作候选",
     "query": "iptv m3u",
     "type": "github_search"
