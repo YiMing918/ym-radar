@@ -28,7 +28,7 @@
   5) 重排：每栏按（验活通、新鲜、条数多、星标高）重算 rank 和 score。
   6) 双安全阀（任一触发 → 非零退出、不写任何文件、保住旧数据）：
      - 全站超过 30% 条目验活不通；
-     - 本次新增+移除超过全站总数的 25%。
+     - 本次移除超过全站总数的 25%（新增不拦：不重复的新条目全数加进）。
 
 GitHub API：有环境变量 GITHUB_TOKEN 就带上提限额；没有就自动降速
 （搜索请求间隔拉长、每页条数减少），不用任何私人令牌。
@@ -56,9 +56,9 @@ DEADLINE = 30               # 单个请求总时限（秒），防慢速滴漏�
 MAX_BYTES = 6 * 1024 * 1024
 CST = datetime.timezone(datetime.timedelta(hours=8))
 GH_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
-MAX_ADD_PER_CAT = 15        # 每栏每次最多新增
-MAX_PER_CAT = 300           # 每栏总量上限（防洪水靠 25% 变更安全阀）
-MAX_CANDIDATES_TRY = 40     # 每栏最多深挖多少个候选
+MAX_PER_CAT = 300           # 每栏总量上限
+MAX_ADD_PER_CAT = MAX_PER_CAT  # 每栏每次新增不另设上限：搜到多少不重复的新条目就加多少（站长 2026-11-23 定），只受每栏总量上限约束
+MAX_CANDIDATES_TRY = MAX_PER_CAT  # 每栏最多深挖多少个候选（与总量上限齐平，实际等于不限）
 
 STATS = {"checked_ok": 0, "dead": 0, "content_dead": 0, "github": 0, "counted": 0, "imaged": 0,
          "lang": 0, "region": 0, "cnswitch": 0, "cnswitch_en": 0,
@@ -1819,7 +1819,7 @@ def main():
                 REMOVED.append((slug, item.get("name") or "", item.get("url") or "",
                                 f"连续 {threshold} 次验活不通"))
 
-    # ---- 新增：先补位、再扩充；每栏 <=5 条、总量 <=40 ----
+    # ---- 新增：先补位、再扩充；不重复的新条目全数加进（每栏总量上限 300） ----
     max_id = [0]
     _id_lock = threading.Lock()
     for cat in categories.values():
@@ -1873,12 +1873,14 @@ def main():
         if cat.get("items"):
             cat["items"] = [it for it in cat["items"] if id(it) not in removed_keys]
 
-    # 安全阀二：新增+移除超过全站 25% → 中止，不写任何文件
-    changed = len(ADDED) + len(REMOVED)
-    if total_before and changed > total_before * 0.25:
-        log(f"变更量安全阀触发：新增 {len(ADDED)} + 移除 {len(REMOVED)} = {changed} 条，"
-            f"超过全站 {total_before} 条的 25%，判定源头异常，中止不写数据。")
+    # 安全阀二：只拦「移除」——一次移除超过全站 25% 多半是源头异常，中止保数据。
+    # 新增永不拦：搜到多少不重复的新条目就加多少（站长 2026-11-23 定死）。
+    if total_before and len(REMOVED) > total_before * 0.25:
+        log(f"移除量安全阀触发：移除 {len(REMOVED)} 条，超过全站 {total_before} 条的 25%，"
+            "判定源头异常，中止不写数据。")
         return 3
+    if ADDED:
+        log(f"本轮新增 {len(ADDED)} 条新条目（不设上限，全数加进）。")
 
     # ---- 重排 + 总览更新 ----
     rerank(categories)
