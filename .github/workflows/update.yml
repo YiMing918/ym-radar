@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 # 同一时间只跑一个，防重入
 concurrency:
@@ -88,3 +89,14 @@ jobs:
             echo "::error title=站点自检未通过::线上站首页或数据抽查异常（数据提交不回滚，多半是 Pages 部署延迟，下一轮自愈）"
             echo "❌ 自检未通过（数据提交不回滚，多半是部署延迟，下一轮自愈）。" >> "$GITHUB_STEP_SUMMARY"
           fi
+
+      # 失败自报：任何一步失败就开一个 issue，别让失败悄悄过去
+      - name: 失败自报（开 issue）
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "自动采集失败 $(TZ=Asia/Shanghai date +'%Y-%m-%d %H:%M')" \
+            --body "自动采集工作流失败了，跑的地址：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}，请去看日志。"
+            
