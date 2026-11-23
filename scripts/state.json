@@ -1,17 +1,24 @@
 {
  "fails": {
-  "https://play.iptv365.org/欧歌/api.json": 1,
-  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/shiguang.json": 1,
-  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/多仓订阅.json": 1,
-  "https://szyyds.cn/tv/x.json": 1,
-  "https://jt12.de/SYV2_1/2023/04/19/22/34/21/1681914861643ffbede14bc.json": 1,
-  "https://jt12.de/SYV2_4/2023/04/27/10/01/23/16825608836449d7738b738.json": 1,
-  "https://shuyuan.mgz6.cc/shuyuan/f20c00a9254a8aaf2d60379796716114.json": 1,
-  "https://e-c.coding.net/p/yicheng/d/YD/git/raw/master/sy.json": 1,
-  "https://jsd.onmicrosoft.cn/gh/XIU2/Yuedu/master/shuyuan": 1,
-  "https://namofree.gitee.io/yuedu3/legado3_booksource_by_Namo.json": 1,
-  "https://raw.githubusercontent.com/LancelotRar/best-cf-ips/main/best-cf-ip-collected.txt": 1,
-  "https://img.hsdi.fun/i/shuyuan/23-02-10-3059.json": 1
+  "https://play.iptv365.org/欧歌/api.json": 2,
+  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/shiguang.json": 2,
+  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/多仓订阅.json": 2,
+  "https://szyyds.cn/tv/x.json": 2,
+  "https://jt12.de/SYV2_1/2023/04/19/22/34/21/1681914861643ffbede14bc.json": 2,
+  "https://jt12.de/SYV2_4/2023/04/27/10/01/23/16825608836449d7738b738.json": 2,
+  "https://shuyuan.mgz6.cc/shuyuan/f20c00a9254a8aaf2d60379796716114.json": 2,
+  "https://e-c.coding.net/p/yicheng/d/YD/git/raw/master/sy.json": 2,
+  "https://jsd.onmicrosoft.cn/gh/XIU2/Yuedu/master/shuyuan": 2,
+  "https://namofree.gitee.io/yuedu3/legado3_booksource_by_Namo.json": 2,
+  "https://raw.githubusercontent.com/LancelotRar/best-cf-ips/main/best-cf-ip-collected.txt": 2,
+  "https://img.hsdi.fun/i/shuyuan/23-02-10-3059.json": 2,
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js": 1,
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.js": 1,
+  "https://www.yckceo.com/yuedu/shuyuans/json/id/35.json": 1,
+  "https://www.furry.box/": 1,
+  "https://customer.l53.net/": 1,
+  "http://bttcj.com/inc/sapi.php": 1,
+  "http://www.010aizy.com/API/macs.php": 1
  },
- "updatedAt": "2026-11-23T16:46:10.692Z"
+ "updatedAt": "2026-11-23T17:18:42.105Z"
 }
