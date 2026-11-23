@@ -1139,6 +1139,9 @@ def process_item(slug, item, state_fails):
                     set_detail(item, lb, "未公布")
             if not get_detail(item, "现价"):
                 set_detail(item, "现价", "未公布")
+        if (item.get("section") or "") == "discounts":
+            if not get_detail(item, "原价"):
+                set_detail(item, "原价", "未公布")
 
     # 版本硬规矩：app/apple/proxy 三栏的最新版本、版本日期 label 不许缺
     if slug in VERSION_REQUIRED_SLUGS:
@@ -1594,6 +1597,9 @@ def build_item(slug, cand, material, new_id):
             for lb in ("内购项目", "原价", "买断性质"):
                 if not get_detail(item, lb):
                     set_detail(item, lb, "未公布")
+        if item.get("section") == "discounts":
+            if not get_detail(item, "原价"):
+                set_detail(item, "原价", "未公布")
     if not item["imageUrl"]:
         img = find_image(url)
         if img:
