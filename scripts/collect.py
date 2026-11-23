@@ -1256,6 +1256,16 @@ def feed_candidates_github_search(feed):
     return out
 
 
+def feed_candidates_github_repo(feed):
+  """指定 GitHub 仓库：直接把仓库当候选，不走搜索（搜索搜不到大仓库）。"""
+  repo = (feed.get("repo") or "").strip()
+  if not repo or "/" not in repo:
+    raise RuntimeError(f"github_repo 源缺 repo：{feed}")
+    return [{"name": repo,
+                      "url": f"https://github.com/{repo}",
+                      "desc": ""}]
+
+
 def _generic_json_candidates(data):
     """repo_json 的通用解析：认 list / sites / results / packages 几种结构。"""
     out = []
@@ -1356,6 +1366,7 @@ def feed_candidates_page_links(feed):
 
 
 FEED_FUNCS = {"github_search": feed_candidates_github_search,
+              "github_repo": feed_candidates_github_repo,
               "repo_json": feed_candidates_repo_json,
               "rss": feed_candidates_rss,
               "page_links": feed_candidates_page_links}
