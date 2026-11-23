@@ -20,15 +20,16 @@
      网址规范化 + 名称近似双去重；新候选验活后深挖内容（iTunes 完整介绍 /
      F-Droid 介绍 / GitHub README / 网页正文），凑齐「是什么、干什么、
      有什么用、适合谁」四样才收；深挖后仍无实义内容的放弃并记录原因。
-     每栏每次最多新增 15 条，每栏总量上限 300 条。
+     新增不设上限（搜到多少不重复的新条目就加多少），每栏总量上限 300 条。
   4) 替换：scripts/state.json 记每条连续验活失败次数，连续不通自动移除
      （苹果栏目 3 次、其他栏目 6 次；每 6 小时跑一轮，约合 18/36 小时），
      从同栏候选池按新鲜度补位；新增/移除/挪组清单写进 changes.txt
      （提交信息用）。苹果限免组每轮按现价复核：不是免费了就降组或移除。
   5) 重排：每栏按（验活通、新鲜、条数多、星标高）重算 rank 和 score。
-  6) 双安全阀（任一触发 → 非零退出、不写任何文件、保住旧数据）：
-     - 全站超过 30% 条目验活不通；
-     - 本次移除超过全站总数的 25%（新增不拦：不重复的新条目全数加进）。
+  6) 双安全阀（只拦「删」，从不整轮作废）：
+     - 全站超过 30% 条目验活不通 → 本轮跳过删除，刷新与新增照常写盘；
+     - 本次移除超过全站总数的 25% → 只删够 25% 的名额，剩下的下轮再删。
+     （新增不拦：不重复的新条目全数加进。）
 
 GitHub API：有环境变量 GITHUB_TOKEN 就带上提限额；没有就自动降速
 （搜索请求间隔拉长、每页条数减少），不用任何私人令牌。
@@ -53,7 +54,7 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 TIMEOUT = 12                # 单次连接/读超时（秒）
 DEADLINE = 30               # 单个请求总时限（秒），防慢速滴漏把进程挂死
-MAX_BYTES = 6 * 1024 * 1024
+MAX_BYTES = 32 * 1024 * 1024  # 单次抓取上限：书源全量文件可达 20MB，6MB 会截断导致误判失效
 CST = datetime.timezone(datetime.timedelta(hours=8))
 GH_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
 MAX_PER_CAT = 300           # 每栏总量上限
@@ -139,13 +140,15 @@ def fetch(url, max_bytes=MAX_BYTES, deadline=DEADLINE, headers=None):
 
 
 def gh_fetch(url, max_bytes=512 * 1024):
-    """GitHub API 专用：有令牌带令牌；搜索接口无令牌时自动降速。"""
+    """GitHub API 专用：有令牌带令牌；搜索接口自动降速（无令牌 7 秒一次，
+    有令牌 2.5 秒一次，搜索限速 30 次/分钟，6 个 worker 齐发会撞上限）。"""
     headers = {"Accept": "application/vnd.github+json"}
     if GH_TOKEN:
         headers["Authorization"] = f"Bearer {GH_TOKEN}"
-    if "/search/" in url and not GH_TOKEN:
+    if "/search/" in url:
+        interval = 7.0 if not GH_TOKEN else 2.5
         with _search_lock:
-            wait = 7.0 - (time.monotonic() - _last_search_at[0])
+            wait = interval - (time.monotonic() - _last_search_at[0])
             if wait > 0:
                 time.sleep(wait)
             _last_search_at[0] = time.monotonic()
@@ -278,6 +281,24 @@ def md_to_text(md):
 
 # ---------------- 数条数（v1 沿用） ----------------
 
+def _try_json(text):
+    """宽容解析 JSON：标准解析失败时，再试「放宽控制字符」和「去掉整行 //
+    注释」（TVBox 配置常见这两种写法，标准 json.loads 会直接报错，
+    导致好好的源被误判为内容失效）。仍解析不了返回 None。"""
+    try:
+        return json.loads(text, strict=False)
+    except Exception:
+        pass
+    cleaned = "\n".join(
+        ln for ln in text.splitlines()
+        if not ln.lstrip().startswith("//")
+    )
+    try:
+        return json.loads(cleaned, strict=False)
+    except Exception:
+        return None
+
+
 def count_content(url, body):
     """按内容数条数，返回 (label, count) 或 None。数不出来返回 None。"""
     if not body:
@@ -292,15 +313,18 @@ def count_content(url, body):
 
     stripped = text.lstrip()
     if stripped.startswith(("{", "[")):
-        try:
-            data = json.loads(text)
-        except Exception:
-            data = None
+        data = _try_json(text)
         if isinstance(data, dict) and isinstance(data.get("sites"), list):
             return ("站点数", len(data["sites"]))
         if isinstance(data, dict) and isinstance(data.get("list"), list) \
                 and data["list"]:
             return ("条数", len(data["list"]))
+        if isinstance(data, dict) and isinstance(data.get("bookSources"), list) \
+                and data["bookSources"]:
+            return ("书源数", len(data["bookSources"]))
+        if isinstance(data, dict) and isinstance(data.get("plugins"), list) \
+                and data["plugins"]:
+            return ("条数", len(data["plugins"]))
         if isinstance(data, list) and data:
             return ("书源数", len(data))
 
@@ -1205,6 +1229,11 @@ def feed_candidates_github_search(feed):
         url = (f"https://api.github.com/search/repositories?q={q}"
                f"&sort=updated&order=desc&per_page={per_page}&page={page}")
         status, _ct, body = gh_fetch(url, max_bytes=1024 * 1024)
+        if status in (403, 429) and page == 1:
+            # 撞上搜索限速：等 60 秒再试一次，还不行才放弃这个源
+            log(f"GitHub 搜索被限速（{status}），等 60 秒重试一次：{feed.get('query')}")
+            time.sleep(60)
+            status, _ct, body = gh_fetch(url, max_bytes=1024 * 1024)
         if status != 200:
             if page == 1:
                 raise RuntimeError(f"GitHub 搜索返回 {status}")
@@ -1270,7 +1299,9 @@ def feed_candidates_repo_json(feed):
     status, _ct, body = fetch(feed["url"], max_bytes=MAX_BYTES)
     if status != 200:
         raise RuntimeError(f"清单返回 {status}")
-    data = json.loads(body.decode("utf-8", "replace"))
+    data = _try_json(body.decode("utf-8", "replace"))
+    if data is None:
+        raise RuntimeError("清单不是有效 JSON")
     return _generic_json_candidates(data)
 
 
@@ -1280,7 +1311,8 @@ def feed_candidates_rss(feed):
         raise RuntimeError(f"RSS 返回 {status}")
     text = body.decode("utf-8", "replace")
     if text.lstrip().startswith("{"):
-        return _generic_json_candidates(json.loads(text))
+        data = _try_json(text)
+        return _generic_json_candidates(data if data is not None else {})
     out = []
     for m in re.finditer(r"<item>(.*?)</item>", text, re.S):
         chunk = m.group(1)
@@ -1738,11 +1770,12 @@ def main():
         list(ex.map(lambda j: process_item(j[0], j[1], state_fails), jobs))
     log(f"验活：通 {STATS['checked_ok']} / 不通 {STATS['dead']}")
 
-    # 安全阀一：超过 30% 不通 → 中止，不写任何文件
-    if total_before and STATS["dead"] > total_before * 0.30:
-        log(f"安全阀触发：{STATS['dead']}/{total_before} 条不通（超过 30%），"
-            "中止并保留旧数据，不写文件。")
-        return 2
+    # 安全阀一：超过 30% 不通 → 本轮不删任何条目（验活数据可能不可信），
+    # 但刷新、新增、记账照常写盘——阀门只拦「删」，绝不整轮作废。
+    valve1_tripped = bool(total_before and STATS["dead"] > total_before * 0.30)
+    if valve1_tripped:
+        log(f"安全阀一触发：{STATS['dead']}/{total_before} 条不通（超过 30%），"
+            "本轮跳过删除，刷新与新增照常。")
 
     # ---- 发现：逐栏拉候选（单源失败只跳过） ----
     feeds = load_feeds(script_dir)
@@ -1819,6 +1852,25 @@ def main():
                 REMOVED.append((slug, item.get("name") or "", item.get("url") or "",
                                 f"连续 {threshold} 次验活不通"))
 
+    # 安全阀一落地：本轮验活不可信，不删任何条目（失败次数已记在 state.json，
+    # 下轮复核时再按规矩删；苹果限免的降组不受影响，那是按现价核实的）。
+    if valve1_tripped and REMOVED:
+        log(f"安全阀一：本轮跳过删除 {len(REMOVED)} 条，留待下轮复核。")
+        REMOVED.clear()
+        removed_keys.clear()
+
+    # 安全阀二落地：一次移除超过全站 25% 多半是源头异常——不中止，只删够
+    # 25% 的名额，剩下的留到下轮（失败次数已落盘，下轮接着删）。
+    if total_before and len(REMOVED) > total_before * 0.25:
+        removal_cap = int(total_before * 0.25)
+        log(f"移除量安全阀触发：本轮要移除 {len(REMOVED)} 条，超过全站 "
+            f"{total_before} 条的 25%，只删 {removal_cap} 条，剩下的下轮再删。")
+        keep_urls = {norm_url(u) for _s, _n, u, _r in REMOVED[:removal_cap] if u}
+        REMOVED[:] = REMOVED[:removal_cap]
+        removed_keys = {id(it) for cat in categories.values()
+                        for it in (cat.get("items") or [])
+                        if norm_url(it.get("url") or "") in keep_urls}
+
     # ---- 新增：先补位、再扩充；不重复的新条目全数加进（每栏总量上限 300） ----
     max_id = [0]
     _id_lock = threading.Lock()
@@ -1873,12 +1925,8 @@ def main():
         if cat.get("items"):
             cat["items"] = [it for it in cat["items"] if id(it) not in removed_keys]
 
-    # 安全阀二：只拦「移除」——一次移除超过全站 25% 多半是源头异常，中止保数据。
-    # 新增永不拦：搜到多少不重复的新条目就加多少（站长 2026-11-23 定死）。
-    if total_before and len(REMOVED) > total_before * 0.25:
-        log(f"移除量安全阀触发：移除 {len(REMOVED)} 条，超过全站 {total_before} 条的 25%，"
-            "判定源头异常，中止不写数据。")
-        return 3
+    # （安全阀二已在收集阶段按 25% 封顶，这里不再中止；新增永不拦，
+    # 搜到多少不重复的新条目就加多少。）
     if ADDED:
         log(f"本轮新增 {len(ADDED)} 条新条目（不设上限，全数加进）。")
 
