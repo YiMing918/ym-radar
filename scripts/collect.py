@@ -20,7 +20,7 @@
      网址规范化 + 名称近似双去重；新候选验活后深挖内容（iTunes 完整介绍 /
      F-Droid 介绍 / GitHub README / 网页正文），凑齐「是什么、干什么、
      有什么用、适合谁」四样才收；深挖后仍无实义内容的放弃并记录原因。
-     每栏每次最多新增 5 条，每栏总量上限 40 条。
+     每栏每次最多新增 15 条，每栏总量上限 300 条。
   4) 替换：scripts/state.json 记每条连续验活失败次数，连续不通自动移除
      （苹果栏目 3 次、其他栏目 6 次；每 6 小时跑一轮，约合 18/36 小时），
      从同栏候选池按新鲜度补位；新增/移除/挪组清单写进 changes.txt
@@ -986,13 +986,17 @@ def process_item(slug, item, state_fails):
         bump("dead")
         return False
     today = today_cst()
+    # 记住进来之前的连续失败次数：内容级失效要在旧账上接着记，
+    # 不能被本轮的「网络通」先清零，否则永远攒不够移除次数
+    prev_fails = int(state_fails.get(key, 0))
 
     alive = False
     body = b""
     ct = ""
     try:
         status, ct, body = fetch(url)
-        alive = status < 500
+        # 404/410 是资源明确没了，算不通；403 可能是防爬，不算
+        alive = status < 500 and status not in (404, 410)
     except Exception:
         alive = False
     set_detail(item, "最近检查", f"{today} {'通' if alive else '不通'}")
@@ -1019,6 +1023,10 @@ def process_item(slug, item, state_fails):
             path = urllib.parse.urlparse(url).path.lower()
             if path.endswith((".json", ".m3u", ".m3u8", ".txt")):
                 item["_content_fail"] = True
+
+    # 直链文件栏目返回空内容（0 字节）同样是假活，按内容失效记账
+    if alive and not body and slug in ("video", "music", "book", "live", "node", "cfip"):
+        item["_content_fail"] = True
 
     # 下载链接硬规矩：旧版本固定直链改成最新版发布页
     if slug in VERSION_REQUIRED_SLUGS:
@@ -1134,8 +1142,10 @@ def process_item(slug, item, state_fails):
     # 内容级验活汇总：假活按不通补记（连续失败计数、验活阀都算它）
     if item.pop("_content_fail", False) and alive:
         bump("content_dead")
+        bump("dead")  # 30% 验活安全阀也要算上它，不然阀门看不见这类失效
         set_detail(item, "最近检查", f"{today} 不通")
-        state_fails[key] = int(state_fails.get(key, 0)) + 1
+        # 在旧账上 +1（进来时 prev_fails），不许被本轮「网络通」的清零洗掉
+        state_fails[key] = prev_fails + 1
         return False
     return alive
 
