@@ -1,1 +1,681 @@
-ewogIl/or7TmmI4iOiAi6Zu36L6+56uZ5Y+R546w5rqQ5riF5Y2V44CC5q+P5qCP6Iez5bCRIDIg5Liq5LqS55u454us56uL55qE5rqQ77yM5Y2V5Liq5rqQ5aSx6LSl5Y+q6Lez6L+H5bm26K6w5pel5b+X44CCdHlwZSDlm5vnsbvvvJpnaXRodWJfc2VhcmNoPUdpdEh1YiDmkJzntKIgQVBJ77yIcXVlcnkg5piv5pCc57Si5byP77yM5oyJ5pyA6L+R5pu05paw5o6S5bqP77yJ77ybcmVwb19qc29uPeiBmuWQiOS7k+W6ky/lhazlvIDmjqXlj6PnmoQgSlNPTiDmuIXljZXvvIhwYXJzZSDor7TmmI7op6PmnpDmlrnlvI/vvInvvJtyc3M95a6Y5pa55qac5Y2VIGZlZWTvvIjoi7nmnpzokKXplIDlt6XlhbcgUlNTIOeahCBKU09OIOW9ouaAge+8ie+8m3BhZ2VfbGlua3M96IGa5ZCI5a+86Iiq6aG177yM5oqT6aG16Z2i5aSW6ZO+5L2c5YCZ6YCJ44CC6YCJ5rqQ5qCH5YeG77ya5YWs5byA44CB5YWN5Luk54mM44CB57uT5p6E56iz5a6a44CCIiwKICJjYXRlZ29yaWVzIjogewogICJhZHVsdCI6IFsKICAgewogICAgInBhcnNlIjogIuaIkOS6uiBUVkJveCDphY3nva7vvIzlj5Ygc2l0ZXMg5pWw57uE55qEIG5hbWUrYXBpIOS9nOWAmemAiSIsCiAgICAidHlwZSI6ICJyZXBvX2pzb24iLAogICAgInVybCI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vMmhhY2MvVFZCb3gvbWFpbi9oL2guanNvbiIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICJ0dmJveCBoIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiVFZCb3gg5oiQ5Lq6IiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiaG9uZyB0dmJveCIsCiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIgogICB9CiAgXSwKICAiYWkiOiBbCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiZnJlZSBsbG0gYXBpIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAidG9waWM6bGxtIGZyZWUgYXBpIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAib3BlbmFpIGZyZWUgYXBpIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiZnJlZSBhaSBhcGkga2V5IiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiZ2VtaW5pIGZyZWUgYXBpIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAi5YWN6LS5IGFpIGFwaSIsCiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIgogICB9CiAgXSwKICAiYXBwIjogWwogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogInRvcGljOmFuZHJvaWQgdG9waWM6b3Blbi1zb3VyY2UiLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAic2VjdGlvbiI6ICJhbmRyb2lkLWZyZWUiCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAidG9waWM6ZmRyb2lkIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInNlY3Rpb24iOiAiYW5kcm9pZC1mcmVlIgogICB9LAogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogIm9wZW4gc291cmNlIGFuZHJvaWQgYXBwIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInNlY3Rpb24iOiAiYW5kcm9pZC1mcmVlIgogICB9LAogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogImYtZHJvaWQgYXBwcyIsCiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJzZWN0aW9uIjogImFuZHJvaWQtZnJlZSIKICAgfSwKICAgewogICAgInBhcnNlIjogIkYtRHJvaWQg5a6Y5pa55YyF57Si5byV77yM5Y+W5YyF5ZCN5ou85ZWG5bqX6aG15L2c5YCZ6YCJ77yI5Y+q5Y+W6Z2g5YmN5LiA5om577yJIiwKICAgICJ0eXBlIjogInJlcG9fanNvbiIsCiAgICAidXJsIjogImh0dHBzOi8vZi1kcm9pZC5vcmcvYXBpL3YxL3BhY2thZ2VzIiwKICAgICJzZWN0aW9uIjogImFuZHJvaWQtZnJlZSIKICAgfSwKICAgewogICAgInBhcnNlIjogIkYtRHJvaWQg5ZWG5bqX55uu5b2V6aG177yM5oqT5YyF6aG15aSW6ZO+5L2c5YCZ6YCJIiwKICAgICJ0eXBlIjogInBhZ2VfbGlua3MiLAogICAgInVybCI6ICJodHRwczovL2YtZHJvaWQub3JnL2VuL3BhY2thZ2VzLyIsCiAgICAic2VjdGlvbiI6ICJhbmRyb2lkLWZyZWUiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogIndpbmRvd3MgZnJlZSBzb2Z0d2FyZSBvcGVuIHNvdXJjZSIsCiAgICAic2VjdGlvbiI6ICJwYy1mcmVlIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAib3BlbiBzb3VyY2UgYWx0ZXJuYXRpdmUgd2luZG93cyIsCiAgICAic2VjdGlvbiI6ICJwYy1mcmVlIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAicGMgZnJlZXdhcmUgbGlzdCIsCiAgICAic2VjdGlvbiI6ICJwYy1mcmVlIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAi5a6J5Y2TIOegtOinoyDova/ku7Yg5riF5Y2VIiwKICAgICJzZWN0aW9uIjogImFuZHJvaWQtY3JhY2tlZCIsCiAgICAicGFyc2UiOiAi57u05oqk56C06Kej6L2v5Lu25riF5Y2V55qE5YWs5byA5LuT5bqT77yM5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgInvvIjmnaHnm67lvLrliLbluKbpo47pmanorablkYrvvIkiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImFuZHJvaWQgbW9kIGFwcHMgbGlzdCIsCiAgICAic2VjdGlvbiI6ICJhbmRyb2lkLWNyYWNrZWQiLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJ77yI5p2h55uu5by65Yi25bim6aOO6Zmp6K2m5ZGK77yJIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJ3aW5kb3dzIGNyYWNrZWQgc29mdHdhcmUgbGlzdCIsCiAgICAic2VjdGlvbiI6ICJwYy1jcmFja2VkIiwKICAgICJwYXJzZSI6ICLnu7TmiqTnoLTop6Pova/ku7bmuIXljZXnmoTlhazlvIDku5PlupPvvIzlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAie+8iOadoeebruW8uuWItuW4pumjjumZqeitpuWRiu+8iSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAi55S16ISRIOegtOino+i9r+S7tiDlkIjpm4YiLAogICAgInNlY3Rpb24iOiAicGMtY3JhY2tlZCIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgInvvIjmnaHnm67lvLrliLbluKbpo47pmanorablkYrvvIkiCiAgIH0KICBdLAogICJhcHBsZSI6IFsKICAgewogICAgInBhcnNlIjogIuiLueaenOWumOaWuee+juWMuuWFjei0ueamnO+8jGZlZWQucmVzdWx0cyDlj5YgbmFtZSt1cmwiLAogICAgInR5cGUiOiAicnNzIiwKICAgICJ1cmwiOiAiaHR0cHM6Ly9yc3MuYXBwbGVtYXJrZXRpbmd0b29scy5jb20vYXBpL3YyL3VzL2FwcHMvdG9wLWZyZWUvMjUvYXBwcy5qc29uIiwKICAgICJzZWN0aW9uIjogImRlYWxzIgogICB9LAogICB7CiAgICAicGFyc2UiOiAi6Iu55p6c5a6Y5pa55Zu95Yy65YWN6LS55qac77yMZmVlZC5yZXN1bHRzIOWPliBuYW1lK3VybCIsCiAgICAidHlwZSI6ICJyc3MiLAogICAgInVybCI6ICJodHRwczovL3Jzcy5hcHBsZW1hcmtldGluZ3Rvb2xzLmNvbS9hcGkvdjIvY24vYXBwcy90b3AtZnJlZS8yNS9hcHBzLmpzb24iLAogICAgInNlY3Rpb24iOiAiZGVhbHMiCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLoi7nmnpzlrpjmlrnnvo7ljLrku5jotLnmppzvvIjpmY3ku7fop4Llr5/vvInvvIxmZWVkLnJlc3VsdHMg5Y+WIG5hbWUrdXJsIiwKICAgICJ0eXBlIjogInJzcyIsCiAgICAidXJsIjogImh0dHBzOi8vcnNzLmFwcGxlbWFya2V0aW5ndG9vbHMuY29tL2FwaS92Mi91cy9hcHBzL3RvcC1wYWlkLzI1L2FwcHMuanNvbiIsCiAgICAic2VjdGlvbiI6ICJkaXNjb3VudHMiCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLoi7nmnpzlrpjmlrnlm73ljLrku5jotLnmppzvvIjpmY3ku7fop4Llr5/vvInvvIxmZWVkLnJlc3VsdHMg5Y+WIG5hbWUrdXJsIiwKICAgICJ0eXBlIjogInJzcyIsCiAgICAidXJsIjogImh0dHBzOi8vcnNzLmFwcGxlbWFya2V0aW5ndG9vbHMuY29tL2FwaS92Mi9jbi9hcHBzL3RvcC1wYWlkLzI1L2FwcHMuanNvbiIsCiAgICAic2VjdGlvbiI6ICJkaXNjb3VudHMiCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAidGVzdGZsaWdodCBhcHBzIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiaW9zIGZyZWUgYXBwcyBsaXN0IiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogInRlc3RmbGlnaHQgcHVibGljIGxpbmtzIiwKICAgICJzZWN0aW9uIjogInRlc3RmbGlnaHQiLAogICAgInBhcnNlIjogIue7tOaKpCBUZXN0RmxpZ2h0IOWFrOW8gOmTvuaOpea4heWNleeahOS7k+W6k++8jOWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJUZXN0RmxpZ2h0IOaLm+WLnyIsCiAgICAic2VjdGlvbiI6ICJ0ZXN0ZmxpZ2h0IiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAidGVzdGZsaWdodCBiZXRhIGxpc3QiLAogICAgInNlY3Rpb24iOiAidGVzdGZsaWdodCIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogIuWGhei0rSDpmZDlhY0iLAogICAgInNlY3Rpb24iOiAiaWFwZnJlZSIsCiAgICAicGFyc2UiOiAi5YaF6LSt6ZmQ5YWN6IGa5ZCI5LuT5bqT77yM5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImlhcCBmcmVlIGlvcyIsCiAgICAic2VjdGlvbiI6ICJpYXBmcmVlIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAi5Lyq6KOFIGFwcCBpb3Mg6K6h566X5ZmoIiwKICAgICJzZWN0aW9uIjogImRpc2d1aXNlZCIsCiAgICAicGFyc2UiOiAi5Lyq6KOF57G75bqU55So6IGa5ZCI77yI5oyJ5p2l5rqQ6aG15b2S57G75pS277yM6ISa5pys5LiN6Ieq5bex5Yik5pat5Lyq6KOF77yJIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJpb3MgaXBhIGxpYnJhcnkiLAogICAgInNlY3Rpb24iOiAiaXBhc2lnbiIsCiAgICAicGFyc2UiOiAi57u05oqkIElQQSDljIXmuIXljZXnmoTku5PlupPvvIzlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAie+8m+WNluWNoeWvhi/mv4DmtLvnoIHnmoTmnaXmupDkuI3mlLYiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImlwYSDotYTmupDlupMgaW9zIiwKICAgICJzZWN0aW9uIjogImlwYXNpZ24iLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJ77yb5Y2W5Y2h5a+GL+a/gOa0u+eggeeahOadpea6kOS4jeaUtiIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAiZXNpZ24gaXBhIHJlcG8iLAogICAgInNlY3Rpb24iOiAiaXBhc2lnbiIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgInvvJvljZbljaHlr4Yv5r+A5rS756CB55qE5p2l5rqQ5LiN5pS2IgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICLoi7nmnpwgaXBhIOWMhSDoh6rnrb4iLAogICAgInNlY3Rpb24iOiAiaXBhc2lnbiIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgInvvJvljZbljaHlr4Yv5r+A5rS756CB55qE5p2l5rqQ5LiN5pS2IgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJhbHRzdG9yZSBhcHBzIGlwYSIsCiAgICAic2VjdGlvbiI6ICJpcGFzaWduIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAie+8m+WNluWNoeWvhi/mv4DmtLvnoIHnmoTmnaXmupDkuI3mlLYiCiAgIH0KICBdLAogICJib29rIjogWwogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogImxlZ2FkbyDkuabmupAiLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICJ0b3BpYzpsZWdhZG8iLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICLpmIXor7sg5Lmm5rqQIOWQiOmbhiIsCiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIgogICB9LAogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogImxlZ2FkbyBzb3VyY2VzIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICJhb2Fvc3RhciDkuabmupDnq5nvvIzmipPpobXpnaLlpJbpk77kvZzlgJnpgIkiLAogICAgInR5cGUiOiAicGFnZV9saW5rcyIsCiAgICAidXJsIjogImh0dHBzOi8vbGVnYWRvLmFvYW9zdGFyLmNvbS8iCiAgIH0KICBdLAogICJjZmlwIjogWwogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogImNsb3VkZmxhcmUg5LyY6YCJIGlwIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiYmVzdCBjbG91ZGZsYXJlIGlwIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiY2xvdWRmbGFyZSBzcGVlZCB0ZXN0IiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiY2Yg5LyY6YCJIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiY2xvdWRmbGFyZSBwcmVmZXJyZWQgaXAiLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIkJlc3RDRiDlr7zoiKrpobXvvIzmipPpobXpnaLlpJbpk77kvZzlgJnpgIkiLAogICAgInR5cGUiOiAicGFnZV9saW5rcyIsCiAgICAidXJsIjogImh0dHBzOi8vYmVzdGNmLnBhZ2VzLmRldi8iCiAgIH0KICBdLAogICJkb21haW4iOiBbCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiZnJlZSBkb21haW4iLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICJ0b3BpYzpmcmVlLWRvbWFpbiIsCiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIgogICB9LAogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogImZyZWUgZG9tYWlucyBsaXN0IiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiZnJlZSBkb21haW4gbmFtZSBwcm92aWRlciIsCiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIgogICB9LAogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogIuWFjei0ueWfn+WQjSIsCiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJmcmVlIGRvbWFpbiBhZ2dyZWdhdG9yIGxpc3QiLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICLlhY3otLnln5/lkI0g5ZCI6ZuGIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAiZnJlZSBkb21haW4gcHJvdmlkZXJzIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAiZnJlZW5vbSBhbHRlcm5hdGl2ZSBmcmVlIGRvbWFpbnMiLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIgogICB9CiAgXSwKICAibGl2ZSI6IFsKICAgewogICAgInBhcnNlIjogImlwdHYtb3JnIOWumOaWueaSreaUvuWIl+ihqOe0ouW8le+8jOWPliBuYW1lK3VybCDkvZzlgJnpgIkiLAogICAgInR5cGUiOiAicmVwb19qc29uIiwKICAgICJ1cmwiOiAiaHR0cHM6Ly9pcHR2LW9yZy5naXRodWIuaW8vYXBpL3BsYXlsaXN0cy5qc29uIgogICB9LAogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogImlwdHYgbTN1IiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAidG9waWM6aXB0diIsCiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIgogICB9LAogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogImlwdHYgcGxheWxpc3QiLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICLnm7Tmkq3mupAgbTN1IiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiZnJlZSBpcHR2IiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0KICBdLAogICJtdXNpYyI6IFsKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICJNdXNpY0ZyZWUiLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICJ0b3BpYzptdXNpY2ZyZWUiLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICJseC1tdXNpYyDpn7PmupAiLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICLmtJvpm6og6Z+z5rqQIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICJNdXNpY0ZyZWUg5o+S5Lu26IGa5ZCI5riF5Y2V77yM5Y+W5o+S5Lu2IG5hbWUrdXJsIOS9nOWAmemAiSIsCiAgICAidHlwZSI6ICJyZXBvX2pzb24iLAogICAgInVybCI6ICJodHRwczovL2dpdGVlLmNvbS9tYW90b3VtYW8vTXVzaWNGcmVlUGx1Z2lucy9yYXcvbWFzdGVyL3BsdWdpbnMuanNvbiIKICAgfSwKICAgewogICAgInBhcnNlIjogIk11c2ljRnJlZSDmj5Lku7bkuK3lv4PmuIXljZXvvIzlj5bmj5Lku7YgbmFtZSt1cmwg5L2c5YCZ6YCJIiwKICAgICJ0eXBlIjogInJlcG9fanNvbiIsCiAgICAidXJsIjogImh0dHBzOi8vbXVzaWNmcmVlcGx1Z2luc2h1Yi4yMDIwODE4Lnh5ei9wbHVnaW5zLmpzb24iCiAgIH0KICBdLAogICJub2RlIjogWwogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogInYycmF5IGZyZWUgc3Vic2NyaXB0aW9uIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAiY2xhc2ggZnJlZSBzdWJzY3JpcHRpb24iLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICJ0b3BpYzp2MnJheSIsCiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIgogICB9LAogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogImZyZWUgbm9kZXMgc3Vic2NyaXB0aW9uIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAic2luZy1ib3ggZnJlZSBzdWJzY3JpcHRpb24iLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICLlhY3otLnoioLngrkg6K6i6ZiFIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0KICBdLAogICJzZXJ2aWNlIjogWwogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJmcmVlIGZvciBkZXZlbG9wZXJzIiwKICAgICJwYXJzZSI6ICJmcmVlLWZvci1kZXYg57G75YWN6LS55pyN5Yqh5aSn5YWo5LuT5bqT77yI5Li76IGa5ZCI5rqQ77yJ77yM5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImZyZWUgZm9yIGRldiBsaXN0IiwKICAgICJwYXJzZSI6ICLlhY3otLnmnI3liqHlpKflhajnsbvku5PlupPvvIjkuLvogZrlkIjmupDvvIkiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImZyZWUgZG9tYWluIG5hbWUgc2VydmljZSIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInN1YmNhdCI6ICLlhY3otLnln5/lkI0iCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImZyZWUgc3ViZG9tYWluIHByb3ZpZGVyIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAic3ViY2F0IjogIuWFjei0ueWfn+WQjSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAiZnJlZSBob3N0aW5nIHRpZXIiLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJzdWJjYXQiOiAi5YWN6LS55Li75py6L+aJmOeuoSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAiZnJlZSB2cHMgdGllciIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInN1YmNhdCI6ICLlhY3otLnkuLvmnLov5omY566hIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJmcmVlIHRpZXIgY2xvdWQgaG9zdGluZyIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInN1YmNhdCI6ICLlhY3otLnkuLvmnLov5omY566hIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJmcmVlIGVtYWlsIGhvc3RpbmciLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJzdWJjYXQiOiAi5YWN6LS56YKu566xIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJmcmVlIGN1c3RvbSBkb21haW4gZW1haWwiLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJzdWJjYXQiOiAi5YWN6LS56YKu566xIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJmcmVlIGRhdGFiYXNlIGhvc3RpbmciLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJzdWJjYXQiOiAi5YWN6LS55pWw5o2u5bqTIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJmcmVlIHBvc3RncmVzIG15c3FsIHRpZXIiLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJzdWJjYXQiOiAi5YWN6LS55pWw5o2u5bqTIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJmcmVlIHNzbCBjZXJ0aWZpY2F0ZSIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInN1YmNhdCI6ICLlhY3otLnor4HkuaYiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImZyZWUgaHR0cHMgY2VydGlmaWNhdGUgYWNtZSIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInN1YmNhdCI6ICLlhY3otLnor4HkuaYiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImZyZWUgb2JqZWN0IHN0b3JhZ2UgdGllciIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInN1YmNhdCI6ICLlhY3otLnlrZjlgqgv5Zu+5bqKIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJmcmVlIGltYWdlIGhvc3RpbmciLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJzdWJjYXQiOiAi5YWN6LS55a2Y5YKoL+WbvuW6iiIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAicHVibGljIGFwaXMgZnJlZSBsaXN0IiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAic3ViY2F0IjogIuWFjei0uSBBUEkiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImZyZWUgYXBpIHRpZXIiLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJzdWJjYXQiOiAi5YWN6LS5IEFQSSIKICAgfQogIF0sCiAgInZpZGVvIjogWwogICB7CiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiLAogICAgInF1ZXJ5IjogInR2Ym94IiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIsCiAgICAicXVlcnkiOiAidG9waWM6dHZib3giLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICJ0dmJveCDphY3nva4iLAogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIKICAgfSwKICAgewogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIiwKICAgICJxdWVyeSI6ICLlvbHop4bku5Mg6YWN572uIiwKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giCiAgIH0sCiAgIHsKICAgICJwYXJzZSI6ICJUVkJveCDlpKfphY3nva7vvIzlj5Ygc2l0ZXMg5pWw57uE55qEIG5hbWUrYXBpIOS9nOWNleS4quaOpeWPo+WAmemAiSIsCiAgICAidHlwZSI6ICJyZXBvX2pzb24iLAogICAgInVybCI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vZ2FvdGlhbmxpdXl1bi9nYW8vbWFzdGVyLzA4MjEuanNvbiIKICAgfSwKICAgewogICAgInBhcnNlIjogIlRWQm94IOmFjee9ru+8jOWPliBzaXRlcyDmlbDnu4TnmoQgbmFtZSthcGkg5L2c5Y2V5Liq5o6l5Y+j5YCZ6YCJIiwKICAgICJ0eXBlIjogInJlcG9fanNvbiIsCiAgICAidXJsIjogImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9nYW90aWFubGl1eXVuL2dhby9tYXN0ZXIvanMuanNvbiIKICAgfQogIF0sCiAgInByb3h5IjogWwogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJjbGFzaCBhbmRyb2lkIGNsaWVudCIsCiAgICAic2VjdGlvbiI6ICJhbmRyb2lkIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAidjJyYXluZyIsCiAgICAic2VjdGlvbiI6ICJhbmRyb2lkIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAic2luZy1ib3ggYW5kcm9pZCBjbGllbnQiLAogICAgInNlY3Rpb24iOiAiYW5kcm9pZCIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogImlvcyBwcm94eSBjbGllbnQgc2hhZG93cm9ja2V0IiwKICAgICJzZWN0aW9uIjogImlvcyIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogInN1cmdlIGlvcyBjbGllbnQiLAogICAgInNlY3Rpb24iOiAiaW9zIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAiY2xhc2ggd2luZG93cyBjbGllbnQiLAogICAgInNlY3Rpb24iOiAid2luZG93cyIsCiAgICAicGFyc2UiOiAi5Y+W5LuT5bqT5ZCNK+S4u+mhtSvnroDku4vkvZzlgJnpgIkiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogInYycmF5IHdpbmRvd3MgY2xpZW50IiwKICAgICJzZWN0aW9uIjogIndpbmRvd3MiLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJjbGFzaCBtYWNvcyBjbGllbnQiLAogICAgInNlY3Rpb24iOiAibWFjIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAiY2xhc2ggbGludXggY2xpZW50IiwKICAgICJzZWN0aW9uIjogImxpbnV4IiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAib3BlbndydCBjbGFzaCBwcm94eSIsCiAgICAic2VjdGlvbiI6ICJyb3V0ZXIiLAogICAgInBhcnNlIjogIuWPluS7k+W6k+WQjSvkuLvpobUr566A5LuL5L2c5YCZ6YCJIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJyb3V0ZXIgcHJveHkgZmlybXdhcmUiLAogICAgInNlY3Rpb24iOiAicm91dGVyIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfSwKICAgewogICAgInR5cGUiOiAiZ2l0aHViX3NlYXJjaCIsCiAgICAicXVlcnkiOiAiTWV0YUN1YmVYIG1paG9tbyIsCiAgICAic2VjdGlvbiI6ICJhbGwiLAogICAgInBhcnNlIjogIuS7o+eQhuWGheaguCBtaWhvbW8g5a6Y5pa55LuT5bqTIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJTYWdlck5ldCBzaW5nLWJveCIsCiAgICAic2VjdGlvbiI6ICJhbGwiLAogICAgInBhcnNlIjogIuS7o+eQhuWGheaguCBzaW5nLWJveCDlrpjmlrnku5PlupMiCiAgIH0sCiAgIHsKICAgICJ0eXBlIjogImdpdGh1Yl9zZWFyY2giLAogICAgInF1ZXJ5IjogIlhUTFMgWHJheS1jb3JlIiwKICAgICJzZWN0aW9uIjogImFsbCIsCiAgICAicGFyc2UiOiAi5Luj55CG5YaF5qC4IFhyYXkg5a6Y5pa55LuT5bqTIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJzdWItc3RvcmUgc3Vic2NyaXB0aW9uIG1hbmFnZXIiLAogICAgInNlY3Rpb24iOiAiYWxsIiwKICAgICJwYXJzZSI6ICLorqLpmIXnrqHnkIblt6Xlhbcgc3ViLXN0b3JlIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJzdWJjb252ZXJ0ZXIiLAogICAgInNlY3Rpb24iOiAiYWxsIiwKICAgICJwYXJzZSI6ICLorqLpmIXovazmjaLlt6Xlhbcgc3ViY29udmVydGVyIgogICB9LAogICB7CiAgICAidHlwZSI6ICJnaXRodWJfc2VhcmNoIiwKICAgICJxdWVyeSI6ICJwcm94eSBjbGllbnQiLAogICAgInNlY3Rpb24iOiAiYWxsIiwKICAgICJwYXJzZSI6ICLlj5bku5PlupPlkI0r5Li76aG1K+eugOS7i+S9nOWAmemAiSIKICAgfQogIF0KIH0KfQ==
+{
+ "_说明": "雷达站发现源清单。每栏至少 2 个互相独立的源，单个源失败只跳过并记日志。type 四类：github_search=GitHub 搜索 API（query 是搜索式，按最近更新排序）；repo_json=聚合仓库/公开接口的 JSON 清单（parse 说明解析方式）；rss=官方榜单 feed（苹果营销工具 RSS 的 JSON 形态）；page_links=聚合导航页，抓页面外链作候选。选源标准：公开、免令牌、结构稳定。",
+ "categories": {
+  "adult": [
+   {
+    "parse": "成人 TVBox 配置，取 sites 数组的 name+api 作候选",
+    "type": "repo_json",
+    "url": "https://raw.githubusercontent.com/2hacc/TVBox/main/h/h.json"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "tvbox h",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "TVBox 成人",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "hong tvbox",
+    "type": "github_search"
+   }
+  ],
+  "ai": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free llm api",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:llm free api",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "openai free api",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free ai api key",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "gemini free api",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "免费 ai api",
+    "type": "github_search"
+   }
+  ],
+  "app": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:android topic:open-source",
+    "type": "github_search",
+    "section": "android-free"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:fdroid",
+    "type": "github_search",
+    "section": "android-free"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "open source android app",
+    "type": "github_search",
+    "section": "android-free"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "f-droid apps",
+    "type": "github_search",
+    "section": "android-free"
+   },
+   {
+    "parse": "F-Droid 官方包索引，取包名拼商店页作候选（只取靠前一批）",
+    "type": "repo_json",
+    "url": "https://f-droid.org/api/v1/packages",
+    "section": "android-free"
+   },
+   {
+    "parse": "F-Droid 商店目录页，抓包页外链作候选",
+    "type": "page_links",
+    "url": "https://f-droid.org/en/packages/",
+    "section": "android-free"
+   },
+   {
+    "type": "github_search",
+    "query": "windows free software open source",
+    "section": "pc-free",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "open source alternative windows",
+    "section": "pc-free",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "pc freeware list",
+    "section": "pc-free",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "安卓 破解 软件 清单",
+    "section": "android-cracked",
+    "parse": "维护破解软件清单的公开仓库，取仓库名+主页+简介作候选（条目强制带风险警告）"
+   },
+   {
+    "type": "github_search",
+    "query": "android mod apps list",
+    "section": "android-cracked",
+    "parse": "取仓库名+主页+简介作候选（条目强制带风险警告）"
+   },
+   {
+    "type": "github_search",
+    "query": "windows cracked software list",
+    "section": "pc-cracked",
+    "parse": "维护破解软件清单的公开仓库，取仓库名+主页+简介作候选（条目强制带风险警告）"
+   },
+   {
+    "type": "github_search",
+    "query": "电脑 破解软件 合集",
+    "section": "pc-cracked",
+    "parse": "取仓库名+主页+简介作候选（条目强制带风险警告）"
+   }
+  ],
+  "apple": [
+   {
+    "parse": "苹果官方美区免费榜，feed.results 取 name+url",
+    "type": "rss",
+    "url": "https://rss.applemarketingtools.com/api/v2/us/apps/top-free/25/apps.json",
+    "section": "deals"
+   },
+   {
+    "parse": "苹果官方国区免费榜，feed.results 取 name+url",
+    "type": "rss",
+    "url": "https://rss.applemarketingtools.com/api/v2/cn/apps/top-free/25/apps.json",
+    "section": "deals"
+   },
+   {
+    "parse": "苹果官方美区付费榜（降价观察），feed.results 取 name+url",
+    "type": "rss",
+    "url": "https://rss.applemarketingtools.com/api/v2/us/apps/top-paid/25/apps.json",
+    "section": "discounts"
+   },
+   {
+    "parse": "苹果官方国区付费榜（降价观察），feed.results 取 name+url",
+    "type": "rss",
+    "url": "https://rss.applemarketingtools.com/api/v2/cn/apps/top-paid/25/apps.json",
+    "section": "discounts"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "testflight apps",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "ios free apps list",
+    "type": "github_search"
+   },
+   {
+    "type": "github_search",
+    "query": "testflight public links",
+    "section": "testflight",
+    "parse": "维护 TestFlight 公开链接清单的仓库，取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "TestFlight 招募",
+    "section": "testflight",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "testflight beta list",
+    "section": "testflight",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "内购 限免",
+    "section": "iapfree",
+    "parse": "内购限免聚合仓库，取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "iap free ios",
+    "section": "iapfree",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "伪装 app ios 计算器",
+    "section": "disguised",
+    "parse": "伪装类应用聚合（按来源页归类收，脚本不自己判断伪装）"
+   },
+   {
+    "type": "github_search",
+    "query": "ios ipa library",
+    "section": "ipasign",
+    "parse": "维护 IPA 包清单的仓库，取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   },
+   {
+    "type": "github_search",
+    "query": "ipa 资源库 ios",
+    "section": "ipasign",
+    "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   },
+   {
+    "type": "github_search",
+    "query": "esign ipa repo",
+    "section": "ipasign",
+    "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   },
+   {
+    "type": "github_search",
+    "query": "苹果 ipa 包 自签",
+    "section": "ipasign",
+    "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   },
+   {
+    "type": "github_search",
+    "query": "altstore apps ipa",
+    "section": "ipasign",
+    "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   }
+  ],
+  "book": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "legado 书源",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:legado",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "阅读 书源 合集",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "legado sources",
+    "type": "github_search"
+   },
+   {
+    "parse": "aoaostar 书源站，抓页面外链作候选",
+    "type": "page_links",
+    "url": "https://legado.aoaostar.com/"
+   }
+  ],
+  "cfip": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "cloudflare 优选 ip",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "best cloudflare ip",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "cloudflare speed test",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "cf 优选",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "cloudflare preferred ip",
+    "type": "github_search"
+   },
+   {
+    "parse": "BestCF 导航页，抓页面外链作候选",
+    "type": "page_links",
+    "url": "https://bestcf.pages.dev/"
+   }
+  ],
+  "domain": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free domain",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:free-domain",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free domains list",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free domain name provider",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "免费域名",
+    "type": "github_search"
+   },
+   {
+    "type": "github_search",
+    "query": "free domain aggregator list",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "免费域名 合集",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "free domain providers",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "freenom alternative free domains",
+    "parse": "取仓库名+主页+简介作候选"
+   }
+  ],
+  "live": [
+   {
+    "parse": "iptv-org 官方播放列表索引，取 name+url 作候选",
+    "type": "repo_json",
+    "url": "https://iptv-org.github.io/api/playlists.json"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "iptv m3u",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:iptv",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "iptv playlist",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "直播源 m3u",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free iptv",
+    "type": "github_search"
+   }
+  ],
+  "music": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "MusicFree",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:musicfree",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "lx-music 音源",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "洛雪 音源",
+    "type": "github_search"
+   },
+   {
+    "parse": "MusicFree 插件聚合清单，取插件 name+url 作候选",
+    "type": "repo_json",
+    "url": "https://gitee.com/maotoumao/MusicFreePlugins/raw/master/plugins.json"
+   },
+   {
+    "parse": "MusicFree 插件中心清单，取插件 name+url 作候选",
+    "type": "repo_json",
+    "url": "https://musicfreepluginshub.2020818.xyz/plugins.json"
+   }
+  ],
+  "node": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "v2ray free subscription",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "clash free subscription",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:v2ray",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free nodes subscription",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "sing-box free subscription",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "免费节点 订阅",
+    "type": "github_search"
+   }
+  ],
+  "service": [
+   {
+    "type": "github_search",
+    "query": "free for developers",
+    "parse": "free-for-dev 类免费服务大全仓库（主聚合源），取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "free for dev list",
+    "parse": "免费服务大全类仓库（主聚合源）"
+   },
+   {
+    "type": "github_search",
+    "query": "free domain name service",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费域名"
+   },
+   {
+    "type": "github_search",
+    "query": "free subdomain provider",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费域名"
+   },
+   {
+    "type": "github_search",
+    "query": "free hosting tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费主机/托管"
+   },
+   {
+    "type": "github_search",
+    "query": "free vps tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费主机/托管"
+   },
+   {
+    "type": "github_search",
+    "query": "free tier cloud hosting",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费主机/托管"
+   },
+   {
+    "type": "github_search",
+    "query": "free email hosting",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费邮箱"
+   },
+   {
+    "type": "github_search",
+    "query": "free custom domain email",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费邮箱"
+   },
+   {
+    "type": "github_search",
+    "query": "free database hosting",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费数据库"
+   },
+   {
+    "type": "github_search",
+    "query": "free postgres mysql tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费数据库"
+   },
+   {
+    "type": "github_search",
+    "query": "free ssl certificate",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费证书"
+   },
+   {
+    "type": "github_search",
+    "query": "free https certificate acme",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费证书"
+   },
+   {
+    "type": "github_search",
+    "query": "free object storage tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费存储/图床"
+   },
+   {
+    "type": "github_search",
+    "query": "free image hosting",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费存储/图床"
+   },
+   {
+    "type": "github_search",
+    "query": "public apis free list",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费 API"
+   },
+   {
+    "type": "github_search",
+    "query": "free api tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费 API"
+   }
+  ],
+  "video": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "tvbox",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:tvbox",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "tvbox 配置",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "影视仓 配置",
+    "type": "github_search"
+   },
+   {
+    "parse": "TVBox 大配置，取 sites 数组的 name+api 作单个接口候选",
+    "type": "repo_json",
+    "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/0821.json"
+   },
+   {
+    "parse": "TVBox 配置，取 sites 数组的 name+api 作单个接口候选",
+    "type": "repo_json",
+    "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/js.json"
+   }
+  ],
+  "proxy": [
+   {
+    "type": "github_search",
+    "query": "clash android client",
+    "section": "android",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "v2rayng",
+    "section": "android",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "sing-box android client",
+    "section": "android",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "ios proxy client shadowrocket",
+    "section": "ios",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "surge ios client",
+    "section": "ios",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "clash windows client",
+    "section": "windows",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "v2ray windows client",
+    "section": "windows",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "clash macos client",
+    "section": "mac",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "clash linux client",
+    "section": "linux",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "openwrt clash proxy",
+    "section": "router",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "router proxy firmware",
+    "section": "router",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "MetaCubeX mihomo",
+    "section": "all",
+    "parse": "代理内核 mihomo 官方仓库"
+   },
+   {
+    "type": "github_search",
+    "query": "SagerNet sing-box",
+    "section": "all",
+    "parse": "代理内核 sing-box 官方仓库"
+   },
+   {
+    "type": "github_search",
+    "query": "XTLS Xray-core",
+    "section": "all",
+    "parse": "代理内核 Xray 官方仓库"
+   },
+   {
+    "type": "github_search",
+    "query": "sub-store subscription manager",
+    "section": "all",
+    "parse": "订阅管理工具 sub-store"
+   },
+   {
+    "type": "github_search",
+    "query": "subconverter",
+    "section": "all",
+    "parse": "订阅转换工具 subconverter"
+   },
+   {
+    "type": "github_search",
+    "query": "proxy client",
+    "section": "all",
+    "parse": "取仓库名+主页+简介作候选"
+   }
+  ]
+ }
+}
