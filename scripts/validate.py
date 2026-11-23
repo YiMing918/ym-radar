@@ -4,7 +4,7 @@
 雷达站提交前门禁（只用 Python 标准库）。
 
 断言：
-  - data.json 能解析，12 个栏目齐全
+  - data.json 能解析，13 个栏目齐全
   - 每条条目 name / url / summary 非空
   - description 长度：人工条目 >= 30；自动收录的新条目（auto=true，深挖补全后）
     >= 40 且含用途类信息（带「适合」字样，模板的人群段）
@@ -162,7 +162,7 @@ def main():
         for p in problems:
             print(" -", p)
         return 1
-    print(f"校验通过：12 个栏目齐全，共 {total} 条，counts 一致。")
+    print(f"校验通过：13 个栏目齐全，共 {total} 条，counts 一致。")
     return 0
 
 
