@@ -68,6 +68,15 @@ FIX14（2026-11-24，C 截图采集 + D AI 额度字段）：
     apple 在 label_item 里用缓存的 iTunes 数据补、app 用预算（每轮 60
     条）补 F-Droid 截图。
 
+FIX14b（2026-11-24）：内容安全黑名单——错栏/有害条目永不收录。
+  - 命中即拦：拉候选时过滤（pull_candidates）、收录时再拦一道
+    （_try_add_one，防合集拆出来的条目绕过）；已有条目下轮随既有
+    移除流程清掉（走同一批 REMOVED/安全阀/changes.txt/screened.json），
+    绝不手改 data.json。
+  - 拦两类：①精确 URL（phishdestroy/destroylist 等 7 个已核实地址）；
+    ②china-dictatorship 家族的仓库名特征 + 正文指纹句（防改名/借壳复刻，
+    同内容已扩散到 5 个书源条目 + 作者主页仓库）。
+
 用法：python3 scripts/collect.py [data.json 路径]（默认仓库根目录 data.json）
 """
 import base64
@@ -104,10 +113,37 @@ _DEDUP_RANK = {s: i for i, s in enumerate(DEDUP_PRIORITY)}
 ERROR_TITLE_PREFIXES = ("page not found", "404", "not found", "error",
                         "出错", "无法访问", "找不到")
 
+# FIX14b（2026-11-24）：内容安全黑名单。命中即永不收录，已有条目下轮移除。
+#   phishdestroy/destroylist：钓鱼域名黑名单，被 github_search“free domain”
+#     误收进免费域名栏第 1 名，简介还写成“免费领一个能用的域名”，完全错位。
+#     它本身是正经安全名单，只是不属于本站——按精确 URL 拦，不按名拦。
+#   cirosantilli/china-dictatorship 一家：反共政治宣传库，被误收进书源栏
+#     当“阅读书源”；同内容已扩散到 5 个书源条目 + 作者本人主页仓库
+#     （改名 fork、借壳 fork 都有），所以除精确 URL 外，再按仓库名特征
+#     和正文指纹句拦今后的改名/借壳复刻。
+#   URL 存小写、无协议头、比对时同样处理：norm_url 不改路径大小写、
+#     还保留 http/https 协议头，GitHub 仓库名大小写又不敏感，直接比对
+#     会漏掉 PCL2 这类大小写不一致的和 http 变体。
+BLOCKED_URLS = {
+    "github.com/phishdestroy/destroylist",
+    "github.com/cirosantilli/china-dictatorship",
+    "github.com/mrfwq7lwnpzjavv5v6eo/cihna-dictattorshrip-8",
+    "github.com/cirosantilli/china-dictatroship-7",
+    "github.com/zpc1314521/pcl2",
+    "github.com/panbinibn/openpacketfix_",
+    "github.com/cirosantilli/cirosantilli",
+}
+# 仓库名里出现这些子串即拦（只拦 china-dictatorship 家族的改名 fork）。
+BLOCKED_NAME_SUBSTRINGS = ("china-dictatorship", "china-dictatroship",
+                            "cihna-dictattorshrip")
+# 正文指纹句：该政治宣传 README 里独有的长句，防借壳复刻（仓库名换了，
+# 正文还是同一篇）。30 字以上独有文本，正经条目不可能撞上。
+BLOCKED_TEXT_SNIPPETS = ("大陆修宪香港恶法台湾武统朝鲜毁约美中冷战等都是王沪宁愚弄",)
+
 STATS = {"checked_ok": 0, "dead": 0, "content_dead": 0, "github": 0, "counted": 0, "imaged": 0,
          "lang": 0, "region": 0, "cnswitch": 0, "cnswitch_en": 0,
          "deep_ok": 0, "resolved": 0, "pending": 0, "split": 0,
-         "summary_fixed": 0, "ai_credit": 0, "shots": 0}
+         "summary_fixed": 0, "ai_credit": 0, "shots": 0, "blocked": 0}
 _lock = threading.Lock()
 _repo_cache = {}
 _repo_lock = threading.Lock()
@@ -1932,6 +1968,27 @@ def norm_name(name):
     return s
 
 
+def is_blocked(url, name=""):
+    """FIX14b：黑名单命中吗？URL 精确比对（不区分大小写）+ 仓库名家族特征。
+    改名 fork 换了 URL 但仓库名特征还在，照样拦。"""
+    nu = re.sub(r"^https?://", "", norm_url(url or "").lower())
+    if nu in BLOCKED_URLS:
+        return True
+    nn = norm_name(name or "")
+    lu = (url or "").lower()
+    for sub in BLOCKED_NAME_SUBSTRINGS:
+        if norm_name(sub) in nn or sub in lu:
+            return True
+    return False
+
+
+def text_blocked(text):
+    """FIX14b：正文里有没有黑名单指纹句？有即拦（防借壳复刻：仓库名换了，
+    正文还是同一篇政治宣传）。"""
+    t = text or ""
+    return any(snip in t for snip in BLOCKED_TEXT_SNIPPETS)
+
+
 def name_similar(a, b):
     """名称近似：规范化后相等，或短名包含在长名里（短名>=6 字且占长名一半以上）。
     旧规则（>=4 字就判包含）太松：Loon/Stash/Happ 这类短名会撞上无关长名里的
@@ -2181,6 +2238,17 @@ def pull_candidates(slug, feeds):
             if func is None:
                 raise RuntimeError(f"未知 feed 类型 {feed.get('type')}")
             cands = func(feed)
+            # FIX14b：黑名单先拦一道（所有 feed 类型都在这汇合，合集拆分
+            # 产生的条目由 _try_add_one 再拦一次）。
+            kept = []
+            for c in cands:
+                if is_blocked(c.get("url") or "", c.get("name") or ""):
+                    bump("blocked")
+                    ABANDONED.append((c.get("name") or "", c.get("url") or "",
+                                      "黑名单（内容安全）"))
+                    continue
+                kept.append(c)
+            cands = kept
             for c in cands:
                 if feed.get("section"):
                     c.setdefault("section", feed["section"])
@@ -3536,6 +3604,22 @@ def main():
                 REMOVED.append((slug, item.get("name") or "", item.get("url") or "",
                                 f"连续 {threshold} 次验活不通"))
 
+    # FIX14b：黑名单——已有条目里命中的，本轮随既有移除流程清掉（同一批
+    # REMOVED/removed_keys，同样受下面两个安全阀约束；绝不手改 data.json）。
+    # 查 url、sourceUrl、仓库名三处，再查简介/原文里的指纹句（防借壳复刻
+    # 的已有条目：URL 和名字都换了，正文还是同一篇）。
+    for slug, cat in categories.items():
+        for item in cat.get("items") or []:
+            if id(item) in removed_keys:
+                continue
+            if (is_blocked(item.get("url") or "", item.get("name") or "")
+                    or is_blocked(item.get("sourceUrl") or "")
+                    or text_blocked(item.get("description") or "")
+                    or text_blocked(item.get("descriptionOriginal") or "")):
+                removed_keys.add(id(item))
+                REMOVED.append((slug, item.get("name") or "", item.get("url") or "",
+                                "黑名单（内容安全），不再收录"))
+
     # 安全阀一落地：本轮验活不可信，不删任何条目（失败次数已记在 state.json，
     # 下轮复核时再按规矩删；苹果限免的降组不受影响，那是按现价核实的）。
     if valve1_tripped and REMOVED:
@@ -3603,6 +3687,12 @@ def main():
         """深挖并收一条候选；成功返回 True。
         FIX14：service/domain 合集仓库先拆成单条服务再收（合集本身不收，
         拆不出来也不收）；收进来的条目带 _pending_reason 的进待补清单。"""
+        # FIX14b：黑名单第二道（合集拆出来的条目没走 pull_candidates，在这拦）。
+        if is_blocked(cand.get("url") or "", cand.get("name") or ""):
+            bump("blocked")
+            ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                              "黑名单（内容安全）"))
+            return False
         if norm_url(cand["url"]) in claimed_urls:
             ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
                               "本轮已在其他栏收录"))
@@ -3616,6 +3706,12 @@ def main():
             ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
                               reason or "无内容"))
             log(f"放弃候选：{cand.get('name')}（{reason}）")
+            return False
+        # FIX14b：正文指纹——借壳复刻（仓库名换了，正文还是同一篇）在这拦。
+        if text_blocked(material.get("text") or ""):
+            bump("blocked")
+            ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                              "黑名单（内容安全，正文指纹命中）"))
             return False
         if slug in ("service", "domain") and is_collection_repo(slug, cand, material):
             entries = split_collection_repo(slug, cand, material)
@@ -3749,6 +3845,7 @@ def main():
     log(f"FIX14：地址解析成可用地址 {STATS['resolved']} 条；"
         f"简介重建成真实内容 {STATS['summary_fixed']} 条；"
         f"合集仓库拆分 {STATS['split']} 个；待补清单 {len(PENDING)} 条")
+    log(f"FIX14b：黑名单拦下 {STATS['blocked']} 条（候选 + 已有条目）")
     for name, url, reason in ABANDONED:
         log(f"ABANDONED {name} | {url} | {reason}")
     return 0
