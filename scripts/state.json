@@ -1,13 +1,7 @@
 {
  "fails": {
-  "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js": 5,
-  "https://notabug.org/fantaiying/ext/raw/main/drpy2.js": 5,
-  "http://bttcj.com/inc/sapi.php": 5,
-  "http://www.010aizy.com/API/macs.php": 5,
-  "https://github.com/Gost-co/ModelAtlas": 1,
-  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6": 1,
-  "https://github.com/MythorWonder/Respocket-Changer": 1,
-  "https://github.com/Akshay7273/ProxyMan-free-proxy-list": 1
+  "https://github.com/Gost-co/ModelAtlas": 2,
+  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6": 2
  },
- "updatedAt": "2026-11-24T03:58:29.585Z"
+ "updatedAt": "2026-11-24T06:10:11.855Z"
 }
