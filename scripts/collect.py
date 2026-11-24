@@ -255,18 +255,27 @@ def github_release(repo):
 
 
 def github_readme(repo, info=None):
-    """抓 README 开头几段纯文本（深挖用）。拿不到返回空串。"""
+    """抓 README 开头几段纯文本（深挖用）。拿不到返回空串。
+    分支按顺序试：仓库默认分支 -> main -> master。旧写法只认默认分支，
+    一旦 github_info 拿不到（API 限流/仓库改名），就默认 main——
+    v2rayN、TUIC、v2ray-core 这类默认分支是 master 的仓库就永远抓不到 README。"""
     info = info or github_info(repo)
-    branch = (info or {}).get("default_branch") or "main"
-    for name in ("README.md", "readme.md", "README.MD"):
-        try:
-            status, _ct, body = fetch(
-                f"https://raw.githubusercontent.com/{repo}/{branch}/{name}",
-                max_bytes=512 * 1024)
-            if status == 200 and body:
-                return md_to_text(body.decode("utf-8", "replace"))
-        except Exception:
-            continue
+    branches = []
+    if info and info.get("default_branch"):
+        branches.append(info["default_branch"])
+    for b in ("main", "master"):
+        if b not in branches:
+            branches.append(b)
+    for branch in branches:
+        for name in ("README.md", "readme.md", "README.MD"):
+            try:
+                status, _ct, body = fetch(
+                    f"https://raw.githubusercontent.com/{repo}/{branch}/{name}",
+                    max_bytes=512 * 1024)
+                if status == 200 and body:
+                    return md_to_text(body.decode("utf-8", "replace"))
+            except Exception:
+                continue
     return ""
 
 
@@ -1349,9 +1358,15 @@ TRACKING_PARAMS = {"utm_source", "utm_medium", "utm_campaign", "utm_term",
 
 
 def norm_url(url):
-    """网址规范化：小写协议/主机、去尾斜杠、去跟踪参数、去锚点。"""
+    """网址规范化：小写协议/主机、去尾斜杠、去跟踪参数、去锚点。
+    App Store 链接只认应用 ID：同一个应用换个名字 slug 就换了网址
+    （v2box 和 v2box-v2ray-client 都是 id6446814690），不归一化去重就认不出是同一个。"""
     try:
-        p = urllib.parse.urlparse((url or "").strip())
+        u = (url or "").strip()
+        m = re.search(r"apps\.apple\.com/[a-z-]*/app/[^/]*/id(\d+)", u, re.I)
+        if m:
+            return f"https://apps.apple.com/app/id{m.group(1)}"
+        p = urllib.parse.urlparse(u)
         scheme = (p.scheme or "https").lower()
         host = (p.hostname or "").lower()
         port = f":{p.port}" if p.port and p.port not in (80, 443) else ""
@@ -1373,13 +1388,17 @@ def norm_name(name):
 
 
 def name_similar(a, b):
-    """名称近似：规范化后相等，或一方包含另一方（长度>=4 时）。"""
+    """名称近似：规范化后相等，或短名包含在长名里（短名>=6 字且占长名一半以上）。
+    旧规则（>=4 字就判包含）太松：Loon/Stash/Happ 这类短名会撞上无关长名里的
+    子串（loon 藏在 yuloong 里、stash 藏在 upstash 里、happ 藏在 happy 里），
+    导致正经新条目在拉候选阶段就被当重名扔掉。"""
     na, nb = norm_name(a), norm_name(b)
     if not na or not nb:
         return False
     if na == nb:
         return True
-    if min(len(na), len(nb)) >= 4 and (na in nb or nb in na):
+    short, long = (na, nb) if len(na) <= len(nb) else (nb, na)
+    if len(short) >= 6 and len(short) / len(long) >= 0.5 and short in long:
         return True
     return False
 
@@ -1645,13 +1664,15 @@ def deep_dive(slug, cand):
                 "github": None, "itunes": None}, None
 
     # GitHub 仓库：仓库简介 + README 开头几段
+    # 注意：github_info 拿不到（API 限流 403/仓库改名 301）时也别直接扔掉——
+    # README 是走 raw.githubusercontent.com 抓的，不走 API，照样能当实义材料；
+    # 只有简介和 README 都拿不到才算没内容。星标/更新时间缺了下次刷新再补。
     repo = github_repo_of(url)
     if repo:
         info = github_info(repo)
-        if not info:
-            return None, "GitHub 仓库信息拿不到"
         readme = github_readme(repo, info)
-        text = "\n".join(x for x in [info.get("description") or "", readme] if x)
+        desc = (info or {}).get("description") or ""
+        text = "\n".join(x for x in [desc, readme] if x)
         if len(text.strip()) < 25:
             return None, "仓库没简介、README 也没内容"
         return {"title": cand["name"], "text": text[:1500],
