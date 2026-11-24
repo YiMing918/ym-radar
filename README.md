@@ -2,7 +2,7 @@
 
 13 个栏目的免费资源雷达：AI 福利、苹果限免、影视源、音源、书源、直播源、免费服务、免费域名、优选 IP、节点订阅、好用 APP、成人、代理工具。
 
-- 站点：https://leida.1m.us.ci （Cloudflare Pages 部署，仓库推什么它显示什么）
+- 站点：部署在 Cloudflare Pages 上，仓库推什么它显示什么
 - `index.html` 是站子本体（纯静态页），`data.json` 是全部数据，页面打开时读它。
 - `scripts/collect.py` 是自动采集脚本，`scripts/feeds.json` 是发现新条目的源头清单，
   `scripts/state.json` 记每条条目的连续验活失败次数，`scripts/validate.py` 是提交前门禁。
