@@ -380,7 +380,7 @@ def _clean_link_url(u):
     return u
 
 
-def extract_md_links(raw):
+def extract_md_links(raw, repo=""):
     """按文档顺序抽 README 里的链接：[文字](url) + 裸 URL。
     返回 [{"url", "label", "context"}]，context 是链接前 60 字原文
     （看有没有“订阅/下载/Subscribe”这类标注）。图片、徽章、锚点不要。"""
@@ -402,7 +402,13 @@ def extract_md_links(raw):
         if low.endswith((".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico",
                          ".webp", ".md")):
             continue
-        host = urllib.parse.urlparse(url).netloc.lower()
+        try:
+            host = urllib.parse.urlparse(url).netloc.lower()
+        except ValueError:
+            # FIX15：README 里写坏的链接（如 http://[::1）会让 urlparse 抛
+            # ValueError，之前直接拖垮整轮；跳过并记日志
+            log(f"[links] 跳过坏链接 repo={repo or '?'} url={url!r}")
+            continue
         if host in ("shields.io", "img.shields.io") or "/workflows/" in low:
             continue
         if label.startswith("!"):
@@ -415,7 +421,7 @@ def extract_md_links(raw):
 
 def readme_links(repo, info=None):
     """仓库 README 里的链接（按文档顺序），走原文缓存，零重复请求。"""
-    return extract_md_links(github_readme_raw(repo, info))
+    return extract_md_links(github_readme_raw(repo, info), repo)
 
 
 def md_to_text(md):
@@ -1750,8 +1756,13 @@ def process_item(slug, item, state_fails):
     if _resolve_budget_take() and _is_bare_repo_url(url):
         _repo2 = github_repo_of(url)
         _info2 = github_info(_repo2)
+        try:
+            _links2 = readme_links(_repo2, _info2)
+        except Exception:
+            # FIX15：单个条目的 README 链接解析整体出问题也不拖垮整轮
+            _links2 = []
         _mat2 = {"text": github_readme(_repo2, _info2), "github": _info2,
-                 "links": readme_links(_repo2, _info2),
+                 "links": _links2,
                  "readme_raw": github_readme_raw(_repo2, _info2),
                  "homepage": (_info2 or {}).get("homepage") or ""}
         _res2 = resolve_usable_url(
