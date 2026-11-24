@@ -73,10 +73,10 @@ jobs:
         run: |
           sleep 60
           ok=1
-          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 https://leida.1m.us.ci/ || echo 000)
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 https://ym-radar.pages.dev/ || echo 000)
           echo "首页状态码：$code"
           [ "$code" = "200" ] || ok=0
-          if curl -s --max-time 30 https://leida.1m.us.ci/data.json -o /tmp/live_data.json; then
+          if curl -s --max-time 30 https://ym-radar.pages.dev/data.json -o /tmp/live_data.json; then
             python3 -c "import json,random; d=json.load(open('/tmp/live_data.json',encoding='utf-8')); cats=d['categories']; picks=random.sample(sorted(cats),3); print('抽查栏目：', [(s, len(cats[s]['items'])) for s in picks]); print('线上数据可读，栏目数', len(cats))" || ok=0
           else
             echo "线上 data.json 拉不到"
