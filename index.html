@@ -98,6 +98,31 @@
   .lightbox img { max-width: 96vw; max-height: 92vh; border-radius: 8px; }
   .empty { color: var(--muted); text-align: center; padding: 40px 0; }
   .err { color: #ff8a8a; text-align: center; padding: 40px 16px; }
+  /* FIX14 第二阶段：已失效徽标 / 对比表 / 客户端订阅表 / 筛掉公示 */
+  .badge-dead { display: inline-block; vertical-align: middle; font-size: 11.5px; font-weight: 700; color: #ffb3b3;
+    background: #571d1d; border: 1px solid #ff6b6b; border-radius: 6px; padding: 1px 7px; margin-left: 6px; white-space: nowrap; }
+  .item-side .copy-btn { margin-top: 8px; }
+  .copy-btn.sm { padding: 3px 9px; font-size: 12px; }
+  .cmp-wrap { overflow-x: auto; margin: 14px 0 4px; -webkit-overflow-scrolling: touch; }
+  table.cmp { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 12.5px; background: var(--card);
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  table.cmp th { text-align: left; color: var(--accent2); font-weight: 700; padding: 8px 8px;
+    border-bottom: 1px solid var(--line); white-space: nowrap; }
+  table.cmp td { padding: 8px; border-top: 1px solid var(--line); vertical-align: top; color: var(--text); }
+  table.cmp td.cmp-name { font-weight: 600; color: var(--accent); cursor: pointer; white-space: nowrap; max-width: 150px;
+    overflow: hidden; text-overflow: ellipsis; }
+  table.cmp td.dim { color: var(--muted); }
+  table.ctable { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 4px; }
+  table.ctable td { border-top: 1px solid var(--line); padding: 8px 6px; vertical-align: top; }
+  table.ctable td.k { color: var(--muted); width: 92px; flex: none; white-space: nowrap; }
+  table.ctable td.v { word-break: break-word; }
+  .screened { margin-top: 22px; border: 1px dashed var(--line); border-radius: 12px; padding: 12px 14px; }
+  .screened h4 { font-size: 14px; color: var(--accent2); margin-bottom: 6px; }
+  .screened ul { list-style: none; }
+  .screened li { font-size: 13px; color: var(--muted); padding: 5px 0; border-top: 1px solid var(--line); }
+  .screened li:first-child { border-top: none; }
+  .screened li b { color: var(--text); font-weight: 600; }
+  .screened li .rs { color: #ff9f2e; }
 </style>
 </head>
 <body>
@@ -106,6 +131,7 @@
 <script>
 (function () {
   var DATA = null;
+  var SCREENED = null; /* FIX14 第 8 条：screened.json 内容；文件不存在/取不到时为 null，整节隐藏 */
   var app = document.getElementById('app');
   var lightbox = document.getElementById('lightbox');
   var lbImg = document.getElementById('lightbox-img');
@@ -165,6 +191,79 @@
     var v = '';
     (item.details || []).forEach(function (d) { if (d.label === label) v = d.value || ''; });
     return v;
+  }
+  /* FIX14：已失效判定——details 里“最近检查”值含“不通” */
+  function isDead(item) {
+    return detailVal(item, '最近检查').indexOf('不通') >= 0;
+  }
+  function deadBadge() {
+    return '<span class="badge-dead">已失效</span>';
+  }
+  function shortVal(v, n) {
+    v = String(v == null ? '' : v).replace(/\s+/g, ' ').trim();
+    if (!v) return '';
+    return v.length > n ? v.slice(0, n) + '…' : v;
+  }
+  function catName(slug) {
+    var cats = (DATA && DATA.overview && DATA.overview.categories) || [];
+    for (var i = 0; i < cats.length; i++) {
+      if (cats[i].slug === slug) return cats[i].name || slug;
+    }
+    return slug || '其他';
+  }
+  /* FIX14 第 3 条：列表顶部对比表。字段优先取条目已有的 details，缺失填“未公布”，不编数字 */
+  var CMP_FIELDS = {
+    quota: ['首次注册送', '免费额度', '额度', '免费性质', '节点数量', '频道数量', '站点数量', '包含书源数量', '内容量', '免费后缀', '每人限额', '费用', '价格', '现价'],
+    validity: ['额度有效期', '免费期限', '有效期', '免费时长', '到期后怎么办'],
+    difficulty: ['领取条件', '领取门槛', '注册条件', '申请要求', '上手步骤', '导入', '下载方式'],
+    audience: ['能干什么', '适合客户端', '适合谁用', '适用软件', '适用播放器', '适用版本', '适用方式', '类型', '类别', '分类', '平台']
+  };
+  function cmpCell(item, labels) {
+    for (var i = 0; i < labels.length; i++) {
+      var v = detailVal(item, labels[i]);
+      if (v) return shortVal(v, 34);
+    }
+    return '';
+  }
+  function compareTableHtml(items) {
+    if (!items || !items.length) return '';
+    var h = '<div class="cmp-wrap"><table class="cmp"><thead><tr><th>资源</th><th>免费额度</th><th>有效期</th><th>上手难度</th><th>适合谁</th></tr></thead><tbody>';
+    items.forEach(function (it) {
+      var q = cmpCell(it, CMP_FIELDS.quota);
+      var v = cmpCell(it, CMP_FIELDS.validity);
+      var d = cmpCell(it, CMP_FIELDS.difficulty);
+      var a = cmpCell(it, CMP_FIELDS.audience);
+      h += '<tr><td class="cmp-name" data-item="' + it.id + '">' + esc(it.name) + '</td>' +
+        '<td class="' + (q ? '' : 'dim') + '">' + esc(q || '未公布') + '</td>' +
+        '<td class="' + (v ? '' : 'dim') + '">' + esc(v || '未公布') + '</td>' +
+        '<td class="' + (d ? '' : 'dim') + '">' + esc(d || '未公布') + '</td>' +
+        '<td class="' + (a ? '' : 'dim') + '">' + esc(a || '未公布') + '</td></tr>';
+    });
+    return h + '</tbody></table></div>';
+  }
+  /* FIX14 第 8 条：今天筛掉了什么。SCREENED 为空/文件不存在时返回 ''，整节不渲染 */
+  function screenedHtml() {
+    if (!SCREENED || !SCREENED.removed || !SCREENED.removed.length) return '';
+    var h = '<div class="screened"><h4>今天筛掉了什么' + (SCREENED.date ? '（' + esc(SCREENED.date) + '）' : '') + ' · 共 ' + SCREENED.removed.length + ' 条</h4><ul>';
+    SCREENED.removed.forEach(function (r) {
+      h += '<li><b>' + esc(r.name || '未命名') + '</b>（' + esc(catName(r.slug)) + '）— <span class="rs">' + esc(r.reason || '已失效') + '</span></li>';
+    });
+    return h + '</ul></div>';
+  }
+  /* FIX14 第 2 条：node 栏按客户端分行给订阅表。某 key 缺失回落到 item.url；无 clientLinks 不渲染 */
+  var CLIENT_ROWS = [
+    ['clash', 'Clash'], ['v2ray', 'V2Ray'], ['shadowrocket', '小火箭'], ['singbox', 'Sing-Box']
+  ];
+  function clientLinksHtml(item) {
+    var cl = item.clientLinks;
+    if (!cl || typeof cl !== 'object' || !Object.keys(cl).length) return '';
+    var h = '<h4 class="sec">按客户端订阅</h4><table class="ctable">';
+    CLIENT_ROWS.forEach(function (row) {
+      var url = (cl[row[0]] || '').trim() || item.url;
+      if (!url) return;
+      h += '<tr><td class="k">' + row[1] + '</td><td class="v"><div class="urlrow"><span class="u"><a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(url) + '</a></span>' + copyBtn(url) + '</div></td></tr>';
+    });
+    return h + '</table>';
   }
   function metaTags(slug, item) {
     var h = '';
@@ -238,14 +337,15 @@
   /* ---------- 栏目页 ---------- */
   function itemCard(slug, item) {
     var h = '<div class="item-card" data-item="' + item.id + '">' + thumbHtml(item) +
-      '<div class="item-main"><div class="nm">' + esc(item.name) + '</div>' +
+      '<div class="item-main"><div class="nm">' + esc(item.name) + (isDead(item) ? deadBadge() : '') + '</div>' +
       '<div class="sm">' + esc(item.summary) + '</div>' + kindBadge(item) + priceTag(slug, item) + metaTags(slug, item);
     if (item.tags && item.tags.length) {
       h += '<div class="tags">' + item.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>';
     }
     h += '</div><div class="item-side">' +
       (item.score != null ? '<div class="score">' + item.score + '</div>' : '') +
-      '<div class="rank">第 ' + item.rank + ' 名</div></div></div>';
+      '<div class="rank">第 ' + item.rank + ' 名</div>' +
+      (item.url ? '<button class="copy-btn sm" data-copy="' + esc(item.url) + '">复制地址</button>' : '') + '</div></div>';
     return h;
   }
 
@@ -288,6 +388,7 @@
     if (!items.length) {
       h += '<div class="empty">没有找到符合的条目</div>';
     } else {
+      h += compareTableHtml(items);
       var sections = [];
       items.forEach(function (it) { var s = it.section || ''; if (sections.indexOf(s) < 0) sections.push(s); });
       if (sections.length > 1) {
@@ -299,6 +400,7 @@
         items.forEach(function (it) { h += itemCard(slug, it); });
       }
     }
+    h += screenedHtml();
     app.innerHTML = h;
     document.getElementById('back-home').addEventListener('click', function () { location.hash = '#/'; });
     var search = document.getElementById('search');
@@ -311,7 +413,10 @@
       el.addEventListener('click', function () { renderCategory(slug, search.value, el.getAttribute('data-sub')); });
     });
     app.querySelectorAll('[data-item]').forEach(function (el) {
-      el.addEventListener('click', function () { location.hash = '#/item/' + slug + '/' + el.getAttribute('data-item'); });
+      el.addEventListener('click', function (e) {
+        if (e.target.closest('[data-copy]')) return; /* 卡片上的复制按钮不触发进详情 */
+        location.hash = '#/item/' + slug + '/' + el.getAttribute('data-item');
+      });
     });
   }
 
@@ -324,7 +429,7 @@
     if (!item) { app.innerHTML = '<div class="err">条目不存在</div>'; return; }
     var h = '<span class="back" id="back-cat">← 返回' + esc(pack.category.name) + '</span>' +
       '<div class="detail-card"><div class="detail-head">' + thumbHtml(item, true) +
-      '<div><h2>' + esc(item.name) + '</h2><div class="sm">' + esc(item.summary) + '</div>' +
+      '<div><h2>' + esc(item.name) + (isDead(item) ? deadBadge() : '') + '</h2><div class="sm">' + esc(item.summary) + '</div>' +
       '<div class="meta-line">' + (item.score != null ? '评分 ' + item.score + ' · ' : '') + '第 ' + item.rank + ' 名' + (item.region ? ' · ' + esc(item.region) : '') + '</div>' +
       (item.tags && item.tags.length ? '<div class="tags">' + item.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>' : '') +
       '</div></div>' + metaTags(slug, item);
@@ -334,6 +439,7 @@
         (item.usageNote ? '<span class="note">' + esc(item.usageNote) + '</span>' : '') + '</div>';
     }
     h += urlRow('地址', item.url);
+    if (slug === 'node') h += clientLinksHtml(item);
     if (item.builtinConfigUrl) {
       h += '<h4 class="sec">现成整份配置' + (item.builtinConfigName ? '：' + esc(item.builtinConfigName) : '') + '</h4>' +
         '<div class="urlrow"><span class="u"><a href="' + esc(item.builtinConfigUrl) + '" target="_blank" rel="noopener">' + esc(item.builtinConfigUrl) + '</a></span>' + copyBtn(item.builtinConfigUrl) + '</div>';
@@ -344,16 +450,19 @@
     } else if (item.description) {
       h += '<h4 class="sec">详细介绍</h4><div class="desc">' + esc(item.description) + '</div>';
     }
-    h += '<h4 class="sec">应用截图</h4>';
-    if (item.screenshots && item.screenshots.length) {
-      h += '<div class="shots">' + item.screenshots.map(function (s) {
-        return '<img src="' + esc(s) + '" alt="应用截图" loading="lazy" data-zoom="' + esc(s) + '">';
-      }).join('') + '</div>';
-    } else {
-      h += '<div class="no-shot">暂无截图</div>';
+    /* FIX14 截图 C：只有 apple / app 两栏显示“应用截图”一节，其他栏整节不显示 */
+    if (slug === 'apple' || slug === 'app') {
+      h += '<h4 class="sec">应用截图</h4>';
+      if (item.screenshots && item.screenshots.length) {
+        h += '<div class="shots">' + item.screenshots.map(function (s) {
+          return '<img src="' + esc(s) + '" alt="应用截图" loading="lazy" data-zoom="' + esc(s) + '">';
+        }).join('') + '</div>';
+      } else {
+        h += '<div class="no-shot">暂无截图</div>';
+      }
     }
     if (item.details && item.details.length) {
-      var PRIO = ['类别', '规则格式', '模块支持', '分流方式', '配套规则', '可加的东西', '上手步骤', '平台', '官方下载', '收费', '免费时长', '能否续费', '续费价格', '能否进 CF', '机器配置', '容量与发信量', '额度', '申请要求', '能干什么', '类型', '语言', '能否改中文', '下载地区', '现价', '原价', '最新版本', '版本日期', '最近更新', '最近检查'];
+      var PRIO = ['类别', '首次注册送', '每天额度', '总额度', '额度有效期', '是否要绑卡', '领取门槛', '其他途径', '规则格式', '模块支持', '分流方式', '配套规则', '可加的东西', '上手步骤', '平台', '官方下载', '收费', '免费时长', '能否续费', '续费价格', '能否进 CF', '机器配置', '容量与发信量', '额度', '申请要求', '能干什么', '类型', '语言', '能否改中文', '下载地区', '现价', '原价', '最新版本', '版本日期', '最近更新', '最近检查'];
       var sortedDetails = item.details.slice().sort(function (a, b) {
         var ia = PRIO.indexOf(a.label), ib = PRIO.indexOf(b.label);
         return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
@@ -372,7 +481,8 @@
     if (item.sourceUrl) {
       h += '<h4 class="sec">出处</h4><div class="urlrow"><span class="u"><a href="' + esc(item.sourceUrl) + '" target="_blank" rel="noopener">' + esc(item.sourceUrl) + '</a></span>' + copyBtn(item.sourceUrl) + '</div>';
     }
-    h += '<div class="meta-line">核实日期：' + esc(item.verifiedAt || '—') + '</div></div>';
+    h += screenedHtml();
+    h += '<div class="meta-line">核查时间：' + esc(item.verifiedAt || '—') + '</div></div>';
     app.innerHTML = h;
     document.getElementById('back-cat').addEventListener('click', function () { location.hash = '#/cat/' + slug; });
     app.querySelectorAll('[data-zoom]').forEach(function (img) {
@@ -392,9 +502,23 @@
   }
   window.addEventListener('hashchange', route);
 
-  fetch('data.json')
-    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(function (d) { DATA = d; route(); })
+  /* FIX14 第 8 条：screened.json 与 data.json 同目录；取不到（404/离线）也不报错，整节隐藏。
+     3 秒未到也不阻塞首屏渲染；若它在首屏之后才到，下一次路由切换时会带上。 */
+  function loadScreened() {
+    return fetch('screened.json')
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (d) { SCREENED = d; })
+      .catch(function () { SCREENED = null; });
+  }
+  var screenedReady = Promise.race([
+    loadScreened(),
+    new Promise(function (res) { setTimeout(function () { res(); }, 3000); })
+  ]);
+  Promise.all([
+    fetch('data.json').then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
+    screenedReady
+  ])
+    .then(function (results) { DATA = results[0]; route(); })
     .catch(function (e) { app.innerHTML = '<div class="err">数据加载失败：' + esc(e.message) + '<br>请确认 data.json 与本页在同一目录。</div>'; });
 })();
 </script>
