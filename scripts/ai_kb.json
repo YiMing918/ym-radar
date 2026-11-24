@@ -1,0 +1,1154 @@
+{
+  "version": 1,
+  "name": "ym-radar AI 额度知识表（第一版，仅含 29 条手写种子）",
+  "source": {
+    "data_json": "https://ym-radar.pages.dev/data.json",
+    "fetched_at_cst": "2026-11-24 21:49 CST",
+    "live_last_success_at": "2026-11-24T12:57:52.910Z",
+    "ai_total": 300,
+    "seed_count": 29,
+    "auto_count": 271,
+    "seed_id_range": [
+      1087,
+      1115
+    ],
+    "seed_rule": "data.json 里 AI 栏中没有 auto 字段的条目（auto 字段为空 = 手写种子）；有 auto=true 的 271 条自动收录条目不在本表内"
+  },
+  "field_map": {
+    "signup_bonus": "首次注册送",
+    "daily_quota": "每天额度",
+    "other_channels": "其他途径",
+    "total_quota": "总额度",
+    "validity": "额度有效期",
+    "card_required": "是否要绑卡",
+    "eligibility": "领取门槛"
+  },
+  "credit_fields": [
+    "首次注册送",
+    "每天额度",
+    "其他途径",
+    "总额度",
+    "额度有效期",
+    "是否要绑卡",
+    "领取门槛"
+  ],
+  "status_values": {
+    "needs_check": "数字来源日期未知，尚未经官方页面复核；展示时须按规范处理，不得当作已核实数字直接用",
+    "verified": "已按官方页面复核，source_date 为复核日期（本版无此状态的条目）",
+    "stale": "source_date 超过 90 天或政策疑似变化，展示为“待核实”"
+  },
+  "rules_digest": "数字绝不能猜；未公布填“未公布”，不要推断；source_date 未知一律为 unknown；本表只收 29 条种子，不从网上现查现填。",
+  "audit": {
+    "total_entries": 29,
+    "fields_per_entry": 7,
+    "missing_field_cells": 0,
+    "empty_field_cells": 0,
+    "unannounced_by_field": {
+      "首次注册送": 16,
+      "每天额度": 10,
+      "其他途径": 20,
+      "总额度": 0,
+      "额度有效期": 1,
+      "是否要绑卡": 0,
+      "领取门槛": 0
+    },
+    "no_gift_signup_bonus": 6,
+    "card_required_yes": 1,
+    "card_required_no": 28,
+    "entries_with_repo_key": 0,
+    "entries_missing_language_details_in_seed": [
+      "Meta AI"
+    ],
+    "internal_conflicts": [
+      {
+        "name": "Ideogram",
+        "seed_id": 1109,
+        "issue": "种子内两处数字打架：文档口径 30 credits/周 vs 官网定价页 10 credits/周"
+      },
+      {
+        "name": "即梦AI",
+        "seed_id": 1111,
+        "issue": "种子内多口径并存：2026-11 月实测每天 60 积分，之前有过 20 和 150 两种口径"
+      }
+    ]
+  },
+  "entries": [
+    {
+      "key": "aistudio.google.com",
+      "name": "Google AI Studio — Gemini API",
+      "seed_id": 1087,
+      "seed_section": "permanent",
+      "seed_rank": 1,
+      "domain": "aistudio.google.com",
+      "domains": [
+        "aistudio.google.com"
+      ],
+      "repo": null,
+      "url": "https://aistudio.google.com/",
+      "source_url": "https://aistudio.google.com/",
+      "region": "海外",
+      "tags": [
+        "API",
+        "Gemini",
+        "免费层",
+        "开发"
+      ],
+      "summary_seed": "开发者免费调 Gemini 的最实在入口，不用绑卡，Flash 系列每天能调不少，顶级模型额度很小。",
+      "warning_seed": "免费层内容可能被 Google 用于改进产品，别传敏感内容；生图、音乐等模型不在免费 API 内。",
+      "credits": {
+        "首次注册送": "未公布（无一次性赠金）",
+        "每天额度": "按模型限速：Flash 系列约 1500 请求/天，Pro 系列仅约 50 请求/天（以控制台显示为准）",
+        "其他途径": "未公布",
+        "总额度": "免费输入+输出 token，按 RPM/TPM/每日请求数限速，无固定总额",
+        "额度有效期": "长期免费层；每日额度太平洋时间午夜重置",
+        "是否要绑卡": "不要",
+        "领取门槛": "需 Google 账号；国内需海外网络"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "chatgpt.com",
+      "name": "ChatGPT",
+      "seed_id": 1088,
+      "seed_section": "permanent",
+      "seed_rank": 2,
+      "domain": "chatgpt.com",
+      "domains": [
+        "chatgpt.com"
+      ],
+      "repo": null,
+      "url": "https://chatgpt.com/pricing",
+      "source_url": "https://chatgpt.com/pricing",
+      "region": "海外",
+      "tags": [
+        "对话",
+        "免费档",
+        "生图"
+      ],
+      "summary_seed": "日常聊天不限量、不用绑卡的免费对话，传文件、生图、深度研究这些要另外限量。",
+      "warning_seed": "免费档可能出现广告，对话默认会被用于训练；上传、生图等额度官方不公布具体数字。",
+      "credits": {
+        "首次注册送": "未公布（无一次性赠金）",
+        "每天额度": "日常文本对话不限量；文件上传每天 3 个；图片、语音、深度研究、记忆等各自限量",
+        "其他途径": "未公布",
+        "总额度": "长期免费档，无固定总额",
+        "额度有效期": "长期免费，无到期日",
+        "是否要绑卡": "不要",
+        "领取门槛": "邮箱注册即可；国内需海外网络"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "chat.deepseek.com",
+      "name": "DeepSeek",
+      "seed_id": 1089,
+      "seed_section": "permanent",
+      "seed_rank": 3,
+      "domain": "chat.deepseek.com",
+      "domains": [
+        "chat.deepseek.com"
+      ],
+      "repo": null,
+      "url": "https://chat.deepseek.com",
+      "source_url": "https://chat.deepseek.com",
+      "region": "国内",
+      "tags": [
+        "对话",
+        "免费档",
+        "直连"
+      ],
+      "summary_seed": "网页和 App 聊天全免费、没有付费档可买，国内最省心的免费对话入口；API 可没有免费额度。",
+      "warning_seed": "API 没有任何免费额度，别把网页免费当成 API 免费。",
+      "credits": {
+        "首次注册送": "未公布（网页对话本身免费，无注册赠金）",
+        "每天额度": "未公布（官方未公布每日消息上限；高峰期可能提示服务器繁忙）",
+        "其他途径": "未公布",
+        "总额度": "网页/App 对话免费，无付费订阅档；API 按量付费，无免费档",
+        "额度有效期": "长期免费，无到期日公布",
+        "是否要绑卡": "不要（网页/App 不用绑卡；API 需预充值）",
+        "领取门槛": "需注册账号（手机号/邮箱）；国内直连"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "open.bigmodel.cn",
+      "name": "智谱 AI 开放平台",
+      "seed_id": 1090,
+      "seed_section": "permanent",
+      "seed_rank": 4,
+      "domain": "open.bigmodel.cn",
+      "domains": [
+        "open.bigmodel.cn"
+      ],
+      "repo": null,
+      "url": "https://open.bigmodel.cn",
+      "source_url": "https://open.bigmodel.cn",
+      "region": "国内",
+      "tags": [
+        "API",
+        "免费模型",
+        "开发",
+        "直连"
+      ],
+      "summary_seed": "唯一敢在定价页把 0 元写死的免费 API，文本、看图、生图、生视频都有免费款，新用户还送 2000 万 token。",
+      "warning_seed": "免费模型并发低、速度偏慢，别拿它跑生产；GLM-4.5-Flash、GLM-Z1-Flash 已下线，别再用。",
+      "credits": {
+        "首次注册送": "新注册用户送 2000 万 token（称永久有效）",
+        "每天额度": "未公布（免费模型不限每日次数，只限并发，具体并发数在控制台查看）",
+        "其他途径": "未公布",
+        "总额度": "7 个定价 0 元的免费模型 + 新用户 2000 万 token",
+        "额度有效期": "免费模型永久免费；赠送的 2000 万 token 称永久有效",
+        "是否要绑卡": "不要（注册+实名认证即可建 Key）",
+        "领取门槛": "需注册并实名认证；国内直连"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子 description 注明免费模型并发只有 1 左右；GLM-4.5-Flash、GLM-Z1-Flash 已下线。"
+      ]
+    },
+    {
+      "key": "console.groq.com",
+      "name": "Groq",
+      "seed_id": 1091,
+      "seed_section": "permanent",
+      "seed_rank": 5,
+      "domain": "console.groq.com",
+      "domains": [
+        "console.groq.com"
+      ],
+      "repo": null,
+      "url": "https://console.groq.com/docs/rate-limits",
+      "source_url": "https://console.groq.com/docs/rate-limits",
+      "region": "海外",
+      "tags": [
+        "API",
+        "免费层",
+        "推理快"
+      ],
+      "summary_seed": "速度最快的免费推理，不用绑卡，每款模型每天 1000 次请求，适合做原型和小工具。",
+      "warning_seed": "限额按组织算，多建 key 不加额度；免费档只够测试和原型。",
+      "credits": {
+        "首次注册送": "未公布（无一次性赠金）",
+        "每天额度": "按模型限速：gpt-oss-120b 等每天 1000 次请求、每天 20 万 token；Whisper 每天 2000 次",
+        "其他途径": "未公布",
+        "总额度": "按模型限速，无固定总额",
+        "额度有效期": "长期免费层，无到期日公布",
+        "是否要绑卡": "不要（升级付费档才需付款方式）",
+        "领取门槛": "邮箱注册即可；国内直连情况未核实"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "openrouter.ai",
+      "name": "OpenRouter",
+      "seed_id": 1092,
+      "seed_section": "permanent",
+      "seed_rank": 6,
+      "domain": "openrouter.ai",
+      "domains": [
+        "openrouter.ai"
+      ],
+      "repo": null,
+      "url": "https://openrouter.ai/collections/free-models",
+      "source_url": "https://openrouter.ai/collections/free-models",
+      "region": "海外",
+      "tags": [
+        "API",
+        "聚合",
+        "免费模型"
+      ],
+      "summary_seed": "一个 key 能调几十个免费模型，名字带 :free 的就是 0 元，不用绑卡，每天 50 次起步。",
+      "warning_seed": "免费模型名单轮换很快，用前先去免费模型页确认；部分免费模型可能拿对话去训练。",
+      "credits": {
+        "首次注册送": "未公布（无一次性赠金）",
+        "每天额度": "免费模型每天 50 次请求、每分钟 20 次；账号累计买过 $10 额度后每天 1000 次",
+        "其他途径": "openrouter/free 自动路由到当前免费模型",
+        "总额度": "按请求数限速，不按 token 计费",
+        "额度有效期": "长期免费，无到期日",
+        "是否要绑卡": "不要",
+        "领取门槛": "邮箱或 GitHub 注册即可；国内直连情况未核实"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "claude.ai",
+      "name": "Claude",
+      "seed_id": 1093,
+      "seed_section": "permanent",
+      "seed_rank": 7,
+      "domain": "claude.ai",
+      "domains": [
+        "claude.ai"
+      ],
+      "repo": null,
+      "url": "https://claude.ai",
+      "source_url": "https://claude.ai",
+      "region": "海外",
+      "tags": [
+        "对话",
+        "免费档",
+        "长文"
+      ],
+      "summary_seed": "写长文、读长文档很强的免费对话，每 5 小时刷新一次用量，不用绑卡；API 可没有免费档。",
+      "warning_seed": "免费档用不了 Opus 和 Claude Code；API 没有长期免费档，别把聊天免费当 API 免费。",
+      "credits": {
+        "首次注册送": "未公布（API 新号有少量一次性试用额度，金额未公布）",
+        "每天额度": "每 5 小时刷新一次用量，另有每周上限；具体条数官方不公布",
+        "其他途径": "验证学生、教师等可免费得 Pro（以官网为准）",
+        "总额度": "长期免费档，无固定总额",
+        "额度有效期": "长期免费；用量按 5 小时窗口刷新",
+        "是否要绑卡": "不要（API 充值才需付款）",
+        "领取门槛": "邮箱注册即可；国内需海外网络"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子注明：API 新号试用额度金额未公布；验证学生/教师可免费得 Pro 以官网为准。"
+      ]
+    },
+    {
+      "key": "www.perplexity.ai",
+      "name": "Perplexity",
+      "seed_id": 1094,
+      "seed_section": "permanent",
+      "seed_rank": 8,
+      "domain": "www.perplexity.ai",
+      "domains": [
+        "www.perplexity.ai"
+      ],
+      "repo": null,
+      "url": "https://www.perplexity.ai",
+      "source_url": "https://www.perplexity.ai/hub/pricing",
+      "region": "海外",
+      "tags": [
+        "搜索",
+        "问答",
+        "免费档"
+      ],
+      "summary_seed": "联网搜答案还带引用来源，基础搜索基本不限量，每天另有 3 次高级搜索，不用注册也能问。",
+      "warning_seed": "高级搜索每天只有 3 次；免费档不能自选模型、不能生图。",
+      "credits": {
+        "首次注册送": "无赠金（免费档本身就是 $0 永久档）",
+        "每天额度": "基础搜索基本不限量；Pro 高级搜索每天 3 次",
+        "其他途径": "Research 深度研究每月 1 次；学生验证后 Education Pro $10/月（付费）",
+        "总额度": "长期免费，无总额度概念",
+        "额度有效期": "永久免费，无到期",
+        "是否要绑卡": "不要",
+        "领取门槛": "邮箱注册即可，基础搜索甚至不用注册；国内需海外网络"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "github.com",
+      "name": "GitHub Copilot Free",
+      "seed_id": 1095,
+      "seed_section": "permanent",
+      "seed_rank": 9,
+      "domain": "github.com",
+      "domains": [
+        "github.com",
+        "docs.github.com"
+      ],
+      "repo": null,
+      "url": "https://github.com/copilot",
+      "source_url": "https://docs.github.com/copilot",
+      "region": "海外",
+      "tags": [
+        "编程",
+        "免费档",
+        "VS Code"
+      ],
+      "summary_seed": "写代码免费档里最实在的，每月 2000 次补全加聊天，VS Code、JetBrains 都能装，不用绑卡。",
+      "warning_seed": "免费档模型只能自动选；聊天额度官方不公布具体数字；免费档对话默认可能被用于训练，记得去设置里关掉。",
+      "credits": {
+        "首次注册送": "无赠金",
+        "每天额度": "按月给：每月 2000 次代码补全；聊天/智能体为有限额度，官方不公布数字",
+        "其他途径": "验证学生免费得不限量补全；验证教师与知名开源维护者免费得 Pro",
+        "总额度": "每月 2000 次补全 + 有限聊天，每月刷新、不可累积",
+        "额度有效期": "长期免费档；每月重置",
+        "是否要绑卡": "不要",
+        "领取门槛": "GitHub 账号即可；国内可直连 GitHub"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "kimi.com",
+      "name": "Kimi",
+      "seed_id": 1096,
+      "seed_section": "permanent",
+      "seed_rank": 10,
+      "domain": "kimi.com",
+      "domains": [
+        "kimi.com"
+      ],
+      "repo": null,
+      "url": "https://kimi.com",
+      "source_url": "https://kimi.com",
+      "region": "国内",
+      "tags": [
+        "对话",
+        "长文",
+        "免费档"
+      ],
+      "summary_seed": "长文档之王免费就能用，整本论文、几百页 PDF 一次塞进去读，主力模型不消耗会员额度。",
+      "warning_seed": "高级功能（深度研究、PPT、代码等）共用一个会员额度池；API 没有免费档。",
+      "credits": {
+        "首次注册送": "未公布（免费档 ¥0 可直接用）",
+        "每天额度": "未公布（主力模型免费，不消耗会员额度）",
+        "其他途径": "API 侧：累计充值满 $5 送 $5 代金券（第三方口径）",
+        "总额度": "免费档 ¥0；新模型 K3.1 Pro 免费档为限量使用，具体次数未公布",
+        "额度有效期": "未公布（免费档为长期档位，非限时赠金）",
+        "是否要绑卡": "不要（免费档不用绑卡）",
+        "领取门槛": "需国内手机号验证码或微信扫码登录；国内直连"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子“其他途径”注明 API 侧充值送券为“第三方口径”，非官方口径，复核时以官方为准。"
+      ]
+    },
+    {
+      "key": "www.qianwen.com",
+      "name": "通义千问",
+      "seed_id": 1097,
+      "seed_section": "permanent",
+      "seed_rank": 11,
+      "domain": "www.qianwen.com",
+      "domains": [
+        "www.qianwen.com"
+      ],
+      "repo": null,
+      "url": "https://www.qianwen.com",
+      "source_url": "https://www.qianwen.com",
+      "region": "国内",
+      "tags": [
+        "对话",
+        "免费档",
+        "办公"
+      ],
+      "summary_seed": "阿里家的全能助手，网页版基础对话、搜索、生图都免费，读长文档、做表格 PPT 偏工作向很顺手。",
+      "warning_seed": "办公助理和生视频已开始收费；免费档具体限制官方文档未明示。",
+      "credits": {
+        "首次注册送": "未公布（网页版个人使用免费，无注册赠 token 数字）",
+        "每天额度": "未公布",
+        "其他途径": "未公布",
+        "总额度": "网页版基础对话、AI 搜索、AI 生图免费；办公助理、生视频按档收费",
+        "额度有效期": "长期免费（基础功能），未公布到期日",
+        "是否要绑卡": "不要",
+        "领取门槛": "手机号验证码登录，也可用淘宝/支付宝账号；不登录只能聊一轮"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "www.doubao.com",
+      "name": "豆包",
+      "seed_id": 1098,
+      "seed_section": "permanent",
+      "seed_rank": 12,
+      "domain": "www.doubao.com",
+      "domains": [
+        "www.doubao.com"
+      ],
+      "repo": null,
+      "url": "https://www.doubao.com/chat/",
+      "source_url": "https://www.doubao.com/chat/",
+      "region": "国内",
+      "tags": [
+        "对话",
+        "语音",
+        "免费档"
+      ],
+      "summary_seed": "语音聊天和拍照识图是国产里最好用的之一，日常聊天写作基本零成本。",
+      "warning_seed": "会员额度数字只在登录后会员页展示，站外无法核验；云存储随会员到期会缩水。",
+      "credits": {
+        "首次注册送": "未公布（基础对话免费，无注册赠金数字）",
+        "每天额度": "未公布（官方未公布具体条数/频次上限）",
+        "其他途径": "未公布",
+        "总额度": "基础对话、语音、识图、写作免费；会员可解锁更多额度",
+        "额度有效期": "长期免费（基础功能）",
+        "是否要绑卡": "不要",
+        "领取门槛": "大陆手机号验证码或抖音账号登录；国内直连"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "yuanbao.tencent.com",
+      "name": "腾讯元宝",
+      "seed_id": 1099,
+      "seed_section": "permanent",
+      "seed_rank": 13,
+      "domain": "yuanbao.tencent.com",
+      "domains": [
+        "yuanbao.tencent.com"
+      ],
+      "repo": null,
+      "url": "https://yuanbao.tencent.com",
+      "source_url": "https://yuanbao.tencent.com",
+      "region": "国内",
+      "tags": [
+        "对话",
+        "微信生态",
+        "免费档"
+      ],
+      "summary_seed": "腾讯家的免费助手，能搜公众号文章、读微信和腾讯文档里的文件，微信重度用户很顺手。",
+      "warning_seed": "只认大陆手机号和微信生态；高峰期可能限流。",
+      "credits": {
+        "首次注册送": "未公布",
+        "每天额度": "未公布（高峰期有使用限制，具体数字未公布）",
+        "其他途径": "未公布",
+        "总额度": "全部功能免费（含 Agent 模式）；截至 2026 年 10 月未推出消费级订阅",
+        "额度有效期": "长期免费",
+        "是否要绑卡": "不要",
+        "领取门槛": "微信或 QQ 扫码登录，也可用手机号；需大陆手机号完整使用；国内直连"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "gemini.google.com",
+      "name": "Gemini",
+      "seed_id": 1100,
+      "seed_section": "permanent",
+      "seed_rank": 14,
+      "domain": "gemini.google.com",
+      "domains": [
+        "gemini.google.com"
+      ],
+      "repo": null,
+      "url": "https://gemini.google.com",
+      "source_url": "https://gemini.google.com",
+      "region": "海外",
+      "tags": [
+        "对话",
+        "免费档",
+        "Google"
+      ],
+      "summary_seed": "免费就能连 Gmail、Drive、YouTube 做个性化回答，额度每 5 小时刷新一次，不用绑卡。",
+      "warning_seed": "免费档无视频生成；网传每日条数是第三方估算，不是官方数字。",
+      "credits": {
+        "首次注册送": "无赠金；符合条件的学生可免费得 12 个月高级版（各地政策不同）",
+        "每天额度": "每 5 小时刷新一次，直到触到每周上限；具体条数官方不公布",
+        "其他途径": "无签到、无邀请奖励",
+        "总额度": "长期免费档；上下文窗口约 32k tokens",
+        "额度有效期": "永久免费；用量按 5 小时窗口刷新",
+        "是否要绑卡": "不要（只需 Google 账号）",
+        "领取门槛": "需 Google 账号；国内需海外网络"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子 warning 注明：网传每天 30 条、每天 20 张图是第三方估算，不是 Google 公布的数字。"
+      ]
+    },
+    {
+      "key": "copilot.microsoft.com",
+      "name": "Microsoft Copilot",
+      "seed_id": 1101,
+      "seed_section": "permanent",
+      "seed_rank": 15,
+      "domain": "copilot.microsoft.com",
+      "domains": [
+        "copilot.microsoft.com"
+      ],
+      "repo": null,
+      "url": "https://copilot.microsoft.com",
+      "source_url": "https://copilot.microsoft.com",
+      "region": "海外",
+      "tags": [
+        "对话",
+        "免费档",
+        "微软"
+      ],
+      "summary_seed": "网页、Windows、Edge、手机全端免费，写东西、查资料、生图、读文件都行，不用绑卡。",
+      "warning_seed": "想在 Word、Excel 里用它需另买 Microsoft 365；免费档高峰期要排队。",
+      "credits": {
+        "首次注册送": "无赠金（免费档本身就是 $0）",
+        "每天额度": "未公布（微软不公布免费档每日条数；深度推理官方表述为不限量）",
+        "其他途径": "无签到、无邀请奖励",
+        "总额度": "长期免费档",
+        "额度有效期": "永久免费",
+        "是否要绑卡": "不要；基础聊天甚至不用登录",
+        "领取门槛": "微软账号免费注册即可（可用任意邮箱）；国内需海外网络"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "leonardo.ai",
+      "name": "Leonardo.Ai",
+      "seed_id": 1102,
+      "seed_section": "permanent",
+      "seed_rank": 16,
+      "domain": "leonardo.ai",
+      "domains": [
+        "leonardo.ai"
+      ],
+      "repo": null,
+      "url": "https://leonardo.ai/pricing",
+      "source_url": "https://leonardo.ai/pricing",
+      "region": "海外",
+      "tags": [
+        "绘图",
+        "免费档",
+        "每天送"
+      ],
+      "summary_seed": "每天白给 150 个 token，轻度天天画图很划算；坑是图全公开、模型受限。",
+      "warning_seed": "免费生成的图全部公开、不可商用；token 按 GPU 负载扣，花得快。",
+      "credits": {
+        "首次注册送": "未公布（无一次性赠金，免费档即每日额度）",
+        "每天额度": "150 Fast Tokens/天，每 24 小时重置，不累积",
+        "其他途径": "未公布",
+        "总额度": "每天 150 Tokens；坚持每天用约 4500 Tokens/月",
+        "额度有效期": "每日额度当天过期，不结转；免费档本身长期有效",
+        "是否要绑卡": "不要",
+        "领取门槛": "注册账号即可；免费生成均为公开作品、无私人生成"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "cursor.com",
+      "name": "Cursor",
+      "seed_id": 1103,
+      "seed_section": "permanent",
+      "seed_rank": 17,
+      "domain": "cursor.com",
+      "domains": [
+        "cursor.com"
+      ],
+      "repo": null,
+      "url": "https://cursor.com",
+      "source_url": "https://cursor.com",
+      "region": "海外",
+      "tags": [
+        "编程",
+        "免费档",
+        "编辑器"
+      ],
+      "summary_seed": "AI 编程标杆，免费版能完整体验编辑器和自家模型，轻度用、试手感够了；新版不给 Claude/GPT 了。",
+      "warning_seed": "2026 年 10 月改版后免费版不含第三方模型；免费额度数字官网不公布，旧口径已过时。",
+      "credits": {
+        "首次注册送": "新用户一周 Pro 试用；免费版本身无赠金数字",
+        "每天额度": "未公布（官网只写 Agent/Chat/Tab 用量有限，不公布具体数字）",
+        "其他途径": "未公布",
+        "总额度": "Free $0/月；可用自家模型，不含 Claude、GPT、Gemini 等第三方模型",
+        "额度有效期": "长期免费档（非试用）；新客 Pro $20 已不对新客开放",
+        "是否要绑卡": "不要",
+        "领取门槛": "需注册账号（邮箱）；国内需海外网络"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子 warning 注明：2026 年 10 月改版后免费版不含第三方模型；旧教程里的 2000 次补全、50 次请求已过时，不得沿用。"
+      ]
+    },
+    {
+      "key": "trae.cn",
+      "name": "Trae",
+      "seed_id": 1104,
+      "seed_section": "permanent",
+      "seed_rank": 18,
+      "domain": "trae.cn",
+      "domains": [
+        "trae.cn",
+        "www.trae.ai"
+      ],
+      "repo": null,
+      "url": "https://trae.cn",
+      "source_url": "https://www.trae.ai/pricing",
+      "region": "国内",
+      "tags": [
+        "编程",
+        "免费档",
+        "直连"
+      ],
+      "summary_seed": "国内用户直接用国内版最顺，中文界面、国内网络都顺，免费每月 500 积分能干不少活。",
+      "warning_seed": "国际版免费额度一次性的、用完不回血，两个版本别混着看价格。",
+      "credits": {
+        "首次注册送": "国内版：新用户送 2500 积分（2026-11 起由 4500 下调）；国际版免费额度为一次性",
+        "每天额度": "国内版免费版每月 500 积分；国际版无每日/每月重置",
+        "其他途径": "未公布",
+        "总额度": "国内版每月 500 积分；国际版一次性额度用完即止",
+        "额度有效期": "国际版一次性额度用完即止；国内版每月 500 积分按月给",
+        "是否要绑卡": "不要",
+        "领取门槛": "下载登录即为免费版；国内版国内手机号直接用，国际版国内付费受限"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子区分国内版与国际版两个版本，额度口径不同，不得混用；国内版新用户积分 2026-11 起由 4500 下调为 2500。"
+      ]
+    },
+    {
+      "key": "www.aliyun.com",
+      "name": "阿里云百炼",
+      "seed_id": 1105,
+      "seed_section": "deals",
+      "seed_rank": 1,
+      "domain": "www.aliyun.com",
+      "domains": [
+        "www.aliyun.com",
+        "developer.aliyun.com"
+      ],
+      "repo": null,
+      "url": "https://www.aliyun.com/product/bailian",
+      "source_url": "https://developer.aliyun.com/article/1786668",
+      "region": "国内",
+      "tags": [
+        "API",
+        "新用户",
+        "赠金"
+      ],
+      "summary_seed": "新人礼包里额度最大的一家，首次开通送超 7000 万 token，够做不少原型和测试；只有 90 天。",
+      "warning_seed": "只有 90 天、只认北京地域；务必先开「用尽即停」，不然额度用完就开始按量扣钱。",
+      "credits": {
+        "首次注册送": "新用户首次开通即自动发放超 7000 万 Token（每模型 100 万 × 70+ 模型）",
+        "每天额度": "无每日签到；额度按模型独立发放",
+        "其他途径": "未公布",
+        "总额度": "超 7000 万 Token",
+        "额度有效期": "90 天，到期自动失效，不补发、不延期",
+        "是否要绑卡": "不要（需实名认证；额度用完若不开用尽即停会自动转按量付费）",
+        "领取门槛": "需阿里云账号 + 实名认证；仅华北 2（北京）地域生效"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子 source_url 是开发者文章（developer.aliyun.com），不是官方定价页，复核时以官方定价页为准。种子 warning：只有 90 天、只认华北 2（北京）地域；须先开“用尽即停”。"
+      ]
+    },
+    {
+      "key": "chat.mistral.ai",
+      "name": "Mistral Vibe",
+      "seed_id": 1106,
+      "seed_section": "permanent",
+      "seed_rank": 19,
+      "domain": "chat.mistral.ai",
+      "domains": [
+        "chat.mistral.ai",
+        "mistral.ai"
+      ],
+      "repo": null,
+      "url": "https://chat.mistral.ai",
+      "source_url": "https://mistral.ai/pricing",
+      "region": "海外",
+      "tags": [
+        "对话",
+        "免费档",
+        "欧洲"
+      ],
+      "summary_seed": "欧洲大厂的免费助手，聊天、联网、编代码、连邮箱日历都能沾点边；免费 API 额度已经没了。",
+      "warning_seed": "免费 API 层已于 2026 年 11 月初取消；免费档对话默认可能用于训练，记得去设置里关掉。",
+      "credits": {
+        "首次注册送": "无赠金",
+        "每天额度": "未公布（官方只写有限消息与联网搜索）",
+        "其他途径": "排程任务免费档最多 5 个；100+ 连接器免费档可用",
+        "总额度": "长期免费档，无总额度概念",
+        "额度有效期": "永久免费",
+        "是否要绑卡": "不要",
+        "领取门槛": "邮箱注册即可；国内需海外网络"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "www.meta.ai",
+      "name": "Meta AI",
+      "seed_id": 1107,
+      "seed_section": "permanent",
+      "seed_rank": 20,
+      "domain": "www.meta.ai",
+      "domains": [
+        "www.meta.ai",
+        "ai.meta.com"
+      ],
+      "repo": null,
+      "url": "https://www.meta.ai",
+      "source_url": "https://ai.meta.com/meta-ai/assistant/",
+      "region": "海外",
+      "tags": [
+        "对话",
+        "免费档",
+        "社交"
+      ],
+      "summary_seed": "不用另外装东西，WhatsApp、Instagram 里直接就能问，还能生图、语音；重度功能上限官方不肯说。",
+      "warning_seed": "重度功能的免费上限官方不公布，用多了会突然限流。",
+      "credits": {
+        "首次注册送": "无赠金（日常使用本身就是免费）",
+        "每天额度": "未公布（重度功能有每日/每月用量上限，数字未公布）",
+        "其他途径": "未公布",
+        "总额度": "长期免费",
+        "额度有效期": "永久免费",
+        "是否要绑卡": "不要",
+        "领取门槛": "需 Meta 账号（Facebook/Instagram 账号）；部分功能分地区开放；国内需海外网络"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "developers.cloudflare.com",
+      "name": "Cloudflare Workers AI",
+      "seed_id": 1108,
+      "seed_section": "permanent",
+      "seed_rank": 21,
+      "domain": "developers.cloudflare.com",
+      "domains": [
+        "developers.cloudflare.com"
+      ],
+      "repo": null,
+      "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+      "source_url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+      "region": "海外",
+      "tags": [
+        "API",
+        "免费层",
+        "开发"
+      ],
+      "summary_seed": "零成本就能把 AI 接进自己网站或小程序，国内开发者最顺手的一档；大模型几十次就烧完。",
+      "warning_seed": "大模型几十次就烧完每日额度，超了直接报错停掉。",
+      "credits": {
+        "首次注册送": "未公布（无一次性赠金）",
+        "每天额度": "10000 Neurons/天；另 Workers 免费计划 100000 请求/天",
+        "其他途径": "未公布",
+        "总额度": "每天 10000 Neurons（约合几十次问答，视模型而定）",
+        "额度有效期": "每天 00:00 UTC 重置，不累积；长期免费",
+        "是否要绑卡": "不要",
+        "领取门槛": "注册 Cloudflare 账号即可，无需 API key"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "ideogram.ai",
+      "name": "Ideogram",
+      "seed_id": 1109,
+      "seed_section": "permanent",
+      "seed_rank": 22,
+      "domain": "ideogram.ai",
+      "domains": [
+        "ideogram.ai",
+        "docs.ideogram.ai"
+      ],
+      "repo": null,
+      "url": "https://ideogram.ai/pricing",
+      "source_url": "https://docs.ideogram.ai/plans-and-billing/available-plans",
+      "region": "海外",
+      "tags": [
+        "绘图",
+        "文字排版",
+        "免费档"
+      ],
+      "summary_seed": "图片里带文字排版最稳的一家，但免费额度很少，而且注册方式踩坑就直接归零。",
+      "warning_seed": "官网定价页写每周 10 credits、文档写 30 credits，两页数字打架，用前再核对；邮箱密码注册没有免费额度。",
+      "credits": {
+        "首次注册送": "未公布",
+        "每天额度": "无每日额度，按周发：30 credits/周，每周六 00:00 UTC 重置",
+        "其他途径": "未公布",
+        "总额度": "30 credits/周",
+        "额度有效期": "每周过期，不累积",
+        "是否要绑卡": "不要",
+        "领取门槛": "必须用 Google/Apple/Microsoft 登录注册才有额度；邮箱+密码注册得 0 额度；免费生成全部公开"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子内自相矛盾：description 与“每天额度”写 30 credits/周（文档口径），warning 与 description 注明官网定价页写每周 10 credits，两页数字打架，复核前不得只取其一。另：邮箱+密码注册得 0 额度，须用 Google/Apple/Microsoft 登录注册。"
+      ]
+    },
+    {
+      "key": "suno.com",
+      "name": "Suno",
+      "seed_id": 1110,
+      "seed_section": "permanent",
+      "seed_rank": 23,
+      "domain": "suno.com",
+      "domains": [
+        "suno.com"
+      ],
+      "repo": null,
+      "url": "https://suno.com/pricing",
+      "source_url": "https://suno.com/pricing",
+      "region": "海外",
+      "tags": [
+        "音乐",
+        "作曲",
+        "免费档"
+      ],
+      "summary_seed": "每天 10 首歌随便玩，AI 作曲里免费最实在的；只能用旧款模型、不能下载、不能商用。",
+      "warning_seed": "免费只能用旧款 v6-mini 模型，不能下载、不能商用。",
+      "credits": {
+        "首次注册送": "未公布",
+        "每天额度": "50 credits/天，UTC 每日重置，不累积；一次生成 10 credits 出 2 首，约合 10 首歌/天",
+        "其他途径": "未公布",
+        "总额度": "每天 50 credits",
+        "额度有效期": "每日过期；免费档长期有效",
+        "是否要绑卡": "不要",
+        "领取门槛": "注册即可；免费仅限 v6-mini 模型、无商用权、生成无月度下载额度"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "jimeng.jianying.com",
+      "name": "即梦AI",
+      "seed_id": 1111,
+      "seed_section": "permanent",
+      "seed_rank": 24,
+      "domain": "jimeng.jianying.com",
+      "domains": [
+        "jimeng.jianying.com"
+      ],
+      "repo": null,
+      "url": "https://jimeng.jianying.com",
+      "source_url": "https://jimeng.jianying.com",
+      "region": "国内",
+      "tags": [
+        "绘图",
+        "视频",
+        "免费档"
+      ],
+      "summary_seed": "字节出品、中文提示词好用，出图到视频、再进剪映一条龙，国内直连最省事；额度当天清零。",
+      "warning_seed": "额度当天清零；视频按秒扣分烧得快；每日积分各时期口径不一，以账号内显示为准。",
+      "credits": {
+        "首次注册送": "未公布",
+        "每天额度": "每天登录发积分，2026-11 月实测为每天 60 积分（以账号内显示为准）",
+        "其他途径": "未公布",
+        "总额度": "每天 60 积分；默认模型 1 张图 3 积分，约 20 张图/天",
+        "额度有效期": "当天 23:59 清零，不累积",
+        "是否要绑卡": "不要",
+        "领取门槛": "需国内手机号注册/登录（抖音/微信/头条也可登）；国内直连"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子内多口径并存：2026-11 月实测每天 60 积分，但 warning 注明之前有过 20 和 150 两种口径，以账号内显示为准。"
+      ]
+    },
+    {
+      "key": "klingai.com",
+      "name": "可灵AI",
+      "seed_id": 1112,
+      "seed_section": "permanent",
+      "seed_rank": 25,
+      "domain": "klingai.com",
+      "domains": [
+        "klingai.com"
+      ],
+      "repo": null,
+      "url": "https://klingai.com",
+      "source_url": "https://klingai.com",
+      "region": "国内",
+      "tags": [
+        "视频",
+        "免费档",
+        "签到"
+      ],
+      "summary_seed": "国产视频生成画质天花板，免费每天能练两条短片；带水印、不能商用。",
+      "warning_seed": "免费导出带水印、明确不可商用；旧口径 66 点出 6 条是老算法，别按它排计划。",
+      "credits": {
+        "首次注册送": "未公布",
+        "每天额度": "每天登录送 66 灵感值，当日不用清零",
+        "其他途径": "未公布",
+        "总额度": "每天 66 灵感值；约合 11 秒 720P 视频、约 2 条 5 秒",
+        "额度有效期": "当日清零，不结转",
+        "是否要绑卡": "不要",
+        "领取门槛": "需国内手机号注册（官网或快影 App），每天签到领；国内直连"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子注明：旧口径“66 点出 6 条”是 2.x 按条计价的老算法，已过时；当前按 3.0 系列 720P 每秒 6 点、带音频 9 点计价。"
+      ]
+    },
+    {
+      "key": "runwayml.com",
+      "name": "Runway",
+      "seed_id": 1113,
+      "seed_section": "deals",
+      "seed_rank": 2,
+      "domain": "runwayml.com",
+      "domains": [
+        "runwayml.com"
+      ],
+      "repo": null,
+      "url": "https://runwayml.com/pricing",
+      "source_url": "https://runwayml.com/pricing",
+      "region": "海外",
+      "tags": [
+        "视频",
+        "一次性",
+        "赠金"
+      ],
+      "summary_seed": "AI 视频画质第一梯队，免费能真试一把；125 点只够一两条短片，还带水印、不能商用。",
+      "warning_seed": "125 点只够一两条短片试手，带水印、不能商用，用完不补。",
+      "credits": {
+        "首次注册送": "125 credits，一次性（非每月）",
+        "每天额度": "无每日额度",
+        "其他途径": "未公布",
+        "总额度": "125 credits（Gen-4 Turbo 约 25 秒视频；Gen-4 约 10 秒）",
+        "额度有效期": "一次性额度不设过期日，但用完不补；免费档长期存在",
+        "是否要绑卡": "不要",
+        "领取门槛": "注册即可；免费导出带水印、无商用授权、不可另购 credits"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": []
+    },
+    {
+      "key": "platform.stability.ai",
+      "name": "Stability AI",
+      "seed_id": 1114,
+      "seed_section": "deals",
+      "seed_rank": 3,
+      "domain": "platform.stability.ai",
+      "domains": [
+        "platform.stability.ai"
+      ],
+      "repo": null,
+      "url": "https://platform.stability.ai",
+      "source_url": "https://platform.stability.ai/pricing",
+      "region": "海外",
+      "tags": [
+        "绘图",
+        "API",
+        "赠金"
+      ],
+      "summary_seed": "Stable Diffusion 老牌子，注册送 25 个免费点，能先验一下出图质量；只够几张图。",
+      "warning_seed": "额度只够几张图；不要信旧教程里 Brand Studio 试用 500/1000 credits 的说法，那页已无法核实。",
+      "credits": {
+        "首次注册送": "25 free credits（1 credit = $0.01，约值 $0.25）",
+        "每天额度": "无每日额度，一次性",
+        "其他途径": "开源权重可免费自托管（年收入 100 万美元以下可商用）",
+        "总额度": "25 credits（约够 3 张 Ultra 或 8 张 Core 图）",
+        "额度有效期": "自发放/购买起 1 年过期",
+        "是否要绑卡": "不要",
+        "领取门槛": "注册账号即可；须会调 API"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子 warning 注明：不要信旧教程里 Brand Studio 试用 500/1000 credits 的说法，那页已无法核实。"
+      ]
+    },
+    {
+      "key": "cloud.cerebras.ai",
+      "name": "Cerebras",
+      "seed_id": 1115,
+      "seed_section": "deals",
+      "seed_rank": 4,
+      "domain": "cloud.cerebras.ai",
+      "domains": [
+        "cloud.cerebras.ai",
+        "inference-docs.cerebras.ai"
+      ],
+      "repo": null,
+      "url": "https://cloud.cerebras.ai",
+      "source_url": "https://inference-docs.cerebras.ai",
+      "region": "海外",
+      "tags": [
+        "API",
+        "试用",
+        "推理快"
+      ],
+      "summary_seed": "速度是真快，5 美元额度够测几千次请求；没有永久免费，还强制绑卡，30 天一到就停。",
+      "warning_seed": "没有永久免费层；强制绑卡；30 天一到就停，别指望长期白嫖。",
+      "credits": {
+        "首次注册送": "一次性 $5 推广额度，需先绑定验证过的支付方式才发放",
+        "每天额度": "试用档：每分钟 5 次请求、每小时/每天各 100 万 tokens（按模型计）",
+        "其他途径": "未公布",
+        "总额度": "$5 一次性",
+        "额度有效期": "发放后 30 天过期，过期或用完即停",
+        "是否要绑卡": "要，必须绑验证过的支付方式，否则试用场和 API 都不开通",
+        "领取门槛": "邮箱注册 + 绑支付方式；国内使用情况未核实"
+      },
+      "source_date": "unknown",
+      "status": "needs_check",
+      "seed_verified_at": "2026-11-24",
+      "seed_last_checked": "2026-11-24 通",
+      "notes": [
+        "种子注明：没有永久免费层；强制绑卡——29 条种子里唯一“要绑卡”的条目。"
+      ]
+    }
+  ]
+}
