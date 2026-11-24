@@ -1586,12 +1586,34 @@ def feed_candidates_direct(feed):
     return out
 
 
+def feed_candidates_fdroid(feed):
+    """F-Droid 应用列表页：抓 /en/packages/ 里的同站包链接当候选。
+    旧的 repo_json 源（/api/v1/packages 全量接口）已被 F-Droid 关掉（403），
+    而 page_links 只认外站链接，同站的包链接全被过滤掉，等于没有 F-Droid 来源。
+    这个函数直接认 /en/packages/<包名>/ 这种同站链接，一页约 348 个包。"""
+    status, _ct, body = fetch(feed["url"], max_bytes=2 * 1024 * 1024)
+    if status != 200:
+        raise RuntimeError(f"F-Droid 列表页返回 {status}")
+    text = body.decode("utf-8", "replace")
+    out = []
+    seen = set()
+    for pkg in re.findall(r'href="/en/packages/([A-Za-z0-9_.]+)/"', text):
+        if pkg in seen:
+            continue
+        seen.add(pkg)
+        out.append({"name": pkg,
+                    "url": f"https://f-droid.org/en/packages/{pkg}/",
+                    "desc": ""})
+    return out
+
+
 FEED_FUNCS = {"github_search": feed_candidates_github_search,
               "github_repo": feed_candidates_github_repo,
               "repo_json": feed_candidates_repo_json,
               "rss": feed_candidates_rss,
               "page_links": feed_candidates_page_links,
-              "direct": feed_candidates_direct}
+              "direct": feed_candidates_direct,
+              "fdroid": feed_candidates_fdroid}
 
 
 def load_feeds(script_dir):
