@@ -1,23 +1,13 @@
 {
  "fails": {
-  "https://play.iptv365.org/欧歌/api.json": 5,
-  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/shiguang.json": 5,
-  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/多仓订阅.json": 5,
-  "https://szyyds.cn/tv/x.json": 5,
-  "https://jt12.de/SYV2_1/2023/04/19/22/34/21/1681914861643ffbede14bc.json": 5,
-  "https://jt12.de/SYV2_4/2023/04/27/10/01/23/16825608836449d7738b738.json": 5,
-  "https://shuyuan.mgz6.cc/shuyuan/f20c00a9254a8aaf2d60379796716114.json": 5,
-  "https://e-c.coding.net/p/yicheng/d/YD/git/raw/master/sy.json": 5,
-  "https://jsd.onmicrosoft.cn/gh/XIU2/Yuedu/master/shuyuan": 5,
-  "https://namofree.gitee.io/yuedu3/legado3_booksource_by_Namo.json": 5,
-  "https://raw.githubusercontent.com/LancelotRar/best-cf-ips/main/best-cf-ip-collected.txt": 5,
-  "https://img.hsdi.fun/i/shuyuan/23-02-10-3059.json": 5,
-  "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js": 4,
-  "https://notabug.org/fantaiying/ext/raw/main/drpy2.js": 4,
-  "http://bttcj.com/inc/sapi.php": 4,
-  "http://www.010aizy.com/API/macs.php": 4,
-  "https://github.com/meroxis/qasa-erp": 1,
-  "https://github.com/CrowKing63/Orbital": 1
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js": 5,
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.js": 5,
+  "http://bttcj.com/inc/sapi.php": 5,
+  "http://www.010aizy.com/API/macs.php": 5,
+  "https://github.com/Gost-co/ModelAtlas": 1,
+  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6": 1,
+  "https://github.com/MythorWonder/Respocket-Changer": 1,
+  "https://github.com/Akshay7273/ProxyMan-free-proxy-list": 1
  },
- "updatedAt": "2026-11-24T02:56:12.229Z"
+ "updatedAt": "2026-11-24T03:58:29.585Z"
 }
