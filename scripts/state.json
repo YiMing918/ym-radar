@@ -1,23 +1,23 @@
 {
  "fails": {
-  "https://play.iptv365.org/欧歌/api.json": 3,
-  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/shiguang.json": 3,
-  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/多仓订阅.json": 3,
-  "https://szyyds.cn/tv/x.json": 3,
-  "https://jt12.de/SYV2_1/2023/04/19/22/34/21/1681914861643ffbede14bc.json": 3,
-  "https://jt12.de/SYV2_4/2023/04/27/10/01/23/16825608836449d7738b738.json": 3,
-  "https://shuyuan.mgz6.cc/shuyuan/f20c00a9254a8aaf2d60379796716114.json": 3,
-  "https://e-c.coding.net/p/yicheng/d/YD/git/raw/master/sy.json": 3,
-  "https://jsd.onmicrosoft.cn/gh/XIU2/Yuedu/master/shuyuan": 3,
-  "https://namofree.gitee.io/yuedu3/legado3_booksource_by_Namo.json": 3,
-  "https://raw.githubusercontent.com/LancelotRar/best-cf-ips/main/best-cf-ip-collected.txt": 3,
-  "https://img.hsdi.fun/i/shuyuan/23-02-10-3059.json": 3,
-  "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js": 2,
-  "https://notabug.org/fantaiying/ext/raw/main/drpy2.js": 2,
-  "http://bttcj.com/inc/sapi.php": 2,
-  "http://www.010aizy.com/API/macs.php": 2,
-  "https://github.com/MythorWonder/Respocket-Changer": 1,
-  "https://github.com/Akshay7273/ProxyMan-free-proxy-list": 1
+  "https://play.iptv365.org/欧歌/api.json": 4,
+  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/shiguang.json": 4,
+  "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/多仓订阅.json": 4,
+  "https://szyyds.cn/tv/x.json": 4,
+  "https://jt12.de/SYV2_1/2023/04/19/22/34/21/1681914861643ffbede14bc.json": 4,
+  "https://jt12.de/SYV2_4/2023/04/27/10/01/23/16825608836449d7738b738.json": 4,
+  "https://shuyuan.mgz6.cc/shuyuan/f20c00a9254a8aaf2d60379796716114.json": 4,
+  "https://e-c.coding.net/p/yicheng/d/YD/git/raw/master/sy.json": 4,
+  "https://jsd.onmicrosoft.cn/gh/XIU2/Yuedu/master/shuyuan": 4,
+  "https://namofree.gitee.io/yuedu3/legado3_booksource_by_Namo.json": 4,
+  "https://raw.githubusercontent.com/LancelotRar/best-cf-ips/main/best-cf-ip-collected.txt": 4,
+  "https://img.hsdi.fun/i/shuyuan/23-02-10-3059.json": 4,
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js": 3,
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.js": 3,
+  "http://bttcj.com/inc/sapi.php": 3,
+  "http://www.010aizy.com/API/macs.php": 3,
+  "https://github.com/MythorWonder/Respocket-Changer": 2,
+  "https://github.com/Akshay7273/ProxyMan-free-proxy-list": 2
  },
- "updatedAt": "2026-11-24T00:58:43.313Z"
+ "updatedAt": "2026-11-24T02:08:49.693Z"
 }
