@@ -81,10 +81,10 @@
         "section": "android-free"
       },
       {
-        "parse": "F-Droid 官方包索引，取包名拼商店页作候选（只取靠前一批）",
-        "type": "repo_json",
-        "url": "https://f-droid.org/api/v1/packages",
-        "section": "android-free"
+        "type": "fdroid",
+        "url": "https://f-droid.org/en/packages/",
+        "section": "android-free",
+        "parse": "F-Droid 应用列表页（同站包链接）"
       },
       {
         "parse": "F-Droid 商店目录页，抓包页外链作候选",
