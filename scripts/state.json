@@ -1,7 +1,17 @@
 {
  "fails": {
-  "https://github.com/Gost-co/ModelAtlas": 2,
-  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6": 2
+  "https://github.com/Gost-co/ModelAtlas": 3,
+  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6": 3,
+  "https://github.com/dinhdev666/free-opencode-api": 1,
+  "https://github.com/neverpaytwice/ai-token-cost-scripts": 1,
+  "https://github.com/3LGroup/prevelet-app-build": 1,
+  "https://github.com/jwqsir2-lang/newbox": 1,
+  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v7": 1,
+  "https://api.apibdzy.com/api.php/provide/vod?ac=list": 1,
+  "https://www.yckceo.com/yuedu/shuyuans/json/id/35.json": 1,
+  "https://github.com/childpig/reader": 1,
+  "https://github.com/MythorWonder/Respocket-Changer": 1,
+  "https://github.com/Akshay7273/ProxyMan-free-proxy-list": 1
  },
- "updatedAt": "2026-11-24T06:10:11.855Z"
+ "updatedAt": "2026-11-24T12:57:53.112Z"
 }
