@@ -1966,7 +1966,7 @@ def main():
                 max_id[0] = max(max_id[0], item["id"])
 
     def _add_for_slug(slug, cat):
-        items = cat.get("items") or []
+        items = cat.setdefault("items", [])
         removed_here = sum(1 for it in items if id(it) in removed_keys)
         room = MAX_PER_CAT - (len(items) - removed_here)
         cap = max(0, min(MAX_ADD_PER_CAT, room))
