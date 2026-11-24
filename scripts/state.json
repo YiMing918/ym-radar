@@ -1,17 +1,174 @@
 {
  "fails": {
-  "https://github.com/Gost-co/ModelAtlas": 3,
-  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6": 3,
-  "https://github.com/dinhdev666/free-opencode-api": 1,
-  "https://github.com/neverpaytwice/ai-token-cost-scripts": 1,
-  "https://github.com/3LGroup/prevelet-app-build": 1,
-  "https://github.com/jwqsir2-lang/newbox": 1,
-  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v7": 1,
-  "https://api.apibdzy.com/api.php/provide/vod?ac=list": 1,
-  "https://www.yckceo.com/yuedu/shuyuans/json/id/35.json": 1,
-  "https://github.com/childpig/reader": 1,
-  "https://github.com/MythorWonder/Respocket-Changer": 1,
-  "https://github.com/Akshay7273/ProxyMan-free-proxy-list": 1
+  "https://github.com/Gost-co/ModelAtlas": 4,
+  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6": 4,
+  "https://github.com/dinhdev666/free-opencode-api": 2,
+  "https://github.com/neverpaytwice/ai-token-cost-scripts": 2,
+  "https://github.com/jwqsir2-lang/newbox": 2,
+  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v7": 2,
+  "https://github.com/childpig/reader": 2,
+  "https://github.com/MythorWonder/Respocket-Changer": 2,
+  "https://github.com/Akshay7273/ProxyMan-free-proxy-list": 2,
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js": 1,
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.js": 1,
+  "https://github.com/dandelions/home-iptv": 1,
+  "http://bttcj.com/inc/sapi.php": 1,
+  "http://www.010aizy.com/API/macs.php": 1
  },
- "updatedAt": "2026-11-24T12:57:53.112Z"
+ "pending": [
+  {
+   "url": "https://github.com/Arsh624/llm4jobs-v2",
+   "name": "Arsh624/llm4jobs-v2",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/rogergongas8/token-counter",
+   "name": "rogergongas8/token-counter",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/Gost-co/ModelAtlas",
+   "name": "Gost-co/ModelAtlas",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/muntasirrmahdi/minimalrouter",
+   "name": "muntasirrmahdi/minimalrouter",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/ons96/free-llm-benchmarking",
+   "name": "ons96/free-llm-benchmarking",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/angvor/tvbox-live",
+   "name": "angvor/tvbox-live",
+   "slug": "video",
+   "reason": "README 里找到的配置文件验活都不通",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/jwqsir2-lang/musebox",
+   "name": "jwqsir2-lang/musebox",
+   "slug": "video",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/LDeom/TVBox-Config",
+   "name": "LDeom/TVBox-Config",
+   "slug": "video",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/neo-idea/STREAM-LIB-REPO",
+   "name": "neo-idea/STREAM-LIB-REPO",
+   "slug": "video",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/rdk31/nixos-tvbox",
+   "name": "rdk31/nixos-tvbox",
+   "slug": "video",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/hmily91/TVBoxOSC",
+   "name": "hmily91/TVBoxOSC",
+   "slug": "video",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/longyudev/cfnb-ip",
+   "name": "longyudev/cfnb-ip",
+   "slug": "cfip",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/Visupervi/TVBOX-AUTO",
+   "name": "Visupervi/TVBOX-AUTO",
+   "slug": "video",
+   "reason": "README 里找到的配置文件验活都不通",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/royalhayga/tvbox-master-aggregator",
+   "name": "royalhayga/tvbox-master-aggregator",
+   "slug": "video",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/TigerVpnGit/TigerVpnGuid",
+   "name": "TigerVpnGit/TigerVpnGuid",
+   "slug": "node",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/abdollahim/portman",
+   "name": "abdollahim/portman",
+   "slug": "node",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/Freedom-Guard-Builder/Freedom-Finder",
+   "name": "Freedom-Guard-Builder/Freedom-Finder",
+   "slug": "node",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-24",
+   "lastTried": "2026-11-24",
+   "tries": 1
+  }
+ ],
+ "updatedAt": "2026-11-24T14:48:17.224Z"
 }

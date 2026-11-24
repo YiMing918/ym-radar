@@ -1,0 +1,18 @@
+{
+ "date": "2026-11-24",
+ "removed": [
+  {
+   "name": "reqsgjh/free-coding-agent-models",
+   "url": "https://openrouter.ai/collections/free-models",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "mnfst/awesome-free-llm-apis",
+   "url": "https://awesome.re",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  }
+ ],
+ "updatedAt": "2026-11-24T14:48:17.224Z"
+}
