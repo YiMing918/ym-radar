@@ -1744,7 +1744,7 @@ def process_item(slug, item, state_fails):
             url = m.group(1) + "/releases"
             item["url"] = url
 
-    # FIX14 A+B：老条目逐步解析可用地址 + 重建模板简介（每轮预算 60 条，
+    # FIX14 A+B：老条目逐步解析可用地址 + 重建模板简介（每轮预算 120 条，
     # 只动裸仓库地址的条目；已有 sourceUrl/builtinConfigUrl 的只补缺的，
     # 绝不洗掉手写种子带的值；改地址后验活在下一轮走正常流程）。
     if _resolve_budget_take() and _is_bare_repo_url(url):
@@ -2267,7 +2267,7 @@ def pull_candidates(slug, feeds):
 
 PENDING = {}                    # norm_url -> {url,name,slug,reason,firstSeen,lastSeen,tries}
 _pending_lock = threading.Lock()
-_RESOLVE_BUDGET = {"left": 60}  # 每轮 process_item 里最多解析多少条老条目（逐步替换）
+_RESOLVE_BUDGET = {"left": 120}  # 每轮 process_item 里最多解析多少条老条目（逐步替换）
 _resolve_lock = threading.Lock()
 _SHOT_BUDGET = {"left": 60}     # 每轮 process_item 里最多补多少条老 app 条目的截图
 _shot_lock = threading.Lock()
@@ -3506,7 +3506,7 @@ def main():
     for _e in state_pending:
         if isinstance(_e, dict) and _e.get("url"):
             PENDING[norm_url(_e["url"])] = _e
-    _RESOLVE_BUDGET["left"] = 60
+    _RESOLVE_BUDGET["left"] = 120
     _SHOT_BUDGET["left"] = 60
 
     normalize_sections(data)
