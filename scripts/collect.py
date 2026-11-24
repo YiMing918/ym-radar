@@ -692,8 +692,42 @@ PROXY_KB = [
      "Xray/v2ray 路由规则（geosite/geoip）", "无模块系统，只有配置文件",
      "按 routing 规则分流，geo 数据文件随客户端更新（无远程规则集订阅）",
      "geo 数据：Loyalsoldier/v2ray-rules-dat（github.com/Loyalsoldier/v2ray-rules-dat）"),
+    (("throne", "nekoray"), "sing-box",
+     "sing-box JSON（route 路由 + rule_set 规则集）", "无模块系统，只有配置文件",
+     "按 route 规则分流，rule_set 支持远程订阅更新",
+     "规则集：官方 sing-geosite（github.com/SagerNet/sing-geosite）、"
+     "sing-geoip（github.com/SagerNet/sing-geoip）"),
+    (("egern",), "egern",
+     "Egern 规则集（域名/正则/geo/CIDR/URL 正则等，支持远程规则集）",
+     "支持模块 + 脚本 + 统一重写引擎",
+     "规则分流 / 全局 / 直连可切换，策略组支持选择/自动测速/故障转移/负载均衡，支持远程规则集更新",
+     "社区规则与模块：github.com/topics/egern"),
+    (("streisand",), "xray",
+     "Xray 路由规则（geosite/geoip，图形界面配置）", "无模块系统，只有配置文件",
+     "按 routing 规则分流，订阅导入更新",
+     "geo 数据：Loyalsoldier/v2ray-rules-dat（github.com/Loyalsoldier/v2ray-rules-dat）"),
+    (("happ",), "xray",
+     "Xray 路由规则（geosite/geoip）", "无模块系统，只有配置文件",
+     "按 routing 规则分流，支持加密/隐藏订阅导入更新",
+     "geo 数据：Loyalsoldier/v2ray-rules-dat（github.com/Loyalsoldier/v2ray-rules-dat）"),
+    (("v2box",), "xray",
+     "Xray 路由规则（geosite/geoip）", "无模块系统，只有配置文件",
+     "按 routing 规则分流，订阅导入更新",
+     "geo 数据：Loyalsoldier/v2ray-rules-dat（github.com/Loyalsoldier/v2ray-rules-dat）"),
+    (("hysteria",), "hysteria",
+     "YAML 配置 + ACL 分流规则", "无模块系统，只有配置文件",
+     "按 ACL 规则分流",
+     "暂无（多作为协议被 sing-box/mihomo/v2rayN 内置，单独用得少）"),
+    (("tuic",), "tuic",
+     "JSON 配置", "无模块系统，只有配置文件",
+     "分流靠上层客户端路由",
+     "暂无（多作为协议被 sing-box/mihomo/v2rayN 内置，单独用得少）"),
 ]
 PROXY_FAMILY_URL = "https://gcore.jsdelivr.net/gh/YiMing918/proxy-app-rules@main/{}/"
+# 配套规则只给仓库里真有的七个家族；其他家族（egern/hysteria/tuic 等）写暂无配套，
+# 别拼出一个不存在的文件夹链接。
+PROXY_RULE_FAMILIES = {"mihomo", "sing-box", "xray", "shadowrocket", "surge",
+                       "loon", "quantumultx"}
 
 TOOL_STEPS = {
     "shadowrocket": "1) 加规则：打开小火箭 → 配置 → 选中当前配置 → 规则里添加远程规则集，粘贴规则链接；"
@@ -712,8 +746,113 @@ TOOL_STEPS = {
                 "3) 保存后重连生效；4) 它没有模块，功能都靠配置文件。",
     "xray": "1) 加规则（以 v2rayNG 为例）：设置 → 路由设置 → 添加规则集，粘贴规则或选 geosite 分组；"
             "2) geo 文件在设置里点更新；3) 保存后重连生效。",
+    "egern": "1) 加规则：配置 → 规则集，粘贴远程规则集链接；"
+             "2) 加模块：模块 → 添加，粘贴模块链接安装；3) 保存后重连生效。",
+    "hysteria": "这个是协议内核，一般不用单独装，装个支持它的客户端（如 sing-box、mihomo、v2rayN）就能用；单独用就按它的 YAML 配置写 ACL 分流规则。",
+    "tuic": "这个是协议内核，一般不用单独装，装个支持它的客户端（如 sing-box、mihomo、v2rayN）就能用；单独用就按它的 JSON 配置来。",
     None: "这个工具不用往里加规则和模块，打开按它自己的界面用就行。",
 }
+
+# 代理栏中文名 + 中文介绍：（识别词, 中文名, 中文介绍）。
+# 顺序有讲究：更具体的识别词在前（如 v2rayng 在 v2rayn 前，clash-party 在 mihomo 前），
+# 因为有的名字是另一个的子串（v2rayng 含 v2rayn，clash-party 的仓库地址含 mihomo）。
+PROXY_CN = [
+    (("v2rayng",), "v2rayNG 安卓客户端",
+     "v2rayNG 是安卓上最常用的 Xray 客户端，中文开发者 2dust 的作品，界面支持中文。它支持 VLESS、VMess、Trojan、Shadowsocks 等协议，订阅导入后按 Xray 路由规则（geosite/geoip）分流，规则分流、全局、直连可以切换，geo 数据文件在设置里点更新。免费开源，新手首选。"),
+    (("v2rayn",), "v2rayN 桌面客户端",
+     "v2rayN 是 Windows、Linux、macOS 上的默认 Xray/sing-box 图形客户端，中文开发者 2dust 的作品，界面支持中文。它可以切换 14 种内核（Xray、sing-box、mihomo、Hysteria、TUIC 等），用图形界面生成 Xray/sing-box 的 JSON 路由规则，按规则分流，订阅远程更新。免费开源，功能最全的桌面客户端之一。"),
+    (("v2ray-core", "v2ray core"), "V2Ray 内核",
+     "V2Ray 是 V2Ray 的原版内核，仍在维护但功能已经冻结，没有 Reality、QUIC 系这些新协议。它用和 Xray 同款的 geosite/geoip 路由规则分流。一般用户直接用 Xray-core 就行，不用专门装它。免费开源。"),
+    (("nekobox",), "NekoBox 安卓客户端",
+     "NekoBox（猫箱）是安卓上的 sing-box 图形客户端，中文开发者 MatsuriDayo 的作品，界面支持中文，插件丰富、界面现代。它用 sing-box 的 JSON 配置，route 路由加 rule_set 规则集分流，规则集支持远程订阅更新。免费开源。注意别从 Google Play 下，那个版本 2024 年起由第三方控制、不是开源的，用 GitHub Releases 里的包。"),
+    (("karing",), "Karing 全平台客户端",
+     "Karing（卡林）是 Flutter 写的全平台客户端，安卓、iOS、Windows、macOS、Linux、tvOS 都有，订阅兼容性最强。它用改过的 sing-box 内核，支持 Clash 风格路由规则和 sing-box rule_set，规则分流、全局、直连可以切换，内置 geo-IP、geo-site、ACL 和规则集，支持远程规则订阅更新。免费开源，中文界面。注意它用的是改过的内核，不能换内核。"),
+    (("hiddify",), "Hiddify 全平台客户端",
+     "Hiddify 是 sing-box 的全平台图形客户端，安卓、iOS、Windows、macOS、Linux 都有，主打简单易用，自带免费的 WARP 和 Psiphon。它用 sing-box 的 JSON 配置，route 路由加 rule_set 规则集分流，订阅自动更新，安卓上支持按应用分流。免费开源，支持中文界面。"),
+    (("throne",), "Throne 桌面客户端",
+     "Throne（王座）是 NekoRay 停更后的官方接班人，Qt 写的桌面客户端，Windows、Linux、macOS 都有。它用 sing-box 的 JSON 配置，route 路由加 rule_set 规则集分流，内置 geoip/geosite 规则集远程更新，支持系统代理和 TUN。免费开源。"),
+    (("flclash",), "FlClash 全平台客户端",
+     "FlClash 是 Flutter 写的跨平台客户端，内置 mihomo 内核，安卓、Windows、macOS、Linux 都能用，界面现代，支持 WebDAV 同步配置。它用 Clash 的 YAML 配置和 rule-provider 远程规则集分流，规则分流、全局、直连可以切换，没有插件模块，扩展靠覆写脚本。免费开源，中文界面。"),
+    (("clash-verge",), "Clash Verge Rev 桌面客户端",
+     "Clash Verge Rev 是桌面端首选的 Clash 客户端，Tauri 写的，内置 mihomo 内核，Windows、macOS、Linux 都有。它支持订阅管理、可视化规则编辑，规则分流、全局、直连可以切换，支持 TUN 和服务模式，rule-provider 远程规则集自动更新。没有插件，扩展靠配置合并和 JS 增强脚本。免费开源，中文界面。"),
+    (("clash-party",), "Clash Party 桌面客户端",
+     "Clash Party 是 Tauri 写的桌面客户端，内置 mihomo 内核和 Sub-Store，Windows、macOS、Linux 都有，还有 Win7 和老 macOS 的构建。它用 Clash 的 YAML 配置和 rule-provider 远程规则集分流，规则分流、全局、直连可以切换，订阅管理直接用内置的 Sub-Store。免费开源，中文界面。"),
+    (("mihomo",), "mihomo 内核",
+     "mihomo 是 Clash Meta 延续下来的开源代理内核，是现在大多数 Clash 系客户端的引擎。它用 Clash 的 YAML 配置，支持 rule-provider 远程规则集，规则分流、全局代理、直连三种模式可以切换，订阅更新后规则自动跟着更新。它本身没有界面，要配个客户端（如 FlClash、Clash Verge Rev、Stash、Clash Party）才能用。适合想自己搭规则、要精细控制分流的人。"),
+    (("sing-box", "singbox"), "sing-box 内核",
+     "sing-box 是新一代通用代理平台，协议覆盖最广的开源内核，支持 VLESS、VMess、Trojan、Hysteria2、TUIC 等几乎所有主流协议。它用 JSON 配置，route 路由加 rule_set 规则集，规则分流、全局、直连可以切换，规则集支持远程订阅更新。它本身是命令行工具，要配个图形客户端（如 NekoBox、Karing、Hiddify、Throne）才能方便用。"),
+    (("xray",), "Xray 内核",
+     "Xray-core 是 V2Ray 延续下来的开源代理内核，是 VLESS、Reality、Vision、XHTTP 这些新协议的源头实现，功能最强的 V2Ray 系内核。它用 JSON 配置，靠 geosite/geoip 路由规则分流，geo 数据文件随客户端更新。它本身没有界面，要配个客户端（如 v2rayNG、v2rayN、Streisand、Happ、V2Box）才能用。"),
+    (("streisand",), "Streisand iOS 客户端",
+     "Streisand 是免费开源的 iOS Xray 客户端，内置 Xray-core，支持 VLESS 和 Reality，对新手友好。它用 Xray 的路由规则（geosite/geoip）分流，图形界面配置，订阅用链接或二维码导入更新。免费，界面支持中文。"),
+    (("happ",), "Happ 全平台客户端",
+     "Happ 是免费的 Xray 系客户端，Windows、macOS、Linux、iOS、安卓、电视都有。它用 Xray 的路由规则分流，支持加密和隐藏订阅导入更新。免费，闭源。"),
+    (("v2box",), "V2Box iOS 客户端",
+     "V2Box 是简单免费的 iOS、macOS V2Ray 系客户端。它用 Xray 的路由规则分流，订阅导入更新。免费，界面支持中文。"),
+    (("subconverter", "sub-converter"), "subconverter 订阅转换",
+     "subconverter 是订阅转换工具，把一份机场订阅转换成 Clash、sing-box、Surge 等各种客户端能用的格式。它本身不代理流量，所以没有规则、分流和模块，打开按它自己的界面用就行。免费开源。"),
+    (("sub-store", "substore"), "Sub-Store 订阅管理",
+     "Sub-Store 是订阅管理、转换和合并工具，节点筛选和过滤功能很强，可以给订阅做过滤、重命名和合并，再生成各客户端能用的订阅。它本身不代理流量，所以没有规则和分流，但支持用脚本操作节点。免费开源，界面支持中文。"),
+    (("hysteria",), "Hysteria2 内核",
+     "Hysteria2 是基于 QUIC 的高速代理协议和内核，弱网和大带宽表现好。它用 YAML 配置加 ACL 规则分流，没有模块系统。一般不用单独装，sing-box、mihomo、v2rayN 这些客户端都内置了它。免费开源。"),
+    (("tuic",), "TUIC 内核",
+     "TUIC 是基于 QUIC 的低延迟代理协议，UDP 优化做得好。它用 JSON 配置，分流靠上层客户端路由。一般不用单独装，sing-box、mihomo、v2rayN 这些客户端都内置了它。免费开源。"),
+    (("shadowrocket",), "Shadowrocket iOS 客户端",
+     "Shadowrocket（小火箭）是 iOS 上规则代理的标杆，轻量稳定，中文开发者，界面支持中文。它用 .conf 配置规则，支持 .module 模块，规则分流、全局、直连可以切换，支持远程配置订阅更新。$2.99 一次性买断，没有内购和广告，新手首选的付费客户端。注意国区 App Store 没有，要用外区账号下载。"),
+    (("surge",), "Surge iOS/macOS 客户端",
+     "Surge 是专业级的网络调试工具，规则、抓包、MITM 全套，适合开发者和高级用户。它用 .conf 配置和 RULE-SET 远程规则集，支持 .sgmodule 模块，规则分流、全局、直连可以切换。iOS 和 Mac 分开买，大约 $49.99 一次性买断（含 1 年更新），界面支持中文。"),
+    (("loon",), "Loon iOS 客户端",
+     "Loon 是功能全面的 iOS 代理工具，支持抓包、脚本和高级路由，性价比高。它用自己的配置规则，支持 .plugin 插件，规则分流、全局、直连可以切换，支持远程规则订阅更新。$7.99 一次性买断，界面支持中文。"),
+    (("quantumult",), "Quantumult X iOS 客户端",
+     "Quantumult X（圈X）是 iOS 老牌代理工具，重写和脚本能力强。它用 filter 规则，支持 HTTP 重写和 JS 脚本，规则分流、全局、直连可以切换，filter 支持远程订阅更新。$9.99 一次性买断，界面支持中文。注意国区 App Store 没有，要用外区账号下载。"),
+    (("stash",), "Stash iOS 客户端",
+     "Stash 是 iOS 上对 Clash 配置支持最完整的客户端，中文团队开发，界面支持中文。它完整支持 Clash Premium 配置、脚本和高级策略组，用 Clash 的 YAML 配置和 rule-provider 远程规则集分流，规则分流、全局、直连可以切换，还有 SSID 策略组和按需连接。没有 .module 系统，但支持 JS 脚本、HTTP 重写和 MITM。iOS 版 $5.99 一次性买断，Mac 版是订阅制。"),
+    (("egern",), "Egern iOS 客户端",
+     "Egern（松鼠）是功能很全的免费 iOS 网络工具，支持抓包、重写和 Tailscale。它用自己的规则集（域名、正则、geo、CIDR、URL 正则等），支持远程规则集，支持模块、脚本和统一重写引擎，分流有规则、全局、直连三种模式，策略组支持选择、自动测速、故障转移和负载均衡。免费下载，Pro 内购 $5.99，界面支持简体中文。"),
+]
+
+# 代理栏里确认支持中文界面的应用：返回 (语言, 能否改中文)。
+# 这些应用的 README 可能是英文，但 APP 界面确实有中文，别被语言检测误判
+# （v2rayNG 就是这么被错标成“只有英文”的）。
+PROXY_LANG_OVERRIDE = {
+    "v2rayng": ("中英双语", "可切换中文"),
+    "v2rayn": ("中英双语", "可切换中文"),
+    "nekobox": ("中英双语", "可切换中文"),
+    "flclash": ("中英双语", "可切换中文"),
+    "karing": ("中英双语", "可切换中文"),
+    "hiddify": ("中英双语", "可切换中文"),
+    "clash-verge": ("中英双语", "可切换中文"),
+    "clash-party": ("中英双语", "可切换中文"),
+    "shadowrocket": ("中英双语", "可切换中文"),
+    "surge": ("中英双语", "可切换中文"),
+    "loon": ("中英双语", "可切换中文"),
+    "quantumult": ("中英双语", "可切换中文"),
+    "stash": ("中英双语", "可切换中文"),
+    "egern": ("中英双语", "可切换中文"),
+    "streisand": ("中英双语", "可切换中文"),
+    "v2box": ("中英双语", "可切换中文"),
+}
+
+
+def proxy_cn_for(slug, name, url):
+    """代理栏中文名+中文介绍：按识别词匹配，返回 (中文名, 中文介绍) 或 None。"""
+    if slug != "proxy":
+        return None
+    probe = ((name or "") + " " + (url or "")).lower()
+    for keys, cn_name, cn_desc in PROXY_CN:
+        if any(k in probe for k in keys):
+            return (cn_name, cn_desc)
+    return None
+
+
+def proxy_lang_for(item):
+    """代理栏里确认支持中文界面的应用：返回 (语言, 能否改中文)，否则 None。"""
+    probe = ((item.get("name") or "") + " " + (item.get("url") or "")
+             + " " + (item.get("sourceUrl") or "")).lower()
+    for key, (lang, cnswitch) in PROXY_LANG_OVERRIDE.items():
+        if key in probe:
+            return (lang, cnswitch)
+    return None
 
 
 def kb_match(item):
@@ -736,7 +875,7 @@ def ensure_tool_fields(item):
         set_detail(item, "模块支持", module)
         set_detail(item, "分流方式", split)
         set_detail(item, "配套规则",
-                   PROXY_FAMILY_URL.format(fam) if fam else "暂无配套")
+                   PROXY_FAMILY_URL.format(fam) if fam in PROXY_RULE_FAMILIES else "暂无配套")
         set_detail(item, "可加的东西", addons)
         return entry
     for lb in ("规则格式", "模块支持", "分流方式", "可加的东西"):
@@ -978,6 +1117,17 @@ def label_item(slug, item, page=None, html_text=""):
                 bump("lang")
         return
 
+    # --- 代理栏：确认支持中文界面的应用，直接写死，别被英文 README 误判 ---
+    # （App Store 的应用走上面 iTunes 分支，语言以商店为准，不会走到这里。）
+    if slug == "proxy":
+        _lg = proxy_lang_for(item)
+        if _lg:
+            set_detail(item, "语言", _lg[0])
+            bump("lang")
+            set_detail(item, "能否改中文", _lg[1])
+            bump("cnswitch")
+            return
+
     # --- 苹果栏的 TestFlight 等非商店链接：退回页面判语言 ---
     # --- 通用网站/文件：页面文字判语言 ---
     text = ""
@@ -1091,6 +1241,11 @@ def process_item(slug, item, state_fails):
 
     # 代理工具栏：平台/官方下载/收费（只认官方来源）+ 四项必备说明
     if slug == "proxy":
+        _cn = proxy_cn_for(slug, item.get("name") or "", item.get("url") or "")
+        if _cn:
+            item["name"] = _cn[0]
+            item["description"] = _cn[1]
+            item["summary"] = _cn[1].split("。")[0] + "。" if "。" in _cn[1] else _cn[1]
         plat = PROXY_PLATFORMS.get(item.get("section") or "")
         if plat:
             set_detail(item, "平台", plat)
@@ -1395,11 +1550,29 @@ def feed_candidates_page_links(feed):
     return out
 
 
+def feed_candidates_direct(feed):
+    """指定网址：直接把给定的网址当候选（闭源应用/官网，没有仓库可拉）。
+    每条可自带 section，不带就用 feed 的 section。"""
+    items = feed.get("items") or []
+    out = []
+    for it in items:
+        name = (it.get("name") or "").strip()
+        url = (it.get("url") or "").strip()
+        if not name or not url:
+            raise RuntimeError(f"direct 源缺 name/url：{it}")
+        c = {"name": name, "url": url, "desc": it.get("desc") or ""}
+        if it.get("section"):
+            c["section"] = it["section"]
+        out.append(c)
+    return out
+
+
 FEED_FUNCS = {"github_search": feed_candidates_github_search,
               "github_repo": feed_candidates_github_repo,
               "repo_json": feed_candidates_repo_json,
               "rss": feed_candidates_rss,
-              "page_links": feed_candidates_page_links}
+              "page_links": feed_candidates_page_links,
+              "direct": feed_candidates_direct}
 
 
 def load_feeds(script_dir):
@@ -1522,6 +1695,10 @@ def build_item(slug, cand, material, new_id):
         _t = ""
     name = (_t or cand["name"]).strip()[:80]
     url = cand["url"]
+    # 代理栏：中文名（新条目从这里改名）
+    _cn = proxy_cn_for(slug, name, url)
+    if _cn:
+        name = _cn[0]
     host = urllib.parse.urlparse(url).netloc
     original = re.sub(r"\s+", " ", material["text"]).strip()
     lang = material.get("lang")
@@ -1552,6 +1729,10 @@ def build_item(slug, cand, material, new_id):
             f"它主要用来{use}。适合{who}。")
         item["summary"] = original[:70].rstrip("。") + "。" if len(original) > 10 \
             else f"{kind}。主要用来{use}，适合{who}。"
+    # 代理栏：中文介绍（ curated，覆盖上面按材料拼的通用介绍）
+    if _cn:
+        item["description"] = _cn[1]
+        item["summary"] = _cn[1].split("。")[0] + "。" if "。" in _cn[1] else _cn[1]
     # details：实测数据
     set_detail(item, "最近检查", f"{today_cst()} 通")
     if material.get("counted"):
@@ -1608,6 +1789,12 @@ def build_item(slug, cand, material, new_id):
     mlang = material.get("lang")
     if mlang in ("英文", "中文", "中英双语"):
         set_detail(item, "语言", mlang)
+    # 代理栏：语言以写死的为准（material 的语言可能被英文 README 带偏）
+    if slug == "proxy":
+        _lg = proxy_lang_for(item)
+        if _lg:
+            set_detail(item, "语言", _lg[0])
+            set_detail(item, "能否改中文", _lg[1])
     # 版本硬规矩 + 代理栏字段 + 苹果价格兜底（新条目同样适用）
     if slug in VERSION_REQUIRED_SLUGS:
         if material.get("github"):
