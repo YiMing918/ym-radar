@@ -34,6 +34,40 @@
 GitHub API：有环境变量 GITHUB_TOKEN 就带上提限额；没有就自动降速
 （搜索请求间隔拉长、每页条数减少），不用任何私人令牌。
 
+FIX14（2026-11-24，A 地址解析 + B 真实简介）：
+  - github_info 多取 homepage；README 原文缓存后抽链接（resolve 用）。
+  - build_item / process_item 跑 resolve_usable_url：可用地址进 url，
+    仓库主页挪进 sourceUrl（已有值保留、只补缺），整份配置文件直链进
+    builtinConfigUrl（已有值保留），node 栏再记 clientLinks（按客户端分行）。
+  - 英文条目简介/介绍改取原文首句/首段实质内容（带相关性校验，不相关
+    的不硬用，走“简介待补”进待补清单）；中文条目简介按句界截断清洗，
+    不再 original[:70] 硬切（不断半个英文词、不留碎片）。
+  - cn_explain 接进真正能走到的位置（label_item 的条件修好），
+    “中文说明”不再全站为 0；app 电脑组不用安卓模板。
+  - service/domain 合集仓库拆成单条服务再收，合集本身不收。
+  - 待补清单进 state.json 的 pending；每轮删掉的条目写 screened.json
+    （“今天筛掉了什么”）；核查时间戳沿用 verifiedAt，不新造字段。
+  - process_item 不再拿 GitHub 页面 og:description（短句 + " - owner/repo"
+    后缀）覆盖 README 攒下的长原文。
+
+FIX14（2026-11-24，C 截图采集 + D AI 额度字段）：
+  - D：fill_ai_credit_fields 按 ai-kb-spec.md 填 AI 栏 7 项额度字段：
+    先查 scripts/ai_kb.json（域名精确匹配 → 仓库名匹配；github.com
+    裸 host 不参与域名匹配，防所有仓库被误算成 Copilot），命中填表值；
+    未命中只从 descriptionOriginal 正则抽明确写出的数字，抽不到填
+    “未公布”，绝不猜数；7 项已有真实值只补缺不洗掉。核实状态单独记
+    details「额度核实」（待核实/已核实），不洗 7 项原值；简介里的数
+    只在已核实时写，且只写 details 里已有的数。表缺失时优雅降级（只走
+    正则，不报错、不中断）。推送时须把 fix14/ai_kb.json 作为新文件推到
+    仓库 scripts/ai_kb.json。
+  - C：截图只从 iTunes screenshotUrls（取前 3 张）和 F-Droid 包页
+    <img alt="app screenshot">（取前 3 张）提；Google Play 本脚本没有
+    现成的页面抓取（Play 页需 JS 且常挡爬虫），不硬做；GitHub README
+    里的图绝不当应用截图。截图 URL 只做格式校验（https + 图片扩展名/
+    已知图床域名），不全量下载验活。新条目走 deep_dive 材料；老条目
+    apple 在 label_item 里用缓存的 iTunes 数据补、app 用预算（每轮 60
+    条）补 F-Droid 截图。
+
 用法：python3 scripts/collect.py [data.json 路径]（默认仓库根目录 data.json）
 """
 import base64
@@ -72,7 +106,8 @@ ERROR_TITLE_PREFIXES = ("page not found", "404", "not found", "error",
 
 STATS = {"checked_ok": 0, "dead": 0, "content_dead": 0, "github": 0, "counted": 0, "imaged": 0,
          "lang": 0, "region": 0, "cnswitch": 0, "cnswitch_en": 0,
-         "deep_ok": 0}
+         "deep_ok": 0, "resolved": 0, "pending": 0, "split": 0,
+         "summary_fixed": 0, "ai_credit": 0, "shots": 0}
 _lock = threading.Lock()
 _repo_cache = {}
 _repo_lock = threading.Lock()
@@ -221,6 +256,9 @@ def github_info(repo):
                 "stars": data.get("stargazers_count"),
                 "description": data.get("description") or "",
                 "default_branch": data.get("default_branch") or "main",
+                # FIX14 A：仓库主页 about 栏的官网链接（ai/service/domain
+                # 的可用地址优先从这里拿）。
+                "homepage": (data.get("homepage") or "").strip(),
             }
     except Exception:
         info = None
@@ -258,7 +296,23 @@ def github_readme(repo, info=None):
     """抓 README 开头几段纯文本（深挖用）。拿不到返回空串。
     分支按顺序试：仓库默认分支 -> main -> master。旧写法只认默认分支，
     一旦 github_info 拿不到（API 限流/仓库改名），就默认 main——
-    v2rayN、TUIC、v2ray-core 这类默认分支是 master 的仓库就永远抓不到 README。"""
+    v2rayN、TUIC、v2ray-core 这类默认分支是 master 的仓库就永远抓不到 README。
+    （FIX14：原文走 github_readme_raw 的缓存，与链接抽取共用一次请求。）"""
+    raw = github_readme_raw(repo, info)
+    return md_to_text(raw) if raw else ""
+
+
+_readme_raw_cache = {}
+_readme_raw_lock = threading.Lock()
+
+
+def github_readme_raw(repo, info=None):
+    """README 原文（markdown，带链接语法）：供链接抽取 / 合集拆分用。
+    与 github_readme 同一套分支回退（默认分支 -> main -> master），
+    成功抓到的原文进缓存，同一轮里不再重复请求。"""
+    with _readme_raw_lock:
+        if repo in _readme_raw_cache:
+            return _readme_raw_cache[repo]
     info = info or github_info(repo)
     branches = []
     if info and info.get("default_branch"):
@@ -266,6 +320,7 @@ def github_readme(repo, info=None):
     for b in ("main", "master"):
         if b not in branches:
             branches.append(b)
+    raw = ""
     for branch in branches:
         for name in ("README.md", "readme.md", "README.MD"):
             try:
@@ -273,10 +328,58 @@ def github_readme(repo, info=None):
                     f"https://raw.githubusercontent.com/{repo}/{branch}/{name}",
                     max_bytes=512 * 1024)
                 if status == 200 and body:
-                    return md_to_text(body.decode("utf-8", "replace"))
+                    raw = body.decode("utf-8", "replace")
+                    break
             except Exception:
                 continue
-    return ""
+        if raw:
+            break
+    with _readme_raw_lock:
+        _readme_raw_cache[repo] = raw
+    return raw
+
+
+def _clean_link_url(u):
+    u = (u or "").strip().rstrip(".,;:!?)>]")
+    return u
+
+
+def extract_md_links(raw):
+    """按文档顺序抽 README 里的链接：[文字](url) + 裸 URL。
+    返回 [{"url", "label", "context"}]，context 是链接前 60 字原文
+    （看有没有“订阅/下载/Subscribe”这类标注）。图片、徽章、锚点不要。"""
+    out, seen = [], set()
+    if not raw:
+        return out
+    pat = re.compile(
+        r"\[([^\]]{0,80})\]\((https?://[^)\s]+)\)"
+        r"|(?P<bare>https?://[^\s\)\]\}\"'<>`]+)")
+    for m in pat.finditer(raw):
+        if m.group("bare"):
+            url, label = m.group("bare"), ""
+        else:
+            label, url = (m.group(1) or "").strip(), m.group(2)
+        url = _clean_link_url(url)
+        low = url.lower()
+        if not url or url in seen:
+            continue
+        if low.endswith((".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico",
+                         ".webp", ".md")):
+            continue
+        host = urllib.parse.urlparse(url).netloc.lower()
+        if host in ("shields.io", "img.shields.io") or "/workflows/" in low:
+            continue
+        if label.startswith("!"):
+            continue
+        ctx = re.sub(r"\s+", " ", raw[max(0, m.start() - 60):m.start()]).strip()
+        seen.add(url)
+        out.append({"url": url, "label": label, "context": ctx})
+    return out
+
+
+def readme_links(repo, info=None):
+    """仓库 README 里的链接（按文档顺序），走原文缓存，零重复请求。"""
+    return extract_md_links(github_readme_raw(repo, info))
 
 
 def md_to_text(md):
@@ -592,6 +695,100 @@ def fdroid_page_text(pkg):
     return ""
 
 
+# ---------------- FIX14 C：截图采集（只做格式校验，不下载验活） ----------------
+# 截图只认两个来源：iTunes lookup 的 screenshotUrls、F-Droid 包页上
+# alt="app screenshot" 的图。GitHub README 里的图绝不当应用截图。
+# URL 只校验格式（https + 图片扩展名 / 已知图床域名），不逐张下载验活：
+# 全站几百个应用每轮都下载验活成本太大，格式对了就先收，坏图由展示层
+# 兜底（onerror 隐藏）；Google Play 本脚本没有现成的页面抓取逻辑
+# （Play 页重 JS 且常挡爬虫），不硬做，见 fdroid_screenshots 的注释。
+
+_SHOT_EXTS = (".png", ".jpg", ".jpeg", ".webp", ".gif")
+
+
+def _is_screenshot_url(u):
+    """截图 URL 格式校验：https + 图片。
+    已知图床域名也要看路径（f-droid.org 上还有 .svg 图标，不能无条件放行）；
+    其他域名只认图片扩展名。只做格式校验，不下载验活。"""
+    if not isinstance(u, str):
+        return False
+    u = u.strip()
+    if not u.startswith("https://"):
+        return False
+    try:
+        host = urllib.parse.urlparse(u).netloc.lower()
+        path = urllib.parse.urlparse(u).path.lower()
+    except Exception:
+        return False
+    if host.endswith("googleusercontent.com"):
+        return True
+    if host.endswith("mzstatic.com"):
+        return path.endswith(_SHOT_EXTS)
+    if host == "f-droid.org" or host.endswith(".f-droid.org"):
+        return "screenshot" in path or path.endswith(_SHOT_EXTS)
+    return path.endswith(_SHOT_EXTS)
+
+
+def _valid_screenshot_urls(urls, max_n=3):
+    """只留格式合格的截图，去重，取前 max_n 张。"""
+    out = []
+    for u in urls or []:
+        if _is_screenshot_url(u) and u not in out:
+            out.append(u)
+        if len(out) >= max_n:
+            break
+    return out
+
+
+def itunes_screenshots(rec, max_n=3):
+    """iTunes lookup 结果里的截图（screenshotUrls），取前 max_n 张。
+    iTunes 分支本来就拿 rec.get("description") 当深挖材料，这里顺着它取。"""
+    if not isinstance(rec, dict):
+        return []
+    return _valid_screenshot_urls(rec.get("screenshotUrls") or [], max_n)
+
+
+def fdroid_page_html(pkg):
+    """F-Droid 包页原始 HTML（截图提取用；正文提取仍走 fdroid_page_text）。"""
+    try:
+        status, _ct, body = fetch(f"https://f-droid.org/en/packages/{pkg}/",
+                                  max_bytes=1024 * 1024)
+        if status == 200:
+            return body.decode("utf-8", "replace")
+    except Exception:
+        pass
+    return ""
+
+
+def fdroid_screenshots(pkg, max_n=3):
+    """F-Droid 包页截图：只认 <img alt="app screenshot"> 或 src 里带
+    screenshots 的图（实测形如 /repo/<pkg>/en-US/phoneScreenshots/00.png），
+    取前 max_n 张。包页上图标/捐赠图标等其他 <img> 一律不要。
+    Google Play：本脚本没有 Play 页面抓取逻辑（label_item 只从 Play 链接里
+    抠包名、再到 F-Droid 查有没有同款），Play 页本身是重 JS 页面且常挡
+    爬虫，截图不从 Play 提——Play 应用若同时在 F-Droid 上架，走这条路补。"""
+    html = fdroid_page_html(pkg)
+    if not html:
+        return []
+    found = []
+    for m in re.finditer(r"<img\b[^>]*>", html, re.I):
+        tag = m.group(0)
+        sm = re.search(r"""src\s*=\s*["']([^"']+)["']""", tag, re.I)
+        if not sm:
+            continue
+        src = sm.group(1)
+        is_shot = ("app screenshot" in tag.lower()
+                   or "screenshot" in src.lower())
+        if not is_shot:
+            continue
+        full = urllib.parse.urljoin("https://f-droid.org/", src)
+        if _is_screenshot_url(full) and full not in found:
+            found.append(full)
+        if len(found) >= max_n:
+            break
+    return found
+
+
 CN_EVIDENCE = ("中文", "简体", "繁體", "繁体", "chinese", "多语言", "多語言",
                "multilingual", "multi-language", "i18n", "localization",
                "translations", "语言包")
@@ -898,16 +1095,248 @@ def ensure_tool_fields(item):
 VERSION_REQUIRED_SLUGS = ("app", "apple", "proxy")
 
 
-def cn_explain(item, slug):
-    """给英文条目拼一段大白话中文说明（模板句把关键事实讲清）。"""
+# ================= FIX14：真实简介 / 地址解析 =================
+
+def cat_context_for(slug, section=""):
+    """栏目语境（模板用）：app 电脑组不用安卓模板（LOOK 反例：
+    FrigadeHQ/yogurt 是 Mac/Windows/Linux 软件，简介却说“适合安卓手机用户”）。"""
     kind, use, who = CAT_CONTEXT.get(slug, ("网站/工具", "解决实际问题", "有需要的人"))
+    if slug == "app" and (section or "") in ("pc-free", "pc-cracked"):
+        return ("电脑软件", "在电脑上完成它擅长的事，免费又没广告打扰",
+                "用 Windows/Mac/Linux 电脑的人")
+    return (kind, use, who)
+
+
+def _truncate_at_sentence(text, limit):
+    """按句界截断（LOOK 截断 bug 的修法）：先找句末标点，找不到退到
+    空格/顿号/逗号，最后还不行就退掉断掉的半个英文词。绝不断在半个词上，
+    绝不补 "..."（旧数据里 559 条 descriptionOriginal 正好 200 字加 "…"，
+    就是老版本硬截断的遗留；现行代码里没有 [:200]，index.html 也不截断）。"""
+    text = (text or "").strip()
+    if len(text) <= limit:
+        return text
+    cut = text[:limit]
+    idx = max(cut.rfind("。"), cut.rfind("！"), cut.rfind("？"),
+              cut.rfind("!"), cut.rfind("?"))
+    if idx >= 12:
+        return cut[:idx + 1]
+    sp = cut.rfind(" ")
+    if sp >= 12:
+        return cut[:sp].rstrip(" ,，、；:")
+    for sep in ("、", "，", ",", "；", ";"):
+        j = cut.rfind(sep)
+        if j >= 12:
+            return cut[:j]
+    m = re.search(r"[A-Za-z]+$", cut)
+    if m:
+        return cut[:m.start()].rstrip()
+    return cut.rstrip(" ,，、；:")
+
+
+_SENT_SPLIT_RE = re.compile(r"(?<=[。！？])|(?<=[.!?])\s+")
+_BOILERPLATE_RES = (
+    re.compile(r"contribute to .* development by creating an account", re.I),
+    re.compile(r"buy this domain|domain for sale|domain parking|parked", re.I),
+)
+_KIND_TOKENS = {
+    "ai": {"ai", "llm", "api", "model", "gpt", "chat", "token", "agent", "image"},
+    "apple": {"app", "ios", "iphone", "ipad", "mac", "apple"},
+    "video": {"tvbox", "video", "vod", "movie", "film", "stream", "play"},
+    "music": {"music", "lxmusic", "musicfree", "audio", "song", "lyric"},
+    "book": {"book", "novel", "read", "reading", "legado", "ebook"},
+    "live": {"iptv", "live", "tv", "channel", "m3u", "epg", "stream"},
+    "service": {"free", "api", "host", "cloud", "service", "server", "storage",
+                "database"},
+    "domain": {"domain", "dns", "free", "register", "tld", "subdomain", "name"},
+    "cfip": {"cloudflare", "ip", "cdn", "cf", "proxy", "speed"},
+    "node": {"node", "vless", "vmess", "trojan", "ss", "shadowsocks", "proxy",
+             "subscri", "clash", "sing-box", "singbox", "config"},
+    "app": {"app", "android", "windows", "mac", "linux", "ios", "computer",
+            "software", "desktop", "tool", "client"},
+    "adult": {"video", "adult", "porn", "xxx"},
+    "proxy": {"proxy", "clash", "v2ray", "sing-box", "singbox", "socks", "tun",
+              "vpn", "xray", "hysteria"},
+}
+_STOPWORDS = {"the", "a", "an", "and", "for", "with", "that", "this", "from",
+              "your", "you", "are", "can", "use", "free", "open", "source",
+              "simple", "based", "using", "into", "more", "also", "its", "it",
+              "is", "of", "to", "in", "on", "by", "as", "at", "be", "or", "all",
+              "app", "apps", "one", "new", "best"}
+
+
+def _name_tokens(name, repo):
+    out = set()
+    for src in (name or "", repo or ""):
+        for t in re.split(r"[^A-Za-z0-9]+", src.lower()):
+            if len(t) >= 4:
+                out.add(t)
+        for t in re.findall(r"[一-鿿]{2,}", src):
+            out.add(t)
+    return out
+
+
+def _content_words(s):
+    words = [w for w in re.findall(r"[a-z]{3,}", s.lower())
+             if w not in _STOPWORDS]
+    words += re.findall(r"[一-鿿]{2,}", s)
+    return words
+
+
+def _word_matches_kind(w, slug):
+    """种类词匹配：整词相等，或种类词（>=4 字）是该词的子串
+    （subscribe 含 subscri、nodes 含 node，复数/派生都算）。"""
+    ks = _KIND_TOKENS.get(slug, set())
+    if w in ks:
+        return True
+    return any(len(k) >= 4 and k in w for k in ks)
+
+
+def _sentence_relevant(sentence, slug, name, repo, body):
+    """首句相关性校验（LOOK 反例的修法）：首句要跟条目本身相关才用。
+    拿句子的实义词去 README/正文里比对——同名撞车（如 mihomo 的星穹铁道
+    数据模型，仓库简介写的是另一个项目）会在这里被拦下，不进简介。
+    body 里已扣掉句子本身，避免自己跟自己比对出 100% 相关。"""
+    s_low = (sentence or "").lower()
+    if not s_low.strip():
+        return False
+    for rx in _BOILERPLATE_RES:
+        if rx.search(s_low):
+            return False
+    words = _content_words(sentence)
+    if not words:
+        return False
+    body_low = (body or "").lower()
+    if body_low and len(body_low) >= 50:
+        hits = 0
+        for w in words:
+            if re.search(r"[一-鿿]", w):
+                if w in body_low:
+                    hits += 1
+            elif re.search(r"\b" + re.escape(w) + r"\b", body_low):
+                hits += 1
+        overlap = hits / len(words)
+        toks = set(re.findall(r"[a-z]{3,}", s_low))
+        _nt = _name_tokens(name, repo)
+        name_hit = bool(toks & _nt) or any(
+            t for t in _nt if re.search(r"[一-鿿]", t) and t in sentence)
+        kind_words = [w for w in words if _word_matches_kind(w, slug)]
+        kind_hit = bool(kind_words)
+        # 种类词本身也是相关证据：句子用了本栏的词（domain、nodes……），
+        # 即使它在 README 里只出现一次，也算沾边。分数 = 正文命中 + 种类词。
+        score = (hits + len(kind_words)) / len(words)
+        if overlap >= 0.30 or score >= 0.30:
+            return True
+        if score >= 0.15 and (name_hit or kind_hit):
+            return True
+        return False
+    # 正文太短没法比对（材料几乎只有这一句）：只认种类词——这句用了本栏
+    # 的词（book、domain、nodes……），就当它是说这东西的；只含名字不含
+    # 种类词的不要（mihomo 的星穹铁道句就是只含名字、不含任何代理种类词）。
+    toks = set(re.findall(r"[a-z]{3,}", s_low))
+    return any(_word_matches_kind(w, slug) for w in toks)
+
+
+def _split_sentences(text):
+    parts = _SENT_SPLIT_RE.split(text or "")
+    out = []
+    for p in parts:
+        p = re.sub(r"\s+", " ", p).strip(" \t#*>-`")
+        p = re.sub(r"^[\W_]+(?=[A-Za-z0-9一-鿿])", "", p)
+        if p:
+            out.append(p)
+    return out
+
+
+def first_substantive_sentence(text, max_len=70, slug=None, name="", repo="",
+                               body=None):
+    """第一句实质内容：去营销空话、去 GitHub 默认 boilerplate、过相关性校验，
+    按句界截到 max_len 左右。找不到返回 ""（调用方走“简介待补”，不硬凑）。"""
+    if body is None:
+        body = text or ""
+    for sent in _split_sentences(text):
+        if len(sent) < 12:
+            continue
+        if sent.lower().startswith(("http://", "https://", "www.")):
+            continue
+        rest = (body or "").replace(sent, "", 1)
+        if slug and not _sentence_relevant(sent, slug, name, repo, rest):
+            continue
+        return _truncate_at_sentence(sent, max_len)
+    return ""
+
+
+def first_paragraph(text, max_len=300, slug=None, name="", repo=""):
+    """首段实质内容（介绍用）：取第一个像正文的段落，按句界截断。"""
+    for para in re.split(r"\n\s*\n|\n", text or ""):
+        p = re.sub(r"\s+", " ", para).strip(" \t#*>-`")
+        if len(p) < 25:
+            continue
+        if _BOILERPLATE_RES[0].search(p.lower()):
+            continue
+        return _truncate_at_sentence(p, max_len)
+    return ""
+
+
+def clean_zh_summary(text, slug=None, name="", repo=""):
+    """中文简介清洗：先取首句实质内容；没有成句时（如 v2rayfree 的关键词串）
+    做去重——同一词的不同写法只留一个，最多 3 段，按顿号截断，不留半个词。"""
+    s = first_substantive_sentence(text, 70, slug, name, repo, text)
+    if s:
+        return s
+    raw = re.sub(r"\s+", "", (text or "").strip())
+    if not raw:
+        return ""
+    parts = [p for p in re.split(r"[、，,；;]", raw) if p]
+    kept = []
+    for p in parts:
+        if any(p in k or k in p for k in kept):
+            continue
+        kept.append(p)
+        if len(kept) >= 3:
+            break
+    joined = "、".join(kept)
+    if not joined:
+        return ""
+    return _truncate_at_sentence(joined, 70).rstrip("、，,") + "。"
+
+
+def _is_template_summary(summary):
+    """是不是 12 句英文模板简介之一（形如“XX（英文）。主要用来……”）。"""
+    return bool(re.match(r".+（英文）。主要用来", (summary or "").strip()))
+
+
+def _pick_github_text(desc, readme, repo, slug):
+    """仓库简介 + README 二选一：简介首句与 README 无关（如 mihomo 的简介
+    写的是星穹铁道数据模型，而 README 是 Clash 内核）就扔掉简介、只用 README。"""
+    desc = (desc or "").strip()
+    readme = (readme or "").strip()
+    if not desc:
+        return readme
+    first = _split_sentences(desc)
+    if first and _sentence_relevant(first[0], slug, repo, repo, readme):
+        return (desc + "\n" + readme).strip()
+    return readme
+
+
+def cn_explain(item, slug):
+    """给英文条目拼一段大白话中文说明。
+    FIX14：原来只在 descriptionOriginal 为空时才被 label_item 调用，
+    而 build_item 给英文条目都会填 descriptionOriginal，所以条件几乎
+    走不到，全站“中文说明”为 0。现在内容改用真实首句（模板简介不算），
+    实在没有才回落到种类 + 用途的通用句。"""
+    kind, use, who = cat_context_for(slug, item.get("section") or "")
     name = item.get("name") or "这个条目"
-    summary = (item.get("summary") or "").strip()
     head = f"{name} 是一个{kind}。"
-    mid = f"它主要用来{use}。"
-    if summary and judge_language(summary) in ("中文", "中英双语"):
-        mid = f"{summary.rstrip('。')}。它主要用来{use}。"
-    return f"{head}{mid}适合{who}。页面是英文的，可以用浏览器自动翻译看。"
+    real = (item.get("summary") or "").strip()
+    if _is_template_summary(real):
+        real = ""
+    if not real:
+        real = first_substantive_sentence(
+            item.get("descriptionOriginal") or "", 80, slug, name, "",
+            item.get("descriptionOriginal") or "")
+    if real:
+        return f"{head}{real}适合{who}。"
+    return f"{head}它主要用来{use}。适合{who}。页面是英文的，可以用浏览器自动翻译看。"
 
 
 # ---------------- 免费服务/域名：固定四问字段 ----------------
@@ -1109,6 +1538,15 @@ def label_item(slug, item, page=None, html_text=""):
             else:
                 set_detail(item, "下载地区", "需国外 ID")
             bump("region")
+            # FIX14 C：iTunes 截图补到 3 张（lookup 已缓存，不新增请求；
+            # 老条目原有截图保留，只追加格式合格的、不重复的）。
+            shots = itunes_screenshots(rec)
+            if shots:
+                cur = item.get("screenshots") or []
+                merged = _valid_screenshot_urls(list(cur) + shots)
+                if len(merged) > len(cur):
+                    item["screenshots"] = merged
+                    bump("shots")
         return
 
     # --- 安卓应用（app 栏） ---
@@ -1197,11 +1635,11 @@ def label_item(slug, item, page=None, html_text=""):
         else:
             set_detail(item, "能否改中文", "未公布")
         bump("cnswitch")
-    # 英文条目缺中文说明 → 补一条，不动原 description
-    if lang == "英文" and not (item.get("descriptionOriginal") or "").strip():
-        desc = item.get("description") or ""
-        if judge_language(desc) == "英文" and not get_detail(item, "中文说明"):
-            set_detail(item, "中文说明", cn_explain(item, slug))
+    # 英文条目缺中文说明 → 补一条，不动原 description。
+    # FIX14：旧条件要求 descriptionOriginal 为空，但 build_item 给英文条目
+    # 都会填它，所以这行几乎走不到，全站“中文说明”为 0。改成缺了就补。
+    if lang == "英文" and not get_detail(item, "中文说明"):
+        set_detail(item, "中文说明", cn_explain(item, slug))
 
 
 # ---------------- 现有条目刷新（v1 + 标注） ----------------
@@ -1213,6 +1651,13 @@ def process_item(slug, item, state_fails):
     if not url:
         bump("dead")
         return False
+    # FIX14：去掉旧流程写进 descriptionOriginal 的 " - owner/repo" 后缀
+    #（GitHub 仓库页 og:description 的格式，实测 1021 条带这个后缀）。
+    # 只去后缀本身，不动正文；长原文的重建走下面预算内的 _rebuild_item_text。
+    _o = item.get("descriptionOriginal") or ""
+    _m = re.search(r"\s+-\s+([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)$", _o)
+    if _m and github_repo_of(url) == _m.group(1):
+        item["descriptionOriginal"] = _o[:_m.start()]
     today = today_cst()
     # 记住进来之前的连续失败次数：内容级失效要在旧账上接着记，
     # 不能被本轮的「网络通」先清零，否则永远攒不够移除次数
@@ -1263,6 +1708,34 @@ def process_item(slug, item, state_fails):
             url = m.group(1) + "/releases"
             item["url"] = url
 
+    # FIX14 A+B：老条目逐步解析可用地址 + 重建模板简介（每轮预算 60 条，
+    # 只动裸仓库地址的条目；已有 sourceUrl/builtinConfigUrl 的只补缺的，
+    # 绝不洗掉手写种子带的值；改地址后验活在下一轮走正常流程）。
+    if _resolve_budget_take() and _is_bare_repo_url(url):
+        _repo2 = github_repo_of(url)
+        _info2 = github_info(_repo2)
+        _mat2 = {"text": github_readme(_repo2, _info2), "github": _info2,
+                 "links": readme_links(_repo2, _info2),
+                 "readme_raw": github_readme_raw(_repo2, _info2),
+                 "homepage": (_info2 or {}).get("homepage") or ""}
+        _res2 = resolve_usable_url(
+            slug, {"name": item.get("name") or "", "url": url}, _mat2)
+        if _res2.get("found") and _res2["url"] != url:
+            if not (item.get("sourceUrl") or "").strip():
+                item["sourceUrl"] = f"https://github.com/{_repo2}"
+            item["url"] = _res2["url"]
+            url = _res2["url"]
+            if _res2.get("config_url") and not (item.get("builtinConfigUrl") or "").strip():
+                item["builtinConfigUrl"] = _res2["config_url"]
+            if slug == "node" and _res2.get("client_links") and not item.get("clientLinks"):
+                item["clientLinks"] = _res2["client_links"]
+            pending_discard(url)
+            bump("resolved")
+        elif _res2.get("pending_reason"):
+            pending_add(url, item.get("name") or "", slug, _res2["pending_reason"])
+        if _rebuild_item_text(slug, item, _mat2):
+            bump("summary_fixed")
+
     repo = github_repo_of(url) or github_repo_of(item.get("sourceUrl") or "")
     if repo:
         info = github_info(repo)
@@ -1302,9 +1775,15 @@ def process_item(slug, item, state_fails):
 
     page = parse_page(body) if (alive and body and "html" in ct) else None
     # 网站类：标题/介绍变了就更新原文介绍
+    # FIX14：GitHub 仓库页的 og:description 只有一句话还带 " - owner/repo"
+    # 后缀（实测 1021 条原文介绍就是这么被覆盖短的），别拿它覆盖 README
+    # 攒下的长原文；只有新介绍更长时才换。
     if page is not None and (item.get("descriptionOriginal") or "").strip():
         new_intro = (page.og_desc or page.meta_desc or "").strip()
-        if new_intro and new_intro != item["descriptionOriginal"].strip():
+        new_intro = re.sub(r"\s+-\s+[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$", "",
+                           new_intro)
+        old_intro = item["descriptionOriginal"].strip()
+        if new_intro and new_intro != old_intro and len(new_intro) > len(old_intro):
             item["descriptionOriginal"] = new_intro
     # 免费服务/域名：固定四问字段补齐（查不到写未公布）
     if slug in ("service", "domain"):
@@ -1328,6 +1807,30 @@ def process_item(slug, item, state_fails):
         except Exception:
             html_text = ""
     label_item(slug, item, page=page, html_text=html_text)
+
+    # FIX14 D：AI 老条目刷新额度字段（纯本地计算：查表 + 正则，不联网，
+    # 不占解析预算；手写种子只补缺不洗值、简介不动；自动条目已核实的
+    # 数字才进简介）。
+    if slug == "ai":
+        fill_ai_credit_fields(item, write_summary=bool(item.get("auto")))
+    # FIX14 C：app 老条目缺截图时补 F-Droid 包页截图（每轮预算 60 条，
+    # 只补空的；apple 在 label_item 里已用缓存的 iTunes 数据补过；
+    # Play 链接先查 F-Droid 有没有同款包，有才补——Play 本身不提图）。
+    if slug == "app" and not (item.get("screenshots") or []) \
+            and _shot_budget_take():
+        _pkg = fdroid_package_of(url) or fdroid_package_of(
+            item.get("sourceUrl") or "")
+        if not _pkg and "play.google.com" in urllib.parse.urlparse(
+                url).netloc.lower():
+            _q = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
+            _pp = (_q.get("id") or [None])[0]
+            if _pp and fdroid_has_package(_pp) is True:
+                _pkg = _pp
+        if _pkg:
+            _shots = fdroid_screenshots(_pkg)
+            if _shots:
+                item["screenshots"] = _shots
+                bump("shots")
 
     # 苹果价格死规矩：现价 label 必带；TestFlight 写免费参加；降价组算降幅；
     # 零元购组固定字段补齐（查不到写未公布）
@@ -1692,15 +2195,720 @@ def pull_candidates(slug, feeds):
     return out
 
 
+# ================= FIX14 A：地址解析 =================
+
+PENDING = {}                    # norm_url -> {url,name,slug,reason,firstSeen,lastSeen,tries}
+_pending_lock = threading.Lock()
+_RESOLVE_BUDGET = {"left": 60}  # 每轮 process_item 里最多解析多少条老条目（逐步替换）
+_resolve_lock = threading.Lock()
+_SHOT_BUDGET = {"left": 60}     # 每轮 process_item 里最多补多少条老 app 条目的截图
+_shot_lock = threading.Lock()
+
+
+def _shot_budget_take():
+    with _shot_lock:
+        if _SHOT_BUDGET["left"] > 0:
+            _SHOT_BUDGET["left"] -= 1
+            return True
+        return False
+_NODE_CLIENT_LABELS = {"clash": "Clash", "v2ray": "V2Ray",
+                       "shadowrocket": "小火箭", "singbox": "Sing-Box"}
+
+
+def pending_add(url, name, slug, reason):
+    """待补清单：东西本身可用、只是暂时没找到可用链接的条目，下次运行重试。"""
+    key = norm_url(url or "")
+    if not key:
+        return
+    today = today_cst()
+    with _pending_lock:
+        e = PENDING.get(key)
+        if e:
+            e["tries"] = int(e.get("tries") or 0) + 1
+            e["lastTried"] = today
+            e["reason"] = reason
+        else:
+            PENDING[key] = {"url": url, "name": name, "slug": slug,
+                            "reason": reason, "firstSeen": today,
+                            "lastTried": today, "tries": 1}
+        bump("pending")
+
+
+def pending_discard(url):
+    with _pending_lock:
+        PENDING.pop(norm_url(url or ""), None)
+
+
+def _resolve_budget_take():
+    with _resolve_lock:
+        if _RESOLVE_BUDGET["left"] > 0:
+            _RESOLVE_BUDGET["left"] -= 1
+            return True
+        return False
+
+
+_BARE_REPO_RE = re.compile(r"^https?://github\.com/[^/]+/[^/]+/?$", re.I)
+
+
+def _is_bare_repo_url(url):
+    return bool(_BARE_REPO_RE.match((url or "").strip()))
+
+
+def _is_store_url(url):
+    host = urllib.parse.urlparse(url or "").netloc.lower()
+    return ("apps.apple.com" in host or "f-droid.org" in host
+            or "play.google.com" in host or "testflight.apple.com" in host)
+
+
+def _match_config_link(url, slug):
+    """链接本身是不是该栏目的整份配置文件：返回 kind（'file' / 'plugins' /
+    'single'）或 None。"""
+    low = (url or "").lower()
+    path = urllib.parse.urlparse(url or "").path.lower()
+    if slug == "node":
+        if path.endswith((".yaml", ".yml", ".txt", ".json")) \
+                or path.rstrip("/").endswith("/sub") or "subscribe" in low:
+            return "file"
+    elif slug == "video":
+        if path.endswith(".json"):
+            return "file"
+    elif slug == "music":
+        if path.endswith("plugins.json"):
+            return "plugins"
+        if path.endswith(".js"):
+            return "single"
+    elif slug == "book":
+        if path.endswith(".json"):
+            return "file"
+    elif slug == "live":
+        if path.endswith((".m3u", ".m3u8")):
+            return "file"
+    elif slug == "cfip":
+        if path.endswith(".txt"):
+            return "file"
+    return None
+
+
+def _classify_node_link(url):
+    """node 订阅链接按客户端分：clash / v2ray / shadowrocket / singbox。
+    只有一个文件时四个客户端行共用它（由 UI 按客户端分行展示，见报告）。"""
+    low = (url or "").lower()
+    if "sing-box" in low or "singbox" in low:
+        return "singbox"
+    if "shadowrocket" in low:
+        return "shadowrocket"
+    if "clash" in low or low.endswith((".yaml", ".yml")):
+        return "clash"
+    if "v2ray" in low or low.endswith(".txt") or low.rstrip("/").endswith("/sub"):
+        return "v2ray"
+    return None
+
+
+def _count_config_loose(url, body, slug):
+    """宽松数条数：count_content 数不出的配置文件格式。
+    Clash YAML 里没有 vmess:// 这种 URI，只有结构化条目（- name: / server:），
+    sing-box JSON 只有 outbounds 数组，洛雪 .js 根本不是 JSON——这三种
+    按结构数，数不出才算验活失败。"""
+    if not body:
+        return None
+    text = body.decode("utf-8", "replace")
+    path = urllib.parse.urlparse(url).path.lower()
+    if slug == "node" and path.endswith((".yaml", ".yml")):
+        n = len(re.findall(r"(?m)^\s*-\s+name\s*:", text))
+        if n == 0:
+            n = text.count("server:")
+        if n > 0:
+            return ("节点数", n)
+        return None
+    if slug == "node" and path.endswith(".json"):
+        try:
+            d = json.loads(text)
+        except Exception:
+            return None
+        if isinstance(d, dict) and isinstance(d.get("outbounds"), list):
+            return ("节点数", len(d["outbounds"]))
+        return None
+    if slug == "music" and path.endswith(".js"):
+        if len(body) > 200 and ("function" in text or "=>" in text
+                                or "music" in text.lower()):
+            return ("条数", 1)
+        return None
+    return None
+
+
+def _verify_one(url, slug, verify):
+    """验活一个候选地址：verify=True 走真实请求；False 跳过；callable 用它。
+    配置文件栏还要当场数出条数（>0 才算活）。返回 (ok, counted)。"""
+    if verify is False:
+        return True, None
+    if callable(verify):
+        return verify(url, slug)
+    try:
+        status, _ct, body = fetch(url, max_bytes=MAX_BYTES, deadline=20)
+    except Exception:
+        return False, None
+    if status != 200:
+        return False, None
+    if slug in ("video", "music", "book", "live", "node", "cfip"):
+        counted = count_content(url, body) if body else None
+        if not counted:
+            counted = _count_config_loose(url, body, slug)
+        if not counted or counted[1] <= 0:
+            return False, counted
+        return True, counted
+    if not body or len(body) < 100:
+        return False, None
+    return True, None
+
+
+def _is_labelled(link):
+    text = ((link.get("label") or "") + " " + (link.get("context") or "")).lower()
+    return any(k in text for k in ("订阅", "下载", "subscribe", "download",
+                                   "配置", "全量", "最新", "导入", "install"))
+
+
+def resolve_usable_url(slug, cand, material, verify=True):
+    """按栏目优先级找可用地址。返回 {"url","source_url","config_url",
+    "client_links","found","pending_reason"}。
+    规则：App Store / F-Droid / Play 本身已是可用地址，原样保留；
+    app/apple/proxy 的 GitHub 仓库 -> {repo}/releases；其余从 README/页面
+    链接里按栏目找特征文件（node 订阅、video .json、music plugins.json、
+    book 书源 .json、live .m3u、cfip .txt、ai/service/domain 找 homepage）；
+    命中多个取 README 里最靠前或被“订阅/下载”标注的那个；候选必须当场
+    验活才落盘，验不活就 fallback 到仓库地址并进待补清单。"""
+    cand_url = (cand.get("url") or "").strip()
+    repo = github_repo_of(cand_url)
+    repo_url = f"https://github.com/{repo}" if repo else ""
+    info = material.get("github") or {}
+    homepage = (material.get("homepage") or info.get("homepage") or "").strip()
+    links = material.get("links")
+    if links is None and repo:
+        links = readme_links(repo, info)
+    links = links or []
+
+    def _fallback(reason):
+        return {"url": cand_url, "source_url": "",
+                "config_url": "", "client_links": {}, "found": False,
+                "pending_reason": reason}
+
+    # 1) 商店链接 / 候选本身就是配置文件：原样保留（不验活：商店页常挡爬虫，
+    # 配置文件在 deep_dive 里已数过条数；这里再验一次也行，但别挡住它）。
+    if _is_store_url(cand_url):
+        return {"url": cand_url, "source_url": repo_url,
+                "config_url": "", "client_links": {}, "found": True,
+                "pending_reason": ""}
+    own_kind = _match_config_link(cand_url, slug)
+    if own_kind:
+        ok, _c = _verify_one(cand_url, slug, verify)
+        if ok:
+            cfg = cand_url if slug in ("video", "music", "book", "live", "node",
+                                       "cfip") else ""
+            cl = {}
+            if slug == "node":
+                cl = _node_client_links([cand_url], cand_url)
+            return {"url": cand_url, "source_url": repo_url,
+                    "config_url": cfg, "client_links": cl, "found": True,
+                    "pending_reason": ""}
+        return _fallback("候选配置文件验活失败")
+
+    # 2) 从 README/页面链接里按栏目找候选
+    cands = []  # (url, kind)
+    for link in links:
+        u = (link.get("url") or "").strip()
+        if not u or norm_url(u) == norm_url(cand_url):
+            continue
+        if slug in ("ai", "service", "domain", "adult"):
+            continue  # 这四栏走 homepage / 外链，不走配置文件
+        kind = _match_config_link(u, slug)
+        if kind:
+            cands.append((u, kind, link))
+    if cands:
+        # 被“订阅/下载”标注的优先，其余按 README 里出现的顺序
+        cands.sort(key=lambda t: (0 if _is_labelled(t[2]) else 1))
+        verified = []
+        for u, kind, _link in cands:
+            ok, _c = _verify_one(u, slug, verify)
+            if ok:
+                verified.append((u, kind))
+        if verified:
+            # node：主地址优先通用订阅（v2ray），其余客户端的进 clientLinks
+            if slug == "node":
+                main = verified[0][0]
+                for u, _k in verified:
+                    if _classify_node_link(u) == "v2ray":
+                        main = u
+                        break
+                cl = _node_client_links([u for u, _k in verified], main)
+                cfg = ""
+                for u, _k in verified:
+                    if _classify_node_link(u) == "clash":
+                        cfg = u
+                        break
+                return {"url": main, "source_url": repo_url,
+                        "config_url": cfg or main, "client_links": cl,
+                        "found": True, "pending_reason": ""}
+            main, _kind = verified[0]
+            return {"url": main, "source_url": repo_url,
+                    "config_url": main if slug in ("video", "music", "book",
+                                                   "live", "cfip") else "",
+                    "client_links": {}, "found": True, "pending_reason": ""}
+        return _fallback("README 里找到的配置文件验活都不通")
+
+    # 3) ai/service/domain/adult：仓库 homepage，次选 README 里的官网/外链
+    if slug in ("ai", "service", "domain", "adult"):
+        if homepage and not homepage.startswith("https://github.com"):
+            ok, _c = _verify_one(homepage, slug, verify)
+            if ok:
+                return {"url": homepage, "source_url": repo_url,
+                        "config_url": "", "client_links": {}, "found": True,
+                        "pending_reason": ""}
+        for link in links:
+            u = (link.get("url") or "").strip()
+            host = urllib.parse.urlparse(u).netloc.lower()
+            if not u or host in ("github.com", "raw.githubusercontent.com",
+                                 "shields.io", "img.shields.io"):
+                continue
+            if host in ("twitter.com", "x.com", "facebook.com", "instagram.com",
+                        "youtube.com", "youtu.be", "discord.com", "discord.gg",
+                        "t.me", "telegram.me"):
+                continue
+            ok, _c = _verify_one(u, slug, verify)
+            if ok:
+                return {"url": u, "source_url": repo_url,
+                        "config_url": "", "client_links": {}, "found": True,
+                        "pending_reason": ""}
+        return _fallback("没找到可用的官网/外链")
+
+    # 4) app/apple/proxy 的 GitHub 仓库 -> releases
+    if slug in ("app", "apple", "proxy") and repo:
+        rel = repo_url + "/releases"
+        ok, _c = _verify_one(rel, slug, verify)
+        if ok:
+            return {"url": rel, "source_url": repo_url,
+                    "config_url": "", "client_links": {}, "found": True,
+                    "pending_reason": ""}
+        return _fallback("releases 页打不开")
+
+    # 5) 其余：README 里被“订阅/下载”标注的通用链接
+    for link in links:
+        u = (link.get("url") or "").strip()
+        if u and _is_labelled(link):
+            ok, _c = _verify_one(u, slug, verify)
+            if ok:
+                return {"url": u, "source_url": repo_url,
+                        "config_url": "", "client_links": {}, "found": True,
+                        "pending_reason": ""}
+    return _fallback("README 里没找到可用地址")
+
+
+def _node_client_links(verified_urls, main_url):
+    """node 按客户端分行：{clash, v2ray, shadowrocket, singbox} -> 直链。
+    数据结构（供第二阶段 index.html 用）：item["clientLinks"] 就是这个 dict；
+    某个客户端没有专属文件时，该行共用主订阅直链（UI 按四行展示，每行带
+    复制按钮；key 缺失时 UI 回落到 item.url）。"""
+    out = {}
+    for u in verified_urls:
+        k = _classify_node_link(u)
+        if k and k not in out:
+            out[k] = u
+    for k in ("clash", "v2ray", "shadowrocket", "singbox"):
+        out.setdefault(k, main_url)
+    return out
+
+
+# ---------------- service/domain 合集拆分 ----------------
+
+_COLLECTION_NAME_HINTS = ("awesome", "free-for-dev", "free-stuff", "free-tier",
+                          "free-services", "list", "大全", "合集",
+                          "free-for-developers", "freebies")
+_SOCIAL_HOSTS = {"twitter.com", "x.com", "facebook.com", "instagram.com",
+                 "youtube.com", "youtu.be", "discord.com", "discord.gg",
+                 "t.me", "telegram.me", "linkedin.com", "medium.com"}
+
+
+def parse_collection_entries(readme_raw, repo_url=""):
+    """拆合集仓库 README 里的服务/域名列表：认列表行（- / * / 数字 / 表格行）
+    里的 [名字](链接)，返回 [{"name","url","desc"}]。"""
+    entries, seen = [], set()
+    if not readme_raw:
+        return entries
+    for line in readme_raw.splitlines():
+        s = line.strip()
+        if not s:
+            continue
+        if not (s.startswith(("-", "*", "+")) or s.startswith("|")
+                or re.match(r"\d+[.)]\s", s)):
+            continue
+        m = re.search(r"\[([^\]]{1,80})\]\((https?://[^)\s]+)\)", s)
+        url = name = desc = ""
+        if m:
+            name, url = m.group(1).strip(), _clean_link_url(m.group(2))
+            desc = re.sub(r"^[\s\-–—:：|]+", "", s[m.end():]).strip()
+        else:
+            m2 = re.search(r"https?://[^\s\)\]\}]+", s)
+            if not m2:
+                continue
+            url = _clean_link_url(m2.group(0))
+            name = re.sub(r"^[\s\-–—:：\d.)]+", "", s[:m2.start()]).strip()[:60] \
+                or name_from_url(url)
+            desc = s[m2.end():].strip(" -–—:：|")
+        host = urllib.parse.urlparse(url).netloc.lower()
+        if not url or url in seen:
+            continue
+        if host in _SOCIAL_HOSTS or "shields.io" in host:
+            continue
+        if url.lower().endswith((".svg", ".png", ".jpg", ".md")):
+            continue
+        if repo_url and norm_url(url) == norm_url(repo_url):
+            continue
+        if "github.com" in host and "/search" in url:
+            continue
+        name = re.sub(r"^[^\w一-鿿]+", "", name).strip()[:60]
+        if len(name) < 2:
+            continue
+        seen.add(url)
+        entries.append({"name": name, "url": url, "desc": desc[:200]})
+    return entries
+
+
+def is_collection_repo(slug, cand, material):
+    """是不是合集仓库（只看 service/domain）：README 里列表项链接占大头、
+    且指向 ≥6 个不同外部域名（或名字带 awesome/list/大全等且 ≥4 个域名）。
+    真服务的 README 链接多半指向自家文档/GitHub，不会满足这个条件。"""
+    if slug not in ("service", "domain"):
+        return False
+    repo = github_repo_of(cand.get("url") or "")
+    if not repo:
+        return False
+    raw = material.get("readme_raw") or ""
+    if not raw:
+        return False
+    entries = parse_collection_entries(raw, cand.get("url") or "")
+    if len(entries) < 5:
+        return False
+    domains = {urllib.parse.urlparse(e["url"]).netloc.lower()
+               for e in entries}
+    domains.discard("github.com")
+    total_links = len(extract_md_links(raw))
+    if total_links and len(entries) < 0.5 * total_links:
+        return False
+    hinted = any(h in (cand.get("name") or "").lower()
+                 or h in (cand.get("desc") or "").lower()
+                 for h in _COLLECTION_NAME_HINTS)
+    if len(entries) >= 8 and len(domains) >= 6:
+        return True
+    if hinted and len(entries) >= 5 and len(domains) >= 4:
+        return True
+    return False
+
+
+def split_collection_repo(slug, cand, material):
+    """把合集仓库拆成单条候选（每条走正常 deep_dive + resolve 流程）。
+    拆不出来（<3 条）时调用方直接放弃这个仓库，不收。"""
+    entries = parse_collection_entries(material.get("readme_raw") or "",
+                                       cand.get("url") or "")
+    out = []
+    for e in entries:
+        c = {"name": e["name"], "url": e["url"], "desc": e["desc"]}
+        if cand.get("subcat"):
+            c["subcat"] = cand["subcat"]
+        if cand.get("section"):
+            c["section"] = cand["section"]
+        out.append(c)
+    return out
+
+
 # ---------------- 深挖：把候选挖出实义内容 ----------------
 
 PARKED_HINTS = ("parked", "domain for sale", "buy this domain", "该域名",
                 "域名停放", "domain parking", "coming soon")
 
 
+# ================= FIX14 D：AI 额度字段（ai-kb-spec.md） =================
+# 填充顺序（规范 §3）：域名精确匹配 → 仓库名匹配 → 正则抽取 → “未公布”。
+# 禁止按 name 模糊匹配、禁止按厂商合并。数字绝不猜。
+# 核实状态单独记 details「额度核实」，不洗 7 项原值：展示层按它决定
+# 是否把数字当确定事实展示（规范 §7：needs_check/stale 一律“待核实”）。
+
+AI_CREDIT_LABELS = ["首次注册送", "每天额度", "其他途径", "总额度",
+                    "额度有效期", "是否要绑卡", "领取门槛"]
+_AI_KB = {"loaded": False, "entries": [], "conflicts": set()}
+_ai_kb_lock = threading.Lock()
+
+
+def _ai_kb_path():
+    """知识表路径：collect.py 所在目录的 ai_kb.json。
+    仓库里 collect.py 在 scripts/ 下，对应 scripts/ai_kb.json。"""
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "ai_kb.json")
+
+
+def load_ai_kb():
+    """加载 AI 额度知识表（只读一次，线程安全）。
+    文件缺失/损坏时返回 []，调用方优雅降级为只走正则抽取，不报错、不中断。"""
+    with _ai_kb_lock:
+        if _AI_KB["loaded"]:
+            return _AI_KB["entries"]
+        _AI_KB["loaded"] = True
+        try:
+            with open(_ai_kb_path(), encoding="utf-8") as f:
+                data = json.load(f)
+            entries = data.get("entries") or []
+            _AI_KB["entries"] = [e for e in entries if isinstance(e, dict)]
+            conf = set()
+            for c in ((data.get("audit") or {}).get("internal_conflicts") or []):
+                if isinstance(c, dict) and c.get("name"):
+                    conf.add(c["name"])
+            _AI_KB["conflicts"] = conf
+        except Exception:
+            _AI_KB["entries"] = []
+            _AI_KB["conflicts"] = set()
+        return _AI_KB["entries"]
+
+
+def _ai_norm_host(url):
+    """host 规范化：小写、去 www.、去端口、去路径/query（规范 §3）。"""
+    try:
+        h = urllib.parse.urlparse(url or "").netloc.lower()
+    except Exception:
+        return ""
+    h = h.split("@")[-1].split(":")[0]
+    if h.startswith("www."):
+        h = h[4:]
+    return h
+
+
+def _ai_kb_lookup(item):
+    """按规范 §3 查表，命中返回 entry，否则 None。
+    陷阱：KB 里 GitHub Copilot Free 条目的 domains 含 github.com（它的 url
+    是产品页 https://github.com/copilot），裸 host 匹配会把所有 GitHub
+    仓库都算成 Copilot——github.com 只认整条 URL 相等或仓库名匹配。"""
+    entries = load_ai_kb()
+    if not entries:
+        return None
+    url = (item.get("url") or "").strip()
+    host = _ai_norm_host(url)
+    if not host:
+        return None
+    if host == "github.com":
+        for e in entries:
+            if norm_url(url) == norm_url(e.get("url") or ""):
+                return e
+        repo = github_repo_of(url)
+        if repo:
+            for e in entries:
+                if (e.get("repo") or "").lower() == repo.lower():
+                    return e
+        return None
+    for e in entries:
+        doms = []
+        for d in (e.get("domains") or []):
+            dd = str(d).lower()
+            if dd.startswith("www."):
+                dd = dd[4:]
+            doms.append(dd)
+        if host in doms:
+            return e
+    return None
+
+
+def _ai_stale_reason(entry):
+    """KB 条目是否按“待核实”处理（规范 §7），是则返回原因，否则返回 ""。
+    source_date 为 unknown（v1 全部 29 条）→ 待核实；status 非 verified →
+    待核实；source_date 超 90 天 → 待核实；种子内口径打架/旧口径过时 → 待核实。"""
+    if not entry:
+        return ""
+    name = entry.get("name") or ""
+    if name in _AI_KB.get("conflicts", set()):
+        return "种子内口径打架/多口径并存，待复核"
+    notes = " ".join(str(n) for n in (entry.get("notes") or []))
+    if "打架" in notes or "过时" in notes:
+        return "种子注明口径打架/旧口径过时，待复核"
+    status = (entry.get("status") or "").strip()
+    sd = (entry.get("source_date") or "").strip()
+    if status != "verified":
+        if sd in ("", "unknown"):
+            return "数字未复核，来源日期未知"
+        return "数字未复核"
+    if sd in ("", "unknown"):
+        return "来源日期不明"
+    try:
+        d = datetime.datetime.strptime(sd, "%Y-%m-%d").date()
+        today = datetime.datetime.strptime(today_cst(), "%Y-%m-%d").date()
+    except Exception:
+        return "来源日期格式不明"
+    if (today - d).days > 90:
+        return "来源已超 90 天"
+    return ""
+
+
+_AI_SIGNUP_ATTRS = ("sign up", "sign-up", "new user", "new users",
+                    "new account", "free trial", "promo", "get started")
+
+
+def _ai_near_attr(text, start, end, attrs, window=120):
+    """数字附近（前后 120 字内）有没有归属词（规范 §4.2），二者缺一不可。"""
+    near = text[max(0, start - window):min(len(text), end + window)].lower()
+    return any(a in near for a in attrs)
+
+
+def _ai_extract_from_text(text):
+    """未命中查表时，只从 descriptionOriginal 正则抽明确写出的数字（规范 §4）。
+    只抽这几种格式；光有数字没有归属词不抽；单位不换算、不推导。
+    返回 {中文 label: 抽到的原文片段}，抽不到的键不出现。"""
+    t = (text or "")
+    out = {}
+    if not t.strip():
+        return out
+    # 首次注册送：$5 credit / 25 free credits，须带注册归属词
+    for m in re.finditer(r"\$\s?\d+(?:\.\d+)?\s*(?:in\s+)?credits?\b", t, re.I):
+        if _ai_near_attr(t, m.start(), m.end(), _AI_SIGNUP_ATTRS):
+            out["首次注册送"] = m.group(0).strip()
+            break
+    if "首次注册送" not in out:
+        for m in re.finditer(r"\d[\d,]*\s+free\s+(credits?|tokens?)\b", t, re.I):
+            if _ai_near_attr(t, m.start(), m.end(), _AI_SIGNUP_ATTRS):
+                out["首次注册送"] = m.group(0).strip()
+                break
+    # 每天额度：数字 + 单位 + /day|per day|daily。月额度/一次性不算。
+    for m in re.finditer(
+            r"\d[\d,]*\s*(?:requests?|tokens?|credits?|neurons?|messages?|images?)"
+            r"\s*(?:/\s*day|per\s+day|daily\b)", t, re.I):
+        out["每天额度"] = m.group(0).strip()
+        break
+    if "每天额度" not in out:
+        for m in re.finditer(
+                r"\bdaily\b[^.\n]{0,60}?\d[\d,]*\s*"
+                r"(?:requests?|tokens?|credits?|neurons?)", t, re.I):
+            out["每天额度"] = m.group(0).strip()
+            break
+    # 每天登录/签到奖励：只有原文明确写了 sign in/check in/daily login 才写，
+    # 进“每天额度”（与可灵/即梦种子口径一致）；只知道每日限速时绝不反推。
+    if "每天额度" not in out:
+        for pat in (
+                r"daily\s+(?:login|log[- ]in|sign[- ]in|check[- ]in)[^.\n]{0,80}?"
+                r"\d[\d,]*\s*(?:credits?|tokens?|points?|coins?)",
+                r"(?:log\s*in|sign\s*in|check\s*in)[^.\n]{0,80}?"
+                r"\d[\d,]*\s*(?:credits?|tokens?|points?|coins?)\b"):
+            m = re.search(pat, t, re.I)
+            if m:
+                out["每天额度"] = m.group(0).strip()
+                break
+    # 总额度：只有上下文明确写一次性（one-time）时才进
+    for m in re.finditer(
+            r"one[- ]time[^.\n]{0,60}?(\$\s?\d+(?:\.\d+)?|\d[\d,]*\s*credits?)",
+            t, re.I):
+        out["总额度"] = m.group(0).strip()
+        break
+    if "总额度" not in out:
+        for m in re.finditer(
+                r"(\$\s?\d+(?:\.\d+)?|\d[\d,]*\s*credits?)\s+one[- ]time",
+                t, re.I):
+            out["总额度"] = m.group(0).strip()
+            break
+    # 额度有效期：须带明确天数/月数
+    for m in re.finditer(
+            r"(?:valid\s+for|expires?\s+in|good\s+for)\s+\d+\s*(?:days?|months?|years?)",
+            t, re.I):
+        out["额度有效期"] = m.group(0).strip()
+        break
+    if "额度有效期" not in out:
+        for m in re.finditer(r"\d+\s*[- ](?:day|month)\s+trial\b", t, re.I):
+            out["额度有效期"] = m.group(0).strip()
+            break
+    # 是否要绑卡：只认明确写出的 no card / requires a credit card
+    if re.search(r"\bno\s+(credit\s+)?card\s+(required|needed)\b|\bno\s+card\b",
+                 t, re.I):
+        out["是否要绑卡"] = "不要"
+    elif re.search(r"\b(requires?|needs?)\s+(a\s+)?(valid\s+)?"
+                   r"(credit\s+card|payment\s+method)\b"
+                   r"|\bcredit\s+card\s+required\b"
+                   r"|\bcard\s+required\b", t, re.I):
+        out["是否要绑卡"] = "要"
+    return out
+
+
+def _ai_credit_sentence(item):
+    """简介里写数的句子（规范 §6）：只写 details 里已有的、带数字的三项必填，
+    按“首次注册送 / 每天额度 / 额度有效期”顺序串起来。没有带数字的三项
+    就返回 ""（简介里不写数）。"""
+    parts = []
+    for label, prefix in (("首次注册送", "注册送"), ("每天额度", "每天额度"),
+                          ("额度有效期", "有效期")):
+        v = get_detail(item, label)
+        if v and v != "未公布" and re.search(r"\d", v):
+            parts.append(f"{prefix}：{v}")
+    if not parts:
+        return ""
+    return "；".join(parts) + "。"
+
+
+def fill_ai_credit_fields(item, write_summary=False):
+    """FIX14 D：给一条 AI 栏条目填 7 项额度字段（details）。
+    顺序：查 ai_kb.json → 未命中则从 descriptionOriginal 正则抽 → 抽不到
+    填“未公布”。已有真实值（非空、非裸“未公布”）只补缺、绝不洗掉——手写
+    种子的 7 项原值原样保留。核实状态记 details「额度核实」（待核实/已核实），
+    不动 7 项原值。简介里的数只在已核实时写（write_summary=True 时），
+    且只写 details 里已有的数。
+    返回 {"source": "kb"|"regex"|"none", "entry": 命中条目名或 "",
+          "stale": bool, "stale_reason": str, "filled": [补上的 label]}。"""
+    if not isinstance(item, dict):
+        return {"source": "none", "entry": "", "stale": False,
+                "stale_reason": "", "filled": []}
+    entry = _ai_kb_lookup(item)
+    values = {}
+    source = "none"
+    entry_name = ""
+    stale = False
+    stale_reason = ""
+    if entry:
+        source = "kb"
+        entry_name = entry.get("name") or ""
+        credits = entry.get("credits") or {}
+        for label in AI_CREDIT_LABELS:
+            v = credits.get(label)
+            if isinstance(v, str) and v.strip():
+                values[label] = v.strip()
+        stale_reason = _ai_stale_reason(entry)
+        stale = bool(stale_reason)
+    else:
+        ext = _ai_extract_from_text(item.get("descriptionOriginal") or "")
+        if ext:
+            source = "regex"
+            values.update(ext)
+            # 抽取 ≠ 复核（规范 §4.3）：抽到的数字一律待核实。
+            stale = True
+            stale_reason = "正则抽取未经官方复核"
+    filled = []
+    for label in AI_CREDIT_LABELS:
+        cur = get_detail(item, label)
+        if cur and cur != "未公布":
+            continue
+        if label in values:
+            set_detail(item, label, values[label])
+            filled.append(label)
+        elif not cur:
+            set_detail(item, label, "未公布")
+            filled.append(label)
+    if source in ("kb", "regex"):
+        if stale:
+            set_detail(item, "额度核实",
+                       "待核实" + (f"（{stale_reason}）" if stale_reason else ""))
+        else:
+            set_detail(item, "额度核实",
+                       f"已核实（{(entry or {}).get('source_date') or today_cst()}）")
+        bump("ai_credit")
+    if write_summary and not stale and source == "kb":
+        sent = _ai_credit_sentence(item)
+        if sent and sent not in (item.get("summary") or ""):
+            summary = (item.get("summary") or "").strip()
+            item["summary"] = (summary + " " + sent).strip() if summary else sent
+    return {"source": source, "entry": entry_name, "stale": stale,
+            "stale_reason": stale_reason, "filled": filled}
+
+
 def deep_dive(slug, cand):
     """深挖一个候选，返回 (material, extra) 或 (None, reason)。
-    material: {'title','text','lang','counted','github','itunes'}"""
+    material: {'title','text','lang','counted','github','itunes','screenshots'}"""
     url = cand["url"]
     host = urllib.parse.urlparse(url).netloc.lower()
 
@@ -1715,7 +2923,9 @@ def deep_dive(slug, cand):
             return None, "iTunes 介绍太短"
         return {"title": rec.get("trackName") or cand["name"], "text": text[:1500],
                 "lang": lang_label_from_codes(rec.get("languageCodesISO2A") or []),
-                "counted": None, "github": None, "itunes": rec}, None
+                "counted": None, "github": None, "itunes": rec,
+                # FIX14 C：iTunes screenshotUrls 顺着 rec 取，前 3 张
+                "screenshots": itunes_screenshots(rec)}, None
 
     # F-Droid 应用：包页完整介绍
     pkg = fdroid_package_of(url)
@@ -1725,7 +2935,9 @@ def deep_dive(slug, cand):
             return None, "F-Droid 介绍太短"
         return {"title": cand["name"], "text": text[:1500],
                 "lang": judge_language(text), "counted": None,
-                "github": None, "itunes": None}, None
+                "github": None, "itunes": None,
+                # FIX14 C：F-Droid 包页截图，前 3 张
+                "screenshots": fdroid_screenshots(pkg)}, None
 
     # GitHub 仓库：仓库简介 + README 开头几段
     # 注意：github_info 拿不到（API 限流 403/仓库改名 301）时也别直接扔掉——
@@ -1736,12 +2948,18 @@ def deep_dive(slug, cand):
         info = github_info(repo)
         readme = github_readme(repo, info)
         desc = (info or {}).get("description") or ""
-        text = "\n".join(x for x in [desc, readme] if x)
+        # FIX14：仓库简介首句与 README 无关时扔掉简介（mihomo 的简介写的是
+        # 星穹铁道数据模型，README 才是 Clash 内核——简介是仓库自己的 About
+        # 栏写错了，不是抓错页面；只用 README 就不会张冠李戴）。
+        text = _pick_github_text(desc, readme, repo, slug)
         if len(text.strip()) < 25:
             return None, "仓库没简介、README 也没内容"
         return {"title": cand["name"], "text": text[:1500],
                 "lang": judge_language(text), "counted": None,
-                "github": info, "itunes": None}, None
+                "github": info, "itunes": None,
+                "links": readme_links(repo, info),
+                "readme_raw": github_readme_raw(repo, info),
+                "homepage": (info or {}).get("homepage") or ""}, None
 
     # 普通网址/直链：验活 + 抓页面
     try:
@@ -1767,14 +2985,20 @@ def deep_dive(slug, cand):
     text = "\n".join(x for x in [page.meta_desc or page.og_desc] + page.paras[:3] if x)
     if len(text.strip()) < 40:
         return None, "页面正文太少，挖不出实义内容"
+    links = []
+    for h in page.hrefs:
+        full = urllib.parse.urljoin(url, h)
+        if full.startswith(("http://", "https://")):
+            links.append({"url": full, "label": "", "context": ""})
     return {"title": page.title or cand["name"], "text": text[:1500],
             "lang": judge_language(text, page.lang), "counted": None,
-            "github": None, "itunes": None, "page": page}, None
+            "github": None, "itunes": None, "page": page,
+            "links": links}, None
 
 
 def build_item(slug, cand, material, new_id):
     """用深挖材料拼新条目：四样齐全（定位/功能/用途/适合谁）。"""
-    kind, use, who = CAT_CONTEXT.get(slug, ("网站/工具", "解决实际问题", "有需要的人"))
+    kind, use, who = cat_context_for(slug, cand.get("section") or "")
     _t = (material.get("title") or "").strip()
     if is_error_title(_t):
         _t = ""
@@ -1802,18 +3026,55 @@ def build_item(slug, cand, material, new_id):
     position = f"{name} 是{host} 上的一个{kind}"
     if material.get("github"):
         position = f"{name} 是 GitHub 上的一个开源{kind}"
+    # FIX14 A：地址解析——可用地址进 url，仓库主页挪进 sourceUrl，
+    # 整份配置文件直链进 builtinConfigUrl，node 再记 clientLinks。
+    # 新条目的这三个字段本来就是空的，不存在洗掉已有值的问题。
+    resolved = resolve_usable_url(slug, cand, material)
+    url = resolved["url"]
+    item["url"] = url
+    if resolved.get("source_url"):
+        item["sourceUrl"] = resolved["source_url"]
+    if resolved.get("config_url"):
+        item["builtinConfigUrl"] = resolved["config_url"]
+        item["builtinConfigName"] = "整份配置"
+    if resolved.get("client_links"):
+        item["clientLinks"] = resolved["client_links"]
+    if resolved.get("pending_reason"):
+        item["_pending_reason"] = resolved["pending_reason"]
+    elif resolved.get("found"):
+        bump("resolved")
+    # FIX14 C：截图只从深挖材料里拿（iTunes / F-Droid），README 里的图
+    # 绝不当应用截图；其他栏目不写截图。
+    if slug in ("apple", "app"):
+        item["screenshots"] = _valid_screenshot_urls(
+            material.get("screenshots") or [])
+    # FIX14 B：真实简介——英文取原文首句/首段实质内容（带相关性校验），
+    # 中文取原文首句并清洗，不再拼 "{种类}（英文）。主要用来{用途}，适合{人群}"
+    # 的纯模板，也不再 original[:70] / original[:800] 硬切（不断半个英文词）。
+    # 门禁只卡 description（≥40 字且含“适合”）：下面两条分支都保留了
+    # “适合{who}”尾句，summary 不受门禁约束，放开写真实内容。
+    _repo = github_repo_of(cand["url"]) or ""
     if is_english:
         item["descriptionOriginal"] = original[:1200]
-        item["description"] = (
-            f"{position}。它主要用来{use}。适合{who}。"
-            f"上面一段是它自己的英文原文介绍，页面也是英文的，可以用浏览器自动翻译看。")
-        item["summary"] = f"{kind}（英文）。主要用来{use}，适合{who}。"
+        _first = first_substantive_sentence(original, 200, slug, name, _repo,
+                                            original)
+        _para = first_paragraph(original, 300, slug, name, _repo) or _first
+        if not _first:
+            item["description"] = f"{position}。英文项目，简介待补，适合{who}。"
+            item["summary"] = "英文项目，简介待补。"
+            item["_pending_reason"] = "英文简介待补（原文首句无实质内容或与条目无关）"
+        else:
+            item["description"] = (
+                f"{position}。{_para}适合{who}。"
+                "页面是英文的，可以用浏览器自动翻译看。")
+            item["summary"] = (first_substantive_sentence(
+                original, 70, slug, name, _repo, original) or _first)
     else:
+        _para = first_paragraph(original, 300, slug, name, _repo) or original
         item["description"] = (
-            f"{position}。{original[:800]}。"
-            f"它主要用来{use}。适合{who}。")
-        item["summary"] = original[:70].rstrip("。") + "。" if len(original) > 10 \
-            else f"{kind}。主要用来{use}，适合{who}。"
+            f"{position}。{_para}它主要用来{use}。适合{who}。")
+        item["summary"] = clean_zh_summary(original, slug, name, _repo) \
+            or f"{kind}。主要用来{use}，适合{who}。"
     # 代理栏：中文介绍（ curated，覆盖上面按材料拼的通用介绍）
     if _cn:
         item["description"] = _cn[1]
@@ -1916,11 +3177,72 @@ def build_item(slug, cand, material, new_id):
         if item.get("section") == "discounts":
             if not get_detail(item, "原价"):
                 set_detail(item, "原价", "未公布")
+    # FIX14 D：AI 新条目补 7 项额度字段（KB 命中 / 正则抽取 / 未公布）；
+    # 已核实的数字才进简介，且只写 details 里已有的数。
+    if slug == "ai":
+        fill_ai_credit_fields(item, write_summary=True)
     if not item["imageUrl"]:
         img = find_image(url)
         if img:
             item["imageUrl"] = img
     return item
+
+
+def _desc_orig_suspect(item, slug="", text=""):
+    """descriptionOriginal 是不是可疑的旧值：老版本 200 字硬截断的遗留、
+    GitHub 页面 og:description 覆盖时带的 " - owner/repo" 后缀、
+    首句与新鲜 README 无关（张冠李戴）。是就返回 True，等重建。"""
+    o = (item.get("descriptionOriginal") or "").strip()
+    if not o:
+        return False
+    if len(o) == 200 and o.endswith(("...", "…")):
+        return True
+    repo = github_repo_of(item.get("url") or "") or \
+        github_repo_of(item.get("sourceUrl") or "") or ""
+    if repo and re.search(r"\s+-\s+" + re.escape(repo) + r"$", o):
+        return True
+    if text:
+        first = _split_sentences(o)
+        if first and not _sentence_relevant(first[0], slug,
+                                            item.get("name") or "", repo, text):
+            return True
+    return False
+
+
+def _rebuild_item_text(slug, item, material):
+    """用新鲜 README 重建老条目的模板简介 / 可疑原文介绍。
+    只动自动收录（auto）的条目、手写种子不动；只在简介是模板句，
+    或 descriptionOriginal 可疑时才动手。返回是否改过。"""
+    if not item.get("auto"):
+        return False
+    text = (material.get("text") or "").strip()
+    if len(text) < 25:
+        return False
+    kind, use, who = cat_context_for(slug, item.get("section") or "")
+    name = item.get("name") or ""
+    repo = github_repo_of(item.get("url") or "") or \
+        github_repo_of(item.get("sourceUrl") or "") or ""
+    changed = False
+    if _desc_orig_suspect(item, slug, text):
+        item["descriptionOriginal"] = text[:1200]
+        changed = True
+    if _is_template_summary(item.get("summary") or ""):
+        lang = judge_language(text)
+        if lang == "英文":
+            first = first_substantive_sentence(text, 70, slug, name, repo, text)
+            if first:
+                item["summary"] = first
+                para = first_paragraph(text, 300, slug, name, repo) or first
+                item["description"] = (
+                    f"{name} 是 GitHub 上的一个开源{kind}。{para}适合{who}。"
+                    "页面是英文的，可以用浏览器自动翻译看。")
+                changed = True
+        else:
+            s = clean_zh_summary(text, slug, name, repo)
+            if s:
+                item["summary"] = s
+                changed = True
+    return changed
 
 
 # ---------------- 栏目结构归一 + 破解警告 ----------------
@@ -2046,24 +3368,58 @@ def rerank(categories):
 # ---------------- state.json ----------------
 
 def load_state(script_dir):
+    """读 state.json：fails（连续验活失败次数）+ pending（待补清单）。
+    返回 (fails, path, pending_list)。"""
     path = os.path.join(script_dir, "state.json")
     try:
         with open(path, encoding="utf-8") as f:
             data = json.load(f)
         fails = data.get("fails") or {}
-        return {str(k): int(v) for k, v in fails.items()}, path
+        pending = data.get("pending") or []
+        if not isinstance(pending, list):
+            pending = []
+        return {str(k): int(v) for k, v in fails.items()}, path, pending
     except Exception:
-        return {}, path
+        return {}, path, []
 
 
-def save_state(path, fails, keep_urls):
+def save_state(path, fails, keep_urls, pending=None):
+    """写 state.json：fails 只留还在站上的、次数 >0 的；pending（待补清单）
+    只留还在站上的条目（已解析掉 / 已删掉的自然掉出），最多 1000 条。"""
+    pend = []
+    if pending:
+        for e in pending:
+            if isinstance(e, dict) and norm_url(e.get("url") or "") in keep_urls:
+                pend.append(e)
     data = {"fails": {u: n for u, n in fails.items() if u in keep_urls and n > 0},
+            "pending": pend[:1000],
             "updatedAt": now_iso_z()}
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
         f.write("\n")
     os.replace(tmp, path)
+
+
+def write_screened(root_dir, removed):
+    """FIX14 #8“今天筛掉了什么”：本轮实际删掉的条目（失效/过期/跨栏重复），
+    写进仓库根目录 screened.json（data.json 旁边，工作流提交时一起提交），
+    供第二阶段 index.html 渲染。只记、不拦；写失败也不影响本轮。"""
+    try:
+        screened = {"date": today_cst(),
+                    "removed": [{"name": n, "url": u, "slug": s, "reason": r}
+                                for s, n, u, r in removed],
+                    "updatedAt": now_iso_z()}
+        sp = os.path.join(root_dir, "screened.json")
+        tmp = sp + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(screened, f, ensure_ascii=False, indent=1)
+            f.write("\n")
+        os.replace(tmp, sp)
+        return sp
+    except Exception as e:
+        log(f"screened.json 写失败（不影响本轮）：{e}")
+        return None
 
 
 # ---------------- 主流程 ----------------
@@ -2077,7 +3433,13 @@ def main():
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
     categories = data.get("categories") or {}
-    state_fails, state_path = load_state(script_dir)
+    state_fails, state_path, state_pending = load_state(script_dir)
+    # FIX14：待补清单读进内存；本轮解析预算清零（逐步替换老条目）。
+    for _e in state_pending:
+        if isinstance(_e, dict) and _e.get("url"):
+            PENDING[norm_url(_e["url"])] = _e
+    _RESOLVE_BUDGET["left"] = 60
+    _SHOT_BUDGET["left"] = 60
 
     normalize_sections(data)
 
@@ -2237,6 +3599,62 @@ def main():
             if isinstance(item.get("id"), int):
                 max_id[0] = max(max_id[0], item["id"])
 
+    def _try_add_one(slug, items, cand):
+        """深挖并收一条候选；成功返回 True。
+        FIX14：service/domain 合集仓库先拆成单条服务再收（合集本身不收，
+        拆不出来也不收）；收进来的条目带 _pending_reason 的进待补清单。"""
+        if norm_url(cand["url"]) in claimed_urls:
+            ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                              "本轮已在其他栏收录"))
+            return False
+        if any(name_similar(cand["name"], n) for n in existing_names):
+            ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                              "与已有条目重名"))
+            return False
+        material, reason = deep_dive(slug, cand)
+        if material is None:
+            ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                              reason or "无内容"))
+            log(f"放弃候选：{cand.get('name')}（{reason}）")
+            return False
+        if slug in ("service", "domain") and is_collection_repo(slug, cand, material):
+            entries = split_collection_repo(slug, cand, material)
+            if len(entries) < 3:
+                ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                                  f"合集仓库拆不出条目（仅 {len(entries)} 条），不收"))
+                return False
+            bump("split")
+            added = 0
+            for e in entries:
+                if _try_add_one(slug, items, e):
+                    added += 1
+            return added > 0
+        with _id_lock:
+            if norm_url(cand["url"]) in claimed_urls:
+                ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                                  "本轮已在其他栏收录"))
+                return False
+            claimed_urls.add(norm_url(cand["url"]))
+            max_id[0] += 1
+            new_id = max_id[0]
+        new_item = build_item(slug, cand, material, new_id)
+        # 新收的限免也要复核现价：已经收费的不要挂进限免组
+        if slug == "apple" and new_item.get("section") == "deals":
+            aid = apple_id_of(new_item["url"])
+            rec = itunes_lookup(aid) if aid else None
+            if rec and str(rec.get("formattedPrice") or "") not in ("", "Free"):
+                ABANDONED.append((new_item["name"], new_item["url"],
+                                  f"限免已过期，现价 {rec.get('formattedPrice')}"))
+                return False
+        items.append(new_item)
+        existing_names.append(new_item["name"])
+        ADDED.append((slug, new_item["name"], new_item["url"]))
+        _pr = new_item.pop("_pending_reason", None)
+        if _pr:
+            pending_add(new_item["url"], new_item["name"], slug, _pr)
+        bump("deep_ok")
+        return True
+
     def _add_for_slug(slug, cat):
         items = cat.setdefault("items", [])
         removed_here = sum(1 for it in items if id(it) in removed_keys)
@@ -2250,38 +3668,9 @@ def main():
             if added_here >= cap or tried >= MAX_CANDIDATES_TRY:
                 break
             tried += 1
-            if norm_url(cand["url"]) in claimed_urls:
-                ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
-                                  "本轮已在其他栏收录"))
-                continue
-            material, reason = deep_dive(slug, cand)
-            if material is None:
-                ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
-                                  reason or "无内容"))
-                log(f"放弃候选：{cand.get('name')}（{reason}）")
-                continue
-            with _id_lock:
-                if norm_url(cand["url"]) in claimed_urls:
-                    ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
-                                      "本轮已在其他栏收录"))
-                    continue
-                claimed_urls.add(norm_url(cand["url"]))
-                max_id[0] += 1
-                new_id = max_id[0]
-            new_item = build_item(slug, cand, material, new_id)
-            # 新收的限免也要复核现价：已经收费的不要挂进限免组
-            if slug == "apple" and new_item.get("section") == "deals":
-                aid = apple_id_of(new_item["url"])
-                rec = itunes_lookup(aid) if aid else None
-                if rec and str(rec.get("formattedPrice") or "") not in ("", "Free"):
-                    ABANDONED.append((new_item["name"], new_item["url"],
-                                      f"限免已过期，现价 {rec.get('formattedPrice')}"))
-                    continue
-            items.append(new_item)
-            existing_names.append(new_item["name"])
-            ADDED.append((slug, new_item["name"], new_item["url"]))
-            added_here += 1
-            bump("deep_ok")
+            before = len(items)
+            if _try_add_one(slug, items, cand):
+                added_here += len(items) - before
 
     # 两波新增：先收专栏，免费服务最后收——专栏和兜底栏同时抢到同一链接时，
     # 专栏赢；兜底栏只收专栏都不要的。
@@ -2330,7 +3719,7 @@ def main():
         for item in cat.get("items") or []:
             if item.get("url"):
                 keep_urls.add(norm_url(item["url"]))
-    save_state(state_path, state_fails, keep_urls)
+    save_state(state_path, state_fails, keep_urls, pending=list(PENDING.values()))
 
     lines = [f"新增 {len(ADDED)} 条："]
     lines += [f"- [{s}] {n}（{u}）" for s, n, u in ADDED] or ["- 无"]
@@ -2341,6 +3730,9 @@ def main():
         lines += [f"- [{s}] {n}（{u}）— {r}" for s, n, u, r in MOVED]
     with open(os.path.join(root_dir, "changes.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
+
+    # FIX14 #8：今天筛掉了什么（本轮实际删掉的条目），写 screened.json。
+    write_screened(root_dir, REMOVED)
 
     # ---- 运行日志（报告用） ----
     log("---- feed 明细 ----")
@@ -2354,6 +3746,9 @@ def main():
         f"标上能否改中文 {STATS['cnswitch']} 条（其中只有英文改不了 {STATS['cnswitch_en']} 条）")
     log(f"新增 {len(ADDED)} 条（深挖达标 {STATS['deep_ok']} 条）；"
         f"移除 {len(REMOVED)} 条；放弃候选 {len(ABANDONED)} 条")
+    log(f"FIX14：地址解析成可用地址 {STATS['resolved']} 条；"
+        f"简介重建成真实内容 {STATS['summary_fixed']} 条；"
+        f"合集仓库拆分 {STATS['split']} 个；待补清单 {len(PENDING)} 条")
     for name, url, reason in ABANDONED:
         log(f"ABANDONED {name} | {url} | {reason}")
     return 0
