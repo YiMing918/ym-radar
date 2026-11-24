@@ -1003,6 +1003,42 @@ def extract_fields(kind, text):
     return out
 
 
+# 免费服务子类推断：先看名字（最准），名字没信号再看介绍里 distinctive 的词。
+# 注意：ssl/https/域名这类词介绍里到处都是，不能用来推断——只认名字里的。
+# 推不出来就留空，别硬猜错类（错类比没类更糟：筛选项会把条目带到错的分组里）。
+SERVICE_SUBCAT_NAME_KW = [
+    ("免费证书", ["ssl", "letsencrypt", "acme", "证书"]),
+    ("免费邮箱", ["mail", "email", "smtp", "邮箱", "resend", "brevo", "sendgrid", "mailgun", "postmark"]),
+    ("免费数据库", ["database", "postgres", "mysql", "mongo", "sqlite", "redis", "supabase", "neon", "turso", "firebase", "planetscale", "cockroach", "数据库"]),
+    ("免费域名", ["domain", "dns", "域名", "freenom"]),
+    ("免费存储/图床", ["storage", "s3", "r2", "图床", "cloudinary", "imgur", "存储"]),
+    ("免费主机/托管", ["pages", "hosting", "host", "vps", "vercel", "netlify", "render", "railway", "heroku", "workers", "云", "服务器", "部署", "compute", "oracle", "aws", "azure"]),
+    ("免费 API", ["api", "接口"]),
+]
+SERVICE_SUBCAT_TEXT_KW = [
+    ("免费数据库", ["数据库", "database", "postgres", "mysql", "mongodb", "sqlite", "redis"]),
+    ("免费邮箱", ["邮箱", "邮件", "email", "发信"]),
+    ("免费存储/图床", ["对象存储", "图床", "文件存储"]),
+    ("免费主机/托管", ["部署", "托管", "虚拟机", "云服务器", "静态站"]),
+]
+
+
+def guess_service_subcat(item, text=""):
+    """给缺「类别」的免费服务条目推断子类。返回子类名或空串。"""
+    name = (item.get("name") or "").lower()
+    for subcat, kws in SERVICE_SUBCAT_NAME_KW:
+        for kw in kws:
+            if kw.lower() in name:
+                return subcat
+    t = ((text or "") + "\n" + (item.get("summary") or "")
+         + "\n" + (item.get("description") or "")).lower()
+    for subcat, kws in SERVICE_SUBCAT_TEXT_KW:
+        for kw in kws:
+            if kw.lower() in t:
+                return subcat
+    return ""
+
+
 def ensure_service_fields(slug, item, text):
     """四问 label 必须齐：已有真实值不动，未公布可被新查到的覆盖，
     缺的先填查到的、实在查不到填「未公布」。不许留空、不许瞎编。"""
@@ -1278,6 +1314,12 @@ def process_item(slug, item, state_fails):
                                      page.og_desc] + page.paras[:4])
         search_text += "\n" + (item.get("description") or "") \
             + "\n" + (item.get("summary") or "")
+        # 免费服务缺「类别」的先补上（首页筛选 chip 靠它分组；四问字段也按它选）；
+        # 推不出来就留空，别硬猜。
+        if slug == "service" and not get_detail(item, "类别"):
+            sub = guess_service_subcat(item, search_text)
+            if sub:
+                set_detail(item, "类别", sub)
         ensure_service_fields(slug, item, search_text)
     html_text = ""
     if page is not None:
