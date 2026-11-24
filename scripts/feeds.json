@@ -655,7 +655,7 @@
       },
       {
         "type": "github_repo",
-        "repo": "apernet/hysteria",
+        "repo": "HyNetworks/hysteria",
         "section": "all",
         "parse": "QUIC 协议内核 Hysteria2"
       },
