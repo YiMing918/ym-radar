@@ -60,6 +60,14 @@ GH_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
 MAX_PER_CAT = 300           # 每栏总量上限
 MAX_ADD_PER_CAT = MAX_PER_CAT  # 每栏每次新增不另设上限：搜到多少不重复的新条目就加多少（站长 2026-11-23 定），只受每栏总量上限约束
 MAX_CANDIDATES_TRY = MAX_PER_CAT  # 每栏最多深挖多少个候选（与总量上限齐平，实际等于不限）
+# 跨栏去重优先级：标题能看出来是什么的归专栏，免费服务是兜底栏、放最后。
+# （站长 2026-11-24 定：AI 免费额度只放 AI 栏，别往免费服务里放。）
+DEDUP_PRIORITY = ["apple", "adult", "ai", "app", "live", "video", "music",
+                                    "book", "domain", "cfip", "node", "proxy", "service"]
+_DEDUP_RANK = {s: i for i, s in enumerate(DEDUP_PRIORITY)}
+# 抓页面标题时撞上的通用报错标题前缀：这类标题不算真名。
+ERROR_TITLE_PREFIXES = ("page not found", "404", "not found", "error",
+                                                "出错", "无法访问", "找不到")
 
 STATS = {"checked_ok": 0, "dead": 0, "content_dead": 0, "github": 0, "counted": 0, "imaged": 0,
          "lang": 0, "region": 0, "cnswitch": 0, "cnswitch_en": 0,
@@ -1220,6 +1228,27 @@ def name_similar(a, b):
     return False
 
 
+def is_error_title(title):
+    """抓到的页面标题是不是通用报错标题（不是真名）。"""
+      t = (title or "").strip().lower()
+    if not t:
+              return True
+          return t.startswith(ERROR_TITLE_PREFIXES)
+
+
+def name_from_url(url):
+    """从链接取个名：取最后一段路径，没有就取主机名。"""
+    try:
+              p = urllib.parse.urlparse((url or "").strip())
+              seg = (p.path or "").rstrip("/").rsplit("/", 1)[-1]
+              seg = urllib.parse.unquote(seg)
+              if seg:
+                            return seg[:80]
+                        return (p.hostname or url or "")[:80]
+except Exception:
+        return (url or "")[:80]
+
+
 # ---------------- 发现：拉 feed 候选 ----------------
 
 def feed_candidates_github_search(feed):
@@ -1261,7 +1290,7 @@ def feed_candidates_github_repo(feed):
   repo = (feed.get("repo") or "").strip()
   if not repo or "/" not in repo:
     raise RuntimeError(f"github_repo 源缺 repo：{feed}")
-    return [{"name": repo,
+  return [{"name": repo,
                       "url": f"https://github.com/{repo}",
                       "desc": ""}]
 
@@ -1487,7 +1516,10 @@ def deep_dive(slug, cand):
 def build_item(slug, cand, material, new_id):
     """用深挖材料拼新条目：四样齐全（定位/功能/用途/适合谁）。"""
     kind, use, who = CAT_CONTEXT.get(slug, ("网站/工具", "解决实际问题", "有需要的人"))
-    name = (material.get("title") or cand["name"]).strip()[:80]
+    _t = (material.get("title") or "").strip()
+    if is_error_title(_t):
+              _t = ""
+    name = (_t or cand["name"]).strip()[:80]
     url = cand["url"]
     host = urllib.parse.urlparse(url).netloc
     original = re.sub(r"\s+", " ", material["text"]).strip()
@@ -1888,9 +1920,44 @@ def main():
                         for it in (cat.get("items") or [])
                         if norm_url(it.get("url") or "") in keep_urls}
 
-    # ---- 新增：先补位、再扩充；不重复的新条目全数加进（每栏总量上限 300） ----
+    # ---- 跨栏去重：同一链接只留一个栏（标题能看出来是什么的归专栏，免费服务兜底） ----
+    _url_to_locs = {}
+    for _slug, _cat in categories.items():
+              for _it in _cat.get("items") or []:
+                            _u = norm_url(_it.get("url") or "")
+                            if _u:
+                                              _url_to_locs.setdefault(_u, []).append((_slug, _it))
+                                  _dedup_removed = 0
+    for _u, _locs in _url_to_locs.items():
+              if len(_locs) < 2:
+                            continue
+        _locs.sort(key=lambda kv: _DEDUP_RANK.get(kv[0], 99))
+        _keep_slug = _locs[0][0]
+        for _slug, _it in _locs[1:]:
+                      if id(_it) in removed_keys:
+                                        continue
+                                    _cat = categories[_slug]
+            _cat["items"] = [x for x in (_cat.get("items") or []) if x is not _it]
+            REMOVED.append((_slug, _it.get("name") or "", _it.get("url") or "",
+                                                        f"跨栏重复，保留在「{_keep_slug}」栏"))
+            _dedup_removed += 1
+    if _dedup_removed:
+              log(f"跨栏去重：移除 {_dedup_removed} 条重复（保留在优先级更高的栏）。")
+    # 顺手修重名：页面标题是通用报错的条目，名字改成链接文件名。
+    _renamed = 0
+    for _cat in categories.values():
+              for _it in _cat.get("items") or []:
+                            if is_error_title(_it.get("name") or ""):
+                                              _new = name_from_url(_it.get("url") or ""))
+                                              if _new and _new != _it.get("name"):
+                                                                    _it["name"] = _new
+                                                                    _renamed += 1
+                                                    if _renamed:
+                                                              log(f"标题修正：{_renamed} 条报错标题改成链接文件名。")
+                                                      # ---- 新增：先补位、再扩充；不重复的新条目全数加进（每栏总量上限 300） ----
     max_id = [0]
     _id_lock = threading.Lock()
+    claimed_urls = set(existing_urls)
     for cat in categories.values():
         for item in cat.get("items") or []:
             if isinstance(item.get("id"), int):
@@ -1909,13 +1976,22 @@ def main():
             if added_here >= cap or tried >= MAX_CANDIDATES_TRY:
                 break
             tried += 1
-            material, reason = deep_dive(slug, cand)
+            if norm_url(cand["url"]) in claimed_urls:
+                              ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                                                                                  "本轮已在其他栏收录"))
+                continue
+material, reason = deep_dive(slug, cand)
             if material is None:
                 ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
                                   reason or "无内容"))
                 log(f"放弃候选：{cand.get('name')}（{reason}）")
                 continue
             with _id_lock:
+                              if norm_url(cand["url"]) in claimed_urls:
+                                                    ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                                                                                                            "本轮已在其他栏收录"))
+                                                    continue
+                                                claimed_urls.add(norm_url(cand["url"]))
                 max_id[0] += 1
                 new_id = max_id[0]
             new_item = build_item(slug, cand, material, new_id)
@@ -1933,9 +2009,15 @@ def main():
             added_here += 1
             bump("deep_ok")
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
-        list(ex.map(lambda kv: _add_for_slug(kv[0], kv[1]),
-                    list(categories.items())))
+    # 两波新增：先收专栏，免费服务最后收——专栏和兜底栏同时抢到同一链接时，
+    # 专栏赢；兜底栏只收专栏都不要的。
+    _waves = [[kv for kv in categories.items() if kv[0] != "service"],
+                            [kv for kv in categories.items() if kv[0] == "service"]]
+    for _wave in _waves:
+              if not _wave:
+                            continue
+        with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
+                      list(ex.map(lambda kv: _add_for_slug(kv[0], kv[1]), _wave))
 
     # 真正执行移除
     for cat in categories.values():
