@@ -20,7 +20,7 @@
      网址规范化 + 名称近似双去重；新候选验活后深挖内容（iTunes 完整介绍 /
      F-Droid 介绍 / GitHub README / 网页正文），凑齐「是什么、干什么、
      有什么用、适合谁」四样才收；深挖后仍无实义内容的放弃并记录原因。
-     新增不设上限（搜到多少不重复的新条目就加多少），每栏总量上限 300 条。
+     新增不设上限（搜到多少不重复的新条目就加多少），每栏总量上限 500 条。
   4) 替换：scripts/state.json 记每条连续验活失败次数，连续不通自动移除
      （苹果栏目 3 次、其他栏目 6 次；每 6 小时跑一轮，约合 18/36 小时），
      从同栏候选池按新鲜度补位；新增/移除/挪组清单写进 changes.txt
@@ -100,9 +100,18 @@ DEADLINE = 30               # 单个请求总时限（秒），防慢速滴漏�
 MAX_BYTES = 32 * 1024 * 1024  # 单次抓取上限：书源全量文件可达 20MB，6MB 会截断导致误判失效
 CST = datetime.timezone(datetime.timedelta(hours=8))
 GH_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
-MAX_PER_CAT = 300           # 每栏总量上限
+MAX_PER_CAT = 500           # 每栏总量上限（FIX17 二期：300→500，全部栏目统一）
 MAX_ADD_PER_CAT = MAX_PER_CAT  # 每栏每次新增不另设上限：搜到多少不重复的新条目就加多少（站长 2026-11-23 定），只受每栏总量上限约束
 MAX_CANDIDATES_TRY = MAX_PER_CAT  # 每栏最多深挖多少个候选（与总量上限齐平，实际等于不限）
+
+# FIX17 二期·苹果方案 A：苹果栏分区上限与总量上限（方案 A 稳态约 190–270 条，
+# 在 MAX_PER_CAT=500 内，没问题；分区上限是方案里的硬约束，防某分区独占）。
+APPLE_TOTAL_CAP = 280
+APPLE_SECTION_CAPS = {"deals": 80, "discounts": 80, "testflight": 80,
+                      "ipasign": 120}
+# FIX17 二期·TestFlight：每轮最多抓多少个 1xtest 应用详情页
+# （sitemap 里 lastmod 全是近期的，过滤不住，靠这个预算 + 分区上限兜底）。
+TF_DETAIL_BUDGET = 60
 
 # 跨栏去重优先级：标题能看出来是什么的归专栏，免费服务是兜底栏、放最后。
 # （站长 2026-11-24 定：AI 免费额度只放 AI 栏，别往免费服务里放。）
@@ -474,7 +483,11 @@ def count_content(url, body):
     if not body:
         return None
     text = body.decode("utf-8", "replace")
-    path = urllib.parse.urlparse(url).path.lower()
+    # FIX17 二期：同上，畸形网址的 urlparse 兜底（数不出来返回 None）。
+    try:
+        path = urllib.parse.urlparse(url).path.lower()
+    except Exception:
+        return None
 
     if path.endswith((".m3u", ".m3u8")) or "#EXTINF" in text[:4096]:
         n = text.count("#EXTINF")
@@ -1742,7 +1755,12 @@ def process_item(slug, item, state_fails):
         state_fails[key] = int(state_fails.get(key, 0)) + 1
 
     if alive and body:
-        counted = count_content(url, body)
+        try:
+            counted = count_content(url, body)
+        except Exception:
+            # FIX17 二期：畸形网址会让 urlparse 抛 ValueError（run #16 同类），
+            # 这里兜住——数不出来就按“没数出来”走，不拖垮整轮。
+            counted = None
         if counted:
             label, n = counted
             if label != "书源数" or slug == "book":
@@ -1753,7 +1771,10 @@ def process_item(slug, item, state_fails):
                 item["_content_fail"] = True
         elif slug in ("video", "music", "book", "live", "node", "cfip"):
             # 这些栏目的直链文件本应数得出条数；解不开同样按失败对待
-            path = urllib.parse.urlparse(url).path.lower()
+            try:
+                path = urllib.parse.urlparse(url).path.lower()
+            except Exception:
+                path = ""
             if path.endswith((".json", ".m3u", ".m3u8", ".txt")):
                 item["_content_fail"] = True
 
@@ -1768,10 +1789,14 @@ def process_item(slug, item, state_fails):
             url = m.group(1) + "/releases"
             item["url"] = url
 
-    # FIX14 A+B：老条目逐步解析可用地址 + 重建模板简介（每轮预算 120 条，
-    # 只动裸仓库地址的条目；已有 sourceUrl/builtinConfigUrl 的只补缺的，
-    # 绝不洗掉手写种子带的值；改地址后验活在下一轮走正常流程）。
-    if _resolve_budget_take() and _is_bare_repo_url(url):
+    # FIX14 A+B：老条目逐步解析可用地址 + 重建模板简介（稳态每轮预算 300 条，
+    # 首轮全量刷新不限量，见 main()；只动裸仓库地址的条目；已有 sourceUrl/
+    # builtinConfigUrl 的只补缺的，绝不洗掉手写种子带的值；改地址后验活在
+    # 下一轮走正常流程）。
+    # FIX17 二期：先判地址、再扣预算。旧顺序是先 _resolve_budget_take()
+    # 再判裸仓库地址——非仓库条目也会悄悄烧预算（每轮 120 条里相当一部分
+    # 被根本不需要解析的条目白白占掉）。全量刷新轮里预算=全部，更要先判。
+    if _is_bare_repo_url(url) and _resolve_budget_take():
         _repo2 = github_repo_of(url)
         _info2 = github_info(_repo2)
         try:
@@ -1922,13 +1947,13 @@ def process_item(slug, item, state_fails):
                 item["screenshots"] = _shots
                 bump("shots")
 
-    # 苹果价格死规矩：现价 label 必带；TestFlight 写免费参加；降价组算降幅；
-    # 零元购组固定字段补齐（查不到写未公布）
+    # 苹果价格死规矩：现价 label 必带；TestFlight 写免费参加；降价组算降幅。
+    # FIX17 二期：删「名额状态」标签（方案 A4：苹果从不公布名额数，与
+    # 「招募状态/剩余名额/截止加入」重复；旧条目上的这行由迁移函数清理）。
+    # iapfree 分区已废除（方案 A：整组淘汰），这里不再补它的字段。
     if slug == "apple":
         if "testflight.apple.com" in url:
             set_detail(item, "现价", "免费参加")
-            if not get_detail(item, "名额状态"):
-                set_detail(item, "名额状态", "未公布")
         elif not get_detail(item, "现价"):
             set_detail(item, "现价", "未公布")
         if (item.get("section") or "") == "discounts":
@@ -1941,12 +1966,6 @@ def process_item(slug, item, state_fails):
                 set_detail(item, "降幅",
                            f"原价 {get_detail(item, '原价')}，现价 "
                            f"{get_detail(item, '现价')}，降了约 {pct}%")
-        if (item.get("section") or "") == "iapfree":
-            for lb in ("内购项目", "原价", "买断性质"):
-                if not get_detail(item, lb):
-                    set_detail(item, lb, "未公布")
-            if not get_detail(item, "现价"):
-                set_detail(item, "现价", "未公布")
         if (item.get("section") or "") == "discounts":
             if not get_detail(item, "原价"):
                 set_detail(item, "原价", "未公布")
@@ -2015,6 +2034,20 @@ def norm_url(url):
     except Exception:
         return (url or "").strip().lower()
 
+
+def _item_key(item):
+    """FIX17 二期：removed_keys 的稳定键。
+
+    绝不能用内置 id()——那是 CPython 对象地址。条目从列表里删掉后
+    dict 被释放，新建的条目会复用同一个地址，最终移除时把活条目误杀，
+    而且每次运行撞的条目数都不一样（离线模拟里苹果栏三次三个数：
+    48/50/51）。数字 id 是全站唯一主键（新条目从 max+1 往下发，
+    永不撞已删 id）；没有数字 id 的条目（极少数手工数据）用规范化
+    网址兜底。"""
+    i = item.get("id")
+    if isinstance(i, int):
+        return i
+    return norm_url(item.get("url") or "")
 
 def norm_name(name):
     """名称规范化：小写、去空格标点，只留字母数字和中文。"""
@@ -2321,7 +2354,9 @@ def pull_candidates(slug, feeds):
 
 PENDING = {}                    # norm_url -> {url,name,slug,reason,firstSeen,lastSeen,tries}
 _pending_lock = threading.Lock()
-_RESOLVE_BUDGET = {"left": 120}  # 每轮 process_item 里最多解析多少条老条目（逐步替换）
+_RESOLVE_BUDGET_STEADY = 300  # 稳态每轮刷新预算（FIX17 二期：120→300；
+                                # 首轮全量刷新除外，见 main() 里的 full_refresh_done 标记）
+_RESOLVE_BUDGET = {"left": _RESOLVE_BUDGET_STEADY}  # 每轮 process_item 里最多解析多少条老条目（逐步替换）
 _resolve_lock = threading.Lock()
 _SHOT_BUDGET = {"left": 60}     # 每轮 process_item 里最多补多少条老 app 条目的截图
 _shot_lock = threading.Lock()
@@ -2377,7 +2412,11 @@ def _is_bare_repo_url(url):
 
 
 def _is_store_url(url):
-    host = urllib.parse.urlparse(url or "").netloc.lower()
+    # FIX17 二期：畸形网址的 urlparse 兜底（run #16 同类崩溃）。
+    try:
+        host = urllib.parse.urlparse(url or "").netloc.lower()
+    except Exception:
+        return False
     return ("apps.apple.com" in host or "f-droid.org" in host
             or "play.google.com" in host or "testflight.apple.com" in host)
 
@@ -2386,7 +2425,13 @@ def _match_config_link(url, slug):
     """链接本身是不是该栏目的整份配置文件：返回 kind（'file' / 'plugins' /
     'single'）或 None。"""
     low = (url or "").lower()
-    path = urllib.parse.urlparse(url or "").path.lower()
+    # FIX17 二期：畸形网址会让 urlparse 抛 ValueError（run #16 同类崩溃，
+    # FIX15 只兜了 extract_md_links，这里是第二处暴露面）——解析不了就
+    # 当不是配置文件，绝不向上抛。
+    try:
+        path = urllib.parse.urlparse(url or "").path.lower()
+    except Exception:
+        return None
     if slug == "node":
         if path.endswith((".yaml", ".yml", ".txt", ".json")) \
                 or path.rstrip("/").endswith("/sub") or "subscribe" in low:
@@ -2397,16 +2442,28 @@ def _match_config_link(url, slug):
     elif slug == "music":
         if path.endswith("plugins.json"):
             return "plugins"
+        # FIX17 二期：MusicFree 订阅 JSON 不一定叫 plugins.json
+        # （如 myPlugins.json），任意 .json 都按订阅文件验。
+        if path.endswith(".json"):
+            return "plugins"
         if path.endswith(".js"):
             return "single"
     elif slug == "book":
         if path.endswith(".json"):
             return "file"
     elif slug == "live":
-        if path.endswith((".m3u", ".m3u8")):
+        # FIX17 二期：live.txt 是常见的直播源清单（与 .m3u 同类），
+        # 验活时另有内容嗅探（见 _verify_one），纯文字页进不来。
+        if path.endswith((".m3u", ".m3u8", ".txt")):
             return "file"
     elif slug == "cfip":
         if path.endswith(".txt"):
+            return "file"
+    elif slug == "proxy":
+        # FIX17 二期：proxy 之前没有分支，规则文件会掉到 releases；
+        # 分流规则/模块文件按扩展名认。
+        if path.endswith((".list", ".conf", ".sgmodule", ".snippet",
+                          ".yaml", ".yml")):
             return "file"
     return None
 
@@ -2434,7 +2491,11 @@ def _count_config_loose(url, body, slug):
     if not body:
         return None
     text = body.decode("utf-8", "replace")
-    path = urllib.parse.urlparse(url).path.lower()
+    # FIX17 二期：同上，畸形网址的 urlparse 兜底（数不出来返回 None）。
+    try:
+        path = urllib.parse.urlparse(url).path.lower()
+    except Exception:
+        return None
     if slug == "node" and path.endswith((".yaml", ".yml")):
         n = len(re.findall(r"(?m)^\s*-\s+name\s*:", text))
         if n == 0:
@@ -2477,6 +2538,13 @@ def _verify_one(url, slug, verify):
             counted = _count_config_loose(url, body, slug)
         if not counted or counted[1] <= 0:
             return False, counted
+        # FIX17 二期：live 的 .txt 清单必须像个播放列表（有 #EXTINF 或
+        # 多个流媒体地址），否则一页纯文字说明也会被 count_content 按
+        # “非空行数”误判成活的直播源。
+        if slug == "live" and url.lower().endswith(".txt"):
+            text = body.decode("utf-8", "replace") if body else ""
+            if "#EXTINF" not in text and text.count("://") < 5:
+                return False, counted
         return True, counted
     if not body or len(body) < 100:
         return False, None
@@ -2487,6 +2555,23 @@ def _is_labelled(link):
     text = ((link.get("label") or "") + " " + (link.get("context") or "")).lower()
     return any(k in text for k in ("订阅", "下载", "subscribe", "download",
                                    "配置", "全量", "最新", "导入", "install"))
+
+
+def _looks_like_video_config_endpoint(u, link):
+    """FIX17 二期：TVBox 配置地址常无扩展名（裸路径 /tv /api /config /json），
+    扩展名认不出来。这类链接只在被“订阅/配置/TVBox/接口”标注时才列入
+    候选，靠 _verify_one 的内容数数兜底（内容里没有 sites 列表就验不活，
+    不会把普通网页当配置收进来）。"""
+    low = (u or "").lower()
+    path = urllib.parse.urlparse(u or "").path.lower()
+    last = path.rstrip("/").rsplit("/", 1)[-1]
+    if "." not in last or path.rstrip("/").endswith(("/tv", "/api", "/config",
+                                                     "/json")):
+        text = ((link.get("label") or "") + " "
+                + (link.get("context") or "")).lower()
+        return any(k in text for k in ("订阅", "配置", "tvbox", "影视仓",
+                                       "接口", "subscribe", "config", "api"))
+    return False
 
 
 def resolve_usable_url(slug, cand, material, verify=True):
@@ -2544,6 +2629,21 @@ def resolve_usable_url(slug, cand, material, verify=True):
         kind = _match_config_link(u, slug)
         if kind:
             cands.append((u, kind, link))
+    # FIX17 二期：video 无扩展名配置地址的内容嗅探候选（每条最多 5 个，
+    # 只认被标注过的；见 _looks_like_video_config_endpoint）。
+    if slug == "video":
+        _n_maybe = 0
+        for link in links:
+            if _n_maybe >= 5:
+                break
+            u = (link.get("url") or "").strip()
+            if not u or norm_url(u) == norm_url(cand_url):
+                continue
+            if any(norm_url(u) == norm_url(c[0]) for c in cands):
+                continue
+            if _looks_like_video_config_endpoint(u, link):
+                cands.append((u, "file", link))
+                _n_maybe += 1
     if cands:
         # 被“订阅/下载”标注的优先，其余按 README 里出现的顺序
         cands.sort(key=lambda t: (0 if _is_labelled(t[2]) else 1))
@@ -3295,13 +3395,8 @@ def build_item(slug, cand, material, new_id):
     if slug == "apple":
         if "testflight.apple.com" in item["url"]:
             set_detail(item, "现价", "免费参加")
-            set_detail(item, "名额状态", "未公布")
         elif not get_detail(item, "现价"):
             set_detail(item, "现价", "未公布")
-        if item.get("section") == "iapfree":
-            for lb in ("内购项目", "原价", "买断性质"):
-                if not get_detail(item, lb):
-                    set_detail(item, lb, "未公布")
         if item.get("section") == "discounts":
             if not get_detail(item, "原价"):
                 set_detail(item, "原价", "未公布")
@@ -3930,8 +4025,8 @@ def welfare_expire(categories, removed_keys):
         if not ident:
             continue
         item["miss"] = int(item.get("miss") or 0) + 1
-        if item["miss"] >= 2 and id(item) not in removed_keys:
-            removed_keys.add(id(item))
+        if item["miss"] >= 2 and _item_key(item) not in removed_keys:
+            removed_keys.add(_item_key(item))
             REMOVED.append(("ai", item.get("name") or "", item.get("url") or "",
                             f"来源「{WELFARE_NAMES.get(key, key)}」已下架"
                             "（连续 2 轮不在列表里）"))
@@ -3999,12 +4094,12 @@ def welfare_add(categories, entries, existing_urls, existing_names,
                 claimed_urls, max_id, removed_keys):
     """FIX16 新增：四来源条目进 ai 栏。规矩与现有新增一致——官方链接 +
     来源详情页链接双去重（撞已有 url/sourceUrl/feedUrl 都算）、名称近似
-    去重、黑名单、门禁自检、每栏 300 总量上限的 room（算法同 _add_for_slug）。"""
+    去重、黑名单、门禁自检、每栏 500 总量上限的 room（算法同 _add_for_slug）。"""
     if not entries:
         return
     cat = categories.get("ai") or {}
     items = cat.setdefault("items", [])
-    removed_here = sum(1 for it in items if id(it) in removed_keys)
+    removed_here = sum(1 for it in items if _item_key(it) in removed_keys)
     room = MAX_PER_CAT - (len(items) - removed_here)
     if room <= 0:
         # FIX17 A9：满栏只是新条目进不来，撞上已有条目的回填照常做
@@ -4024,7 +4119,7 @@ def welfare_add(categories, entries, existing_urls, existing_names,
     # 就只针对 ai 栏（FIX16 §2），索引范围与之一致。
     by_url = {}
     for it in cat.get("items") or []:
-        if id(it) in removed_keys:
+        if _item_key(it) in removed_keys:
             continue
         for u in (it.get("url"), it.get("sourceUrl"), it.get("feedUrl")):
             nu = norm_url(u or "")
@@ -4281,6 +4376,144 @@ DOMAIN_DROP_REPOS = frozenset((
     "yeayraww24/public-apis", "yindudegugezhanghao-lgtm/hk-brokers-rules",
     "yukido0205/android-agentic-sdlc", "zszszszsz/.config",
     "zuujiscom/free-game-assets",))
+
+# FIX17 二期：2026-11-25 域名未分类 106 条逐条判定（domain_verdicts.json，逐条核实过）：
+# provider +40、guide +21、drop +45。带 repo_key 的进 REPOS 名单；
+# 只有直接网址的进 URLS 名单（norm_url 口径，与条目比对时同函数）。
+# 注意两个弱锚点：JS.ORG 条目的网址被抓成 https://pages.github.com/（GitHub Pages 落地页），getxyz.de 条目被抓成 https://docs.github.com/en——若以后条目地址被修正为真实官网，这两个 URL 要同步更新。
+DOMAIN_PROVIDER_REPOS |= frozenset(( 
+    "intentfreedomain/isadev.in",
+    "is-a-dev/register",
+))
+DOMAIN_GUIDE_REPOS |= frozenset(( 
+    "4ngel2769/freedns.afraid.org-domain-scraper",
+    "abirboss8055/hostscout",
+    "cenk/nrd",
+    "iougemini/dsmc",
+    "jgalea/domcheck",
+    "kmodabber/sentry",
+    "ljpc-solutions/freescout-whmcs-module",
+    "mailchannels/craft-mailchannels",
+    "rixlhq/work-email-validator",
+    "shizuku-x/dsh-dnshe-domain",
+    "tashfeenahmed/agentdomains-mcp",
+    "tashfeenahmed/agentdomains-web",
+    "whoisfreaks/daily-newly-registered-domains",
+    "zinn-digital/zinn-reseller-toolkit",
+))
+DOMAIN_DROP_REPOS |= frozenset(( 
+    "app-othecary/aublix-v2",
+    "ashayk003/datasmith",
+    "awaism257/the-mantle-library",
+    "clto/hongguo-adblock",
+    "davidmcdougall/conversation-with-machiavelli",
+    "erikpr1994/open-exercise-db",
+    "jam0k/ransomware-intel",
+    "jcarpe315/divided-house",
+    "me-warkari/santkrupa",
+    "mkhalid1/claude-certification-study-notes",
+    "mkhalid1/comptia-a-plus-study-notes",
+    "mkhalid1/comptia-network-plus-study-notes",
+    "mkhalid1/comptia-security-plus-study-notes",
+    "nanocomp/meep",
+    "openie-dev/free-evtol-corpus",
+    "openie-dev/free-humanoid-corpus",
+    "openie-dev/free-wearable-corpus",
+    "openparem/openparem",
+    "orthodoxoskomvos/orthodoxoskomvos.github.io",
+    "qhquanghuy/shipit",
+    "sane-apps/viapatrum-translations",
+    "wahah2048-cell/landsat",
+    "whx57/paper-radar",
+    "yoloboydelis/yoloboydelis.github.io",
+))
+DOMAIN_PROVIDER_URLS = frozenset(( 
+    "https://awesomeprojects.tech/",
+    "https://cli.rs/",
+    "https://cluster.ws/",
+    "https://creepers.sbs/",
+    "https://customer.l53.net/",
+    "https://dev-in.tw/",
+    "https://devs.surf/",
+    "https://docs.is-a.dev/",
+    "https://domain.digitalplat.org/",
+    "https://domain.stackryze.com/",
+    "https://dynv6.com/docs/apis",
+    "https://env.pm/",
+    "https://fluxcast.dev/",
+    "https://foo.ng/",
+    "https://freedns.afraid.org/",
+    "https://freedns.my/index.php",
+    "https://freemyip.com/main",
+    "https://go-live.me/",
+    "https://hapdns.com/",
+    "https://has-a.space/",
+    "https://help.github.com/pages",
+    "https://int.yt/",
+    "https://is-a-good.dev/",
+    "https://is-a.dev/",
+    "https://is-a.wiki/",
+    "https://is-an.ai/",
+    "https://is-cod.in/",
+    "https://is-local.host/",
+    "https://isroot.in/",
+    "https://iz.rs/registracija_domena",
+    "https://katabump.com/en",
+    "https://linkora.top/",
+    "https://meowed-at.me/",
+    "https://moe.page/",
+    "https://nic.eu.org/",
+    "https://nic.ua/en/knowledge-base/pp-ua-domains-restrictions",
+    "https://pages.cloudflare.com/",
+    "https://pages.github.com/",
+    "https://pntr.dev/",
+    "https://pp.ua/eng/index.html",
+    "https://publicfreesuffix.org/",
+    "https://the-dev.xyz/",
+    "https://thedev.id/dns-leak-test",
+    "https://vexr.dev/",
+    "https://www.dnshe.com/",
+    "https://www.duckdns.org/",
+    "https://www.dynu.com/en-US",
+    "https://www.from-mm.dev/waiting-room",
+    "https://www.furry.box/",
+    "https://www.gname.com/",
+    "https://www.gname.vip/tld-eu-cc.html",
+    "https://www.lovie.me/docs",
+    "https://yunamo.com/",
+))
+DOMAIN_GUIDE_URLS = frozenset(( 
+    "http://makes.fyi/",
+    "https://agentdomains.co/",
+    "https://deed.page/",
+    "https://docs.github.com/en",
+    "https://www.cloudflare.com/5xx-error-landing",
+    "https://www.name.com/",
+))
+DOMAIN_DROP_URLS = frozenset(( 
+    "https://archive.org/",
+    "https://community.abuse.ch/",
+    "https://iths.online/",
+    "https://josbeak.github.io/spine",
+    "https://mit-license.org/",
+    "https://openstax.org/",
+    "https://otx.alienvault.com/user/projectargus/pulses",
+    "https://threatcluster.io/",
+    "https://threatcluster.io/api/iocs/public/crypto.txt",
+    "https://threatcluster.io/api/iocs/public/domains.txt",
+    "https://threatcluster.io/api/iocs/public/feed.txt",
+    "https://threatcluster.io/api/iocs/public/full/crypto.txt",
+    "https://threatcluster.io/api/iocs/public/full/domains.txt",
+    "https://threatcluster.io/api/iocs/public/full/hashes.txt",
+    "https://threatcluster.io/api/iocs/public/full/ips.txt",
+    "https://threatcluster.io/api/iocs/public/hashes.txt",
+    "https://threatcluster.io/api/iocs/public/ips.txt",
+    "https://threatcluster.io/feeds",
+    "https://threatcluster.io/formats",
+    "https://threatcluster.io/integrations",
+    "https://threatcluster.io/iocs",
+))
+
 ADULT_DROP_REPOS = frozenset((
     "ballad0324/hoopoetv", "bywilliams/homehub_tvbox", "cc-lab7/tvbox-host",
     "cony8888/tvbox-ipv4-live", "davisweee/vod-hub",
@@ -4345,24 +4578,30 @@ def _fix17_domain_split(categories, removed_keys):
     cat = categories.get("domain") or {}
     n_main = n_guide = n_drop = n_new_guide = n_fail = 0
     for item in cat.get("items") or []:
-        if id(item) in removed_keys:
+        if _item_key(item) in removed_keys:
             continue
         try:
+            # FIX17 二期：仓库 + 直接网址双通道判定（106 条里 66 条只有
+            # 直接网址、没有 repo_key，单看仓库会漏判；种子 15 条的直接
+            # 网址也进了 PROVIDER_URLS，口径统一）。
             repo = _repo_key(item)
-            if not repo:
-                continue
-            if repo in DOMAIN_DROP_REPOS:
-                removed_keys.add(id(item))
+            u = norm_url(item.get("url") or "")
+            su = norm_url(item.get("sourceUrl") or "")
+            if repo in DOMAIN_DROP_REPOS or u in DOMAIN_DROP_URLS \
+                    or su in DOMAIN_DROP_URLS:
+                removed_keys.add(_item_key(item))
                 REMOVED.append(("domain", item.get("name") or "",
                                 item.get("url") or "",
                                 "与域名注册无关的误收录（FIX17 深审清理）"))
                 n_drop += 1
-            elif repo in DOMAIN_GUIDE_REPOS:
+            elif repo in DOMAIN_GUIDE_REPOS or u in DOMAIN_GUIDE_URLS \
+                    or su in DOMAIN_GUIDE_URLS:
                 if (item.get("section") or "") != "guide":
                     item["section"] = "guide"
                     n_new_guide += 1
                 n_guide += 1
-            elif repo in DOMAIN_PROVIDER_REPOS:
+            elif repo in DOMAIN_PROVIDER_REPOS or u in DOMAIN_PROVIDER_URLS \
+                    or su in DOMAIN_PROVIDER_URLS:
                 n_main += 1
         except Exception:
             n_fail += 1
@@ -4383,7 +4622,7 @@ def _fix17_adult_cleanup(categories, removed_keys):
     cat = categories.get("adult") or {}
     n_drop = n_long = n_new_long = n_fail = 0
     for item in cat.get("items") or []:
-        if id(item) in removed_keys:
+        if _item_key(item) in removed_keys:
             continue
         try:
             name = (item.get("name") or "").strip()
@@ -4399,7 +4638,7 @@ def _fix17_adult_cleanup(categories, removed_keys):
             if (repo and repo in ADULT_DROP_REPOS) \
                     or norm_url(item.get("url") or "") in ADULT_DROP_NORMURLS \
                     or norm_name(name) in ADULT_DROP_NORMNAMES:
-                removed_keys.add(id(item))
+                removed_keys.add(_item_key(item))
                 REMOVED.append(("adult", item.get("name") or "",
                                 item.get("url") or "",
                                 "成人栏误收录清理（FIX17 深审：非成人内容）"))
@@ -4434,10 +4673,20 @@ def fix17_candidate_block(slug, cand):
     if slug == "domain":
         repo = github_repo_of(cand.get("url") or "")
         repo = repo.lower() if repo else ""
-        if repo and repo in DOMAIN_DROP_REPOS:
+        u = norm_url(cand.get("url") or "")
+        if (repo and repo in DOMAIN_DROP_REPOS) or u in DOMAIN_DROP_URLS:
             return "域名栏已清理的无关误收录（FIX17）"
-        if repo and repo in DOMAIN_GUIDE_REPOS:
+        if (repo and repo in DOMAIN_GUIDE_REPOS) or u in DOMAIN_GUIDE_URLS:
             cand["section"] = "guide"
+    elif slug == "apple":
+        # FIX17 二期·苹果方案 A：GitHub 仓库来源只进 ipasign；deals/
+        # discounts/testflight 不再接受仓库候选（只收商店页/TestFlight
+        # 链接/价格通道发现的新限免）；iapfree/disguised 分区已废除。
+        section = cand.get("section") or ""
+        if section in ("iapfree", "disguised"):
+            return "苹果栏：iapfree/伪装分区已废除"
+        if github_repo_of(cand.get("url") or "") and section != "ipasign":
+            return "苹果栏：仓库来源只进签名分区"
     elif slug == "adult":
         repo = github_repo_of(cand.get("url") or "")
         repo = repo.lower() if repo else ""
@@ -4485,7 +4734,7 @@ def mark_ai_kinds(categories):
                 tools += 1
             elif kind == "platform":
                 plats += 1
-        # FIX17 加深轮：日志只在本轮真有标记变化时打——稳态下每轮 300 条
+        # FIX17 加深轮：日志只在本轮真有标记变化时打——稳态下每轮全栏
         # 标记都不变，原写法会把同一行数字无限重复进每轮日志。
         if changed:
             log(f"FIX17：AI 条目形态标记——平台 {plats} 条 / 工具 {tools} 条"
@@ -4495,11 +4744,823 @@ def mark_ai_kinds(categories):
 
 
 
+# ================= FIX17 二期·苹果方案 A =================
+# （2026-11-25，方案见 fix17-audit/apple_a_方案.md）
+# 原则：苹果栏只收能直接用的东西——App Store 下载页（限免/降价）、
+# TestFlight 招募链接、签名包仓库；仓库主页冒充限免/内购限免的条目
+# 全部出局。价格/分类以 iTunes Lookup 为唯一事实来源（美区）；原价
+# 没有 Lookup 字段，靠台账 data/apple_prices.json 攒历史价，降价前
+# 的价格即原价，台账里没有就留空，绝不编造。
+
+# 迁移淘汰名单：现有 300 条里要删的 118 个仓库（deals 仓库 102 +
+# iapfree 11 + testflight 仓库 5），按 2026-11-25 live 数据逐条核过。
+APPLE_DROP_REPOS = frozenset({
+    '3lgroup/prevelet-app-build',
+    'abdurahmanalmehdi/x-path',
+    'abhaymettu/appmatch',
+    'adamwilfred/how-to-create-an-interactive-ebook',
+    'ajayrandhawa/grocery-app-documentation',
+    'alexdlaird/fastlane-plugin-bosun',
+    'alfredang/freefoodapp',
+    'aliujun/asc-uploader',
+    'altic-dev/fluidvoice',
+    'amadotejada/testflight-beta-watcher',
+    'anatanczak/meslistes',
+    'andrewpk/ios_appsanddaemons',
+    'anuragvd/movies-app',
+    'appibara-ltd/appitool',
+    'arc-hub/ivyarchackathon',
+    'arf4th/testflight-availability-monitor',
+    'austinea/app-sdlc',
+    'axorax/awesome-free-apps',
+    'bayou-brains/tigerdroppings-ios-app',
+    'bhuvan-rj/midas',
+    'blakecrosley/appstore-connect-mcp',
+    'boondharika/quint-coin-community-for-free',
+    'builde7b0b/ios-doctrine',
+    'bytebrewio/bytebrewiossdk',
+    'bytebrewio/bytebrewunitysdk',
+    'choiceshack/the-arcana-hack',
+    'christian-cunanan-caparra/taskswift-premium-minimalist-daily-planner-to-do-list',
+    'compo-cf/cosmica',
+    'dancingpea/libertyscan',
+    'dash1971/critique-ai-2',
+    'dcmoderator/apple-testflight-codes',
+    'delonsampaio/liftlogic',
+    'dinajdayeh/graduation-project',
+    'duceum/appstore-ppp-pricing-agent-skill',
+    'ekncarcc/osg',
+    'elementalequitycode/organyze-ios',
+    'finnkliewer/shoppinglist',
+    'flexih/snakelist',
+    'fmz200/global-testflight-link',
+    'ftzi/cloud-functions-iap',
+    'gadominas/vintly',
+    'getfoulee/foulee',
+    'goneforever13/tor-links',
+    'gyde-tv/beta-tester-sync',
+    'hangbose/qiling-ios',
+    'hiru-ge/asc-mcp',
+    'hrshitkunwar-tech/argumentsaver',
+    'idoo/app-store-connect-mcp',
+    'improbablyisaac/pandora-official-guide',
+    'indiagrams/apple-shipkit',
+    'isherous/score_predictor',
+    'issaghostlife/streamwears',
+    'javiemir/paperpals3d',
+    'jmarrr/ios-submission-checklist',
+    'joed1986/app-updates',
+    'joshuakozlo/gameswithgold',
+    'katapote/katapote-games-site',
+    'kelleyparker/uil_pml_ios',
+    'kelvinkosbab/appbootstrapai',
+    'khushboosingh12/orderyourfood-swiftuiapp',
+    'kind-unes/habitnow',
+    'kulaklikkontrol/kulaklikkontrol.github.io',
+    'kush-coder/autopilot-app-store-connect-cli-v10',
+    'kush-coder/autopilot-app-store-connect-cli-v8',
+    'kush-coder/autopilot-app-store-connect-cli-v9',
+    'leguagou-debug/longshot',
+    'leverdeterre/iappinfos',
+    'luminati-io/apple-app-store-scraper',
+    'marko-p/spoolkid',
+    'masudbro94/python-hacked-mobile-phone-',
+    'materadetzky/best-free-ios-apps',
+    'mengchuanfu/suspecious-apps-detection',
+    'miguelosaurus/swift-sim',
+    'namiml/figma-ios-paywall-design',
+    'natelee2030/awesome-truly-free-ios',
+    'ndabney562/hive-kit',
+    'needle-mirror/com.unity.purchasing',
+    'nepenth/synara-desktop',
+    'ngominhtoan/myandroidtestflight',
+    'ngominhtoan/mytestflightserver',
+    'nickustinov/itsyconnect-macos',
+    'nlpope/swiftnovice',
+    'now-network/now-app-privacy',
+    'odevio/odevio-cli',
+    'opd-ai/grow-companion',
+    'orellbuehler/testflight-mcp',
+    'ourostack/apple-distribution-kit',
+    'pexatasoy/build-pipelines',
+    'philberhane/fadelistapp',
+    'pierpaologumina/open-source-apps',
+    'pjones7-del/slate-app',
+    'pluwen/awesome-testflight-link',
+    'pofky/asc-mcp',
+    'powerbeef/vocello',
+    're13orn/ipa-decrypt',
+    'repat/ibreak',
+    'ronald106/surviv.io',
+    'rorkai/app-store-connect-cli',
+    'rurom/newnews',
+    'rurza/hangar',
+    'sdrew85-jpg/cricket-empire',
+    'sonia6891/investtogo',
+    'souhaibbenfarhat/karhabti-ios',
+    'soundet/srb',
+    'stefancrigler/easylistapp',
+    'steffan005/kairos-bridge-ios',
+    'swati1024/torrents',
+    'takasusuke/app-policies',
+    'teaualune/mobile-dev-skills',
+    'tianhaoz95/hejitech-apps',
+    'timokoethe/appstoreconnect-mcp',
+    'tryzealot/zealot',
+    'umutserifler/publish-ios-appstore',
+    'vidipt89/shoppinglisthome',
+    'vitalygashkov/app-sneak',
+    'wilburwing-art/phase-training2',
+    'wordisborn/beta-sync',
+    'zksac/iblockfilter',
+})
+
+# 榜单 RSS（观察名单用：美区+国区，限免/付费各 100；feeds.json 里的
+# 苹果 RSS 已拿掉，这里是唯一入口，避免绕开台账直接加条目）。
+APPLE_RSS_FEEDS = [
+    ("us-free", "https://itunes.apple.com/us/rss/topfreeapplications/limit=100/genre=36/json"),
+    ("us-paid", "https://itunes.apple.com/us/rss/toppaidapplications/limit=100/genre=36/json"),
+    ("cn-free", "https://itunes.apple.com/cn/rss/topfreeapplications/limit=100/genre=36/json"),
+    ("cn-paid", "https://itunes.apple.com/cn/rss/toppaidapplications/limit=100/genre=36/json"),
+]
+
+TF_SOURCE_URLS = {
+    "pluwen": "https://github.com/pluwen/awesome-testflight-link",
+    "1xtest": "https://1xtest.com",
+    "releaf": "https://releaf.site/beta",
+}
+
+
+def apple_ledger_path(script_dir):
+    """价格台账路径：仓库根目录 data/apple_prices.json（update.yml 里
+    已把它加进 diff 检查和 git add，否则台账永不落盘）。"""
+    return os.path.join(os.path.dirname(script_dir), "data",
+                        "apple_prices.json")
+
+
+def load_apple_ledger(script_dir):
+    """读价格台账：{app_id: {name, last_price, max_price,
+    first_free_seen, last_seen, misses}}。读不到/坏了返回空台账。"""
+    p = apple_ledger_path(script_dir)
+    try:
+        with open(p, "r", encoding="utf-8") as f:
+            d = json.load(f)
+        if isinstance(d, dict):
+            return d
+    except Exception:
+        pass
+    return {}
+
+
+def save_apple_ledger(script_dir, ledger):
+    p = apple_ledger_path(script_dir)
+    try:
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "w", encoding="utf-8") as f:
+            json.dump(ledger, f, ensure_ascii=False, indent=1, sort_keys=True)
+        return True
+    except Exception as e:
+        log(f"价格台账保存失败：{e}")
+        return False
+
+
+def _ledger_seed_from_item(ledger, app_id, item):
+    """冷启动播种：台账里没有这个 id 时，用条目上已有的现价/原价详情行
+    播种（9 条 discounts 的真实原价就靠这个保住——台账从现价起算的话，
+    永远算不出真原价）。只播种，不洗已有台账。"""
+    ent = ledger.get(app_id)
+    if ent is None:
+        ent = {"name": item.get("name") or "", "last_price": None,
+               "max_price": None, "first_free_seen": None,
+               "last_seen": today_cst(), "misses": 0}
+        ledger[app_id] = ent
+    if ent.get("last_price") is None:
+        cur = _price_amount(get_detail(item, "现价"))
+        if cur is not None:
+            ent["last_price"] = cur
+    if not ent.get("max_price"):
+        orig = _price_amount(get_detail(item, "原价"))
+        if orig:
+            ent["max_price"] = orig
+    return ent
+
+
+def _ledger_seed_from_rec(ledger, app_id, rec):
+    """榜单里首次见到的 id：只记台账，不建条目（没有历史价，叫不出
+    限免/降价；下轮起它有了历史价，才有资格进栏）。"""
+    price = rec.get("price")
+    if price is None:
+        price = _price_amount(rec.get("formattedPrice") or "")
+    ent = {"name": rec.get("trackName") or "", "last_price": price,
+           "max_price": price, "first_free_seen": None,
+           "last_seen": today_cst(), "misses": 0}
+    ledger[app_id] = ent
+    return ent
+
+
+def itunes_lookup_many(ids, country=None):
+    """批量 iTunes lookup（一次最多 200 个 id），结果写进 _itunes_cache
+    （与 itunes_lookup 同 key，label_item/build_item 直接命中，不再
+    重复请求）。返回 {id_str: rec 或 None}。单批失败不重试、不抛错，
+    缺的记 None。"""
+    out = {}
+    ids = [str(i) for i in dict.fromkeys(ids) if i]
+    if not ids:
+        return out
+    for start in range(0, len(ids), 200):
+        chunk = ids[start:start + 200]
+        try:
+            u = "https://itunes.apple.com/lookup?id=" + ",".join(chunk)
+            if country:
+                u += f"&country={country}"
+            status, _ct, body = fetch(u, max_bytes=2 * 1024 * 1024)
+            if status != 200:
+                raise RuntimeError(f"lookup HTTP {status}")
+            data = json.loads(body.decode("utf-8", "replace"))
+            found = {}
+            for rec in data.get("results") or []:
+                tid = str(rec.get("trackId") or "")
+                if tid:
+                    found[tid] = rec
+            for app_id in chunk:
+                rec = found.get(app_id)
+                out[app_id] = rec
+                with _itunes_lock:
+                    _itunes_cache[(app_id, country or "")] = rec
+        except Exception as e:
+            log(f"iTunes 批量查价失败（{len(chunk)} 个 id）：{e}")
+            for app_id in chunk:
+                out.setdefault(app_id, None)
+                with _itunes_lock:
+                    _itunes_cache.setdefault((app_id, country or ""), None)
+    return out
+
+
+def apple_watchlist_rss():
+    """榜单 RSS（美区+国区，限免/付费各 100）：返回 app id 集合。
+    单源失败只跳过，不抛错。"""
+    ids = set()
+    for _name, u in APPLE_RSS_FEEDS:
+        try:
+            status, _ct, body = fetch(u, max_bytes=512 * 1024)
+            if status != 200:
+                continue
+            data = json.loads(body.decode("utf-8", "replace"))
+            for entry in (data.get("feed") or {}).get("entry") or []:
+                tid = (((entry.get("id") or {}).get("attributes") or {})
+                       .get("im:id"))
+                if tid:
+                    ids.add(str(tid))
+        except Exception:
+            continue
+    return ids
+
+
+def _apple_store_items(categories):
+    items = ((categories.get("apple") or {}).get("items") or [])
+    out = []
+    for it in items:
+        app_id = apple_id_of(it.get("url") or "")
+        if app_id:
+            out.append((app_id, it))
+    return out
+
+
+def _build_apple_store_item(rec, section, ledger_ent, new_id):
+    """用 iTunes 记录拼一个苹果商店条目（走 build_item 复用简介/标签
+    逻辑，再补价格通道的字段）。材料不够（无名/无地址/介绍太短）
+    返回 None。"""
+    name = (rec.get("trackName") or "").strip()
+    url = (rec.get("trackViewUrl") or "").strip()
+    desc = (rec.get("description") or "").strip()
+    if not name or not url or len(desc) < 20:
+        return None
+    material = {"title": name, "text": desc[:1500],
+                "lang": lang_label_from_codes(
+                    rec.get("languageCodesISO2A") or []),
+                "counted": None, "github": None, "itunes": rec,
+                "screenshots": itunes_screenshots(rec)}
+    item = build_item("apple", {"name": name, "url": url, "section": section},
+                      material, new_id)
+    price = rec.get("price")
+    if price is None:
+        price = _price_amount(rec.get("formattedPrice") or "")
+    if price is not None:
+        set_detail(item, "现价", "免费" if price == 0 else f"${price:g}")
+    if section == "discounts" and ledger_ent and ledger_ent.get("max_price"):
+        set_detail(item, "原价", f"${ledger_ent['max_price']:g}")
+    genre = rec.get("primaryGenreName") or ""
+    set_detail(item, "应用类型", "游戏" if genre == "Games" else "APP")
+    rel = (rec.get("releaseDate") or "")[:10]
+    if rel:
+        item["publishedAt"] = rel
+        set_detail(item, "发布时间", rel)
+    # FIX17 二期：门禁要求 apple 条目必须有版本标签；Lookup 有就填
+    # 真值，没有就填未公布（绝不编）。
+    set_detail(item, "最新版本", (rec.get("version") or "未公布").strip()
+               or "未公布")
+    vrel = (rec.get("currentVersionReleaseDate") or "")[:10]
+    set_detail(item, "版本日期", vrel or "未公布")
+    if rec.get("averageUserRating") is not None:
+        set_detail(item, "评分", str(rec.get("averageUserRating")))
+    if rec.get("userRatingCount") is not None:
+        set_detail(item, "评分数", str(rec.get("userRatingCount")))
+    return item
+
+
+def apple_price_channel(categories, ledger, removed_keys, next_id):
+    """价格通道：批量查价 → 更新现价/原价/分类/版本/评分 → 限免/降价
+    分区流转（价格回升出栏、下架 3 次未命中删）→ 榜单观察名单发现
+    新限免/新降价。返回 (next_id, stats)。单条异常只跳过该条。
+    移除走既有约定：removed_keys 是 _item_key(item) 的集合（数字 id，见 _item_key），原因写进 REMOVED，
+    同样受两个安全阀约束。
+    安全阀：Lookup 返回数比名单少 30% 以上（疑似接口异常），本轮跳过
+    所有删除和分区流转，只更新价格和台账。"""
+    stats = {"checked": 0, "moved": 0, "removed": 0, "added": 0,
+             "misses": 0, "skipped_valve": False}
+    apple = categories.get("apple") or {}
+    items = apple.get("items") or []
+    retained = _apple_store_items(categories)
+    if not retained:
+        return next_id, stats
+    for app_id, it in retained:
+        _ledger_seed_from_item(ledger, app_id, it)
+    watch = apple_watchlist_rss()
+    watch_ids = {app_id for app_id, _ in retained} | watch
+    lookup = itunes_lookup_many(sorted(watch_ids))
+    got = sum(1 for v in lookup.values() if v)
+    valve = len(watch_ids) > 0 and got < len(watch_ids) * 0.7
+    if valve:
+        stats["skipped_valve"] = True
+        log(f"苹果价格通道：Lookup 只返回 {got}/{len(watch_ids)}，"
+            "本轮跳过所有删除和分区流转")
+    today = today_cst()
+    for app_id, it in retained:
+        try:
+            rec = lookup.get(app_id)
+            ent = ledger.get(app_id) or {}
+            if rec is None:
+                ent["misses"] = int(ent.get("misses") or 0) + 1
+                ent["last_seen"] = today
+                stats["misses"] += 1
+                if not valve and ent["misses"] >= 3:
+                    removed_keys.add(_item_key(it))
+                    REMOVED.append(("apple", it.get("name") or "",
+                                    it.get("url") or "",
+                                    "苹果栏：商店下架（连续 3 轮查不到）"))
+                    stats["removed"] += 1
+                continue
+            ent["misses"] = 0
+            ent["last_seen"] = today
+            ent["name"] = rec.get("trackName") or ent.get("name") or ""
+            price = rec.get("price")
+            if price is None:
+                price = _price_amount(rec.get("formattedPrice") or "")
+            if price is None:
+                continue
+            price = float(price)
+            # FIX17 二期：had_max 必须在更新 max 之前记——原价未公布的
+            # 条目本轮 max 会被写成现价，若直接用 price >= max 判，会把
+            # 现价根本没变过的 46 条降价全删掉（自证预言）。只有之前就
+            # 知道真原价（台账/条目原价详情行），回到原价才算降价结束。
+            had_max = ent.get("max_price") is not None
+            mx = ent.get("max_price")
+            if mx is None or price > mx:
+                ent["max_price"] = price
+            ent["last_price"] = price
+            stats["checked"] += 1
+            section = it.get("section") or ""
+            set_detail(it, "现价", "免费" if price == 0 else f"${price:g}")
+            genre = rec.get("primaryGenreName") or ""
+            set_detail(it, "应用类型", "游戏" if genre == "Games" else "APP")
+            rel = (rec.get("releaseDate") or "")[:10]
+            if rel:
+                it["publishedAt"] = rel
+                set_detail(it, "发布时间", rel)
+            if rec.get("averageUserRating") is not None:
+                set_detail(it, "评分", str(rec.get("averageUserRating")))
+            if rec.get("userRatingCount") is not None:
+                set_detail(it, "评分数", str(rec.get("userRatingCount")))
+            if valve:
+                continue
+            if section == "deals" and price > 0:
+                mx = ent.get("max_price") or 0
+                if mx and price < mx:
+                    it["section"] = "discounts"
+                    set_detail(it, "原价", f"${mx:g}")
+                    stats["moved"] += 1
+                    bump("apple_moved")
+                else:
+                    removed_keys.add(_item_key(it))
+                    REMOVED.append(("apple", it.get("name") or "",
+                                    it.get("url") or "",
+                                    "苹果栏：限免结束（价格回升）"))
+                    stats["removed"] += 1
+            elif section == "discounts":
+                mx = ent.get("max_price") or 0
+                if price == 0:
+                    it["section"] = "deals"
+                    if not ent.get("first_free_seen"):
+                        ent["first_free_seen"] = today
+                    stats["moved"] += 1
+                    bump("apple_moved")
+                elif had_max and price >= mx:
+                    removed_keys.add(_item_key(it))
+                    REMOVED.append(("apple", it.get("name") or "",
+                                    it.get("url") or "",
+                                    "苹果栏：降价结束（价格回到原价）"))
+                    stats["removed"] += 1
+            if price == 0 and not ent.get("first_free_seen"):
+                ent["first_free_seen"] = today
+        except Exception as e:
+            log(f"苹果价格通道跳过一条异常条目 {app_id}：{e}")
+            continue
+    # 观察名单：榜单里出现、台账里有历史价、当前不在栏里的应用
+    if not valve:
+        counts = {}
+        for i in items:
+            s = i.get("section") or ""
+            counts[s] = counts.get(s, 0) + 1
+        total = len(items)
+        retained_ids = {app_id for app_id, _ in retained}
+        for app_id in sorted(watch):
+            if total >= APPLE_TOTAL_CAP:
+                break
+            if app_id in retained_ids:
+                continue
+            ent = ledger.get(app_id)
+            rec = lookup.get(app_id)
+            if not ent or ent.get("last_price") is None:
+                # 首次见到：只记台账，不建条目
+                if rec is not None:
+                    _ledger_seed_from_rec(ledger, app_id, rec)
+                continue
+            if rec is None:
+                continue
+            price = rec.get("price")
+            if price is None:
+                price = _price_amount(rec.get("formattedPrice") or "")
+            if price is None:
+                continue
+            last = ent.get("last_price")
+            if last is None or last <= 0:
+                continue
+            section = None
+            if price == 0:
+                section = "deals"
+            elif price <= 0.7 * last:
+                section = "discounts"
+            if section is None:
+                continue
+            if counts.get(section, 0) >= APPLE_SECTION_CAPS[section]:
+                continue
+            new_item = _build_apple_store_item(rec, section, ent, next_id)
+            if new_item is None:
+                continue
+            items.append(new_item)
+            next_id += 1
+            counts[section] = counts.get(section, 0) + 1
+            total += 1
+            stats["added"] += 1
+            bump("apple_added")
+    return next_id, stats
+
+
+# ---------------- TestFlight 三源 ----------------
+
+def parse_pluwen_tf(text):
+    """pluwen README 表格：返回 ({join_url: (name, updated)},
+    {join_url: status})。只认表行里的 TestFlight 链接；状态 Y=招募中，
+    F=满，N=不招，D=已删。"""
+    open_map = {}
+    status_map = {}
+    if not text:
+        return open_map, status_map
+    for m in re.finditer(
+            r"\|\s*([^|\n]+?)\s*\|\s*\[https://testflight\.apple\.com/join/"
+            r"([A-Za-z0-9]+)\]\([^)]*\)\s*\|\s*([YFND])\s*\|\s*([0-9-]+)?",
+            text):
+        name, code, st, updated = m.groups()
+        url = f"https://testflight.apple.com/join/{code}"
+        status_map[url] = st
+        if st == "Y":
+            open_map[url] = (name.strip(), (updated or "").strip())
+    return open_map, status_map
+
+
+def parse_1xtest_sitemap(text):
+    """1xtest sitemap：返回 /app/<slug> 的 loc 列表（按 sitemap 顺序，
+    即 lastmod 新到旧）。"""
+    out = []
+    if not text:
+        return out
+    for m in re.finditer(
+            r"<loc>(https://1xtest\.com/app/[A-Za-z0-9\-]+)</loc>", text):
+        out.append(m.group(1))
+    return out
+
+
+def parse_1xtest_detail(html):
+    """1xtest 应用详情页：返回 (name, join_url) 或 None。
+    只有页面含 Boarding（正在招募）才算数。"""
+    if not html or "Boarding" not in html:
+        return None
+    m = re.search(r"https://testflight\.apple\.com/join/([A-Za-z0-9]+)", html)
+    if not m:
+        return None
+    title = re.search(r"<title>([^<]+)</title>", html or "")
+    name = ""
+    if title:
+        name = re.sub(r"\s*TestFlight beta.*$", "", title.group(1)).strip()
+    return (name, f"https://testflight.apple.com/join/{m.group(1)}")
+
+
+_MONTHS = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5,
+           "June": 6, "July": 7, "August": 8, "September": 9,
+           "October": 10, "November": 11, "December": 12}
+
+
+def _parse_open_through(text):
+    """releaf 详情页里的 "open through February 22, 2027" → 2027-02-22。
+    解析不出返回空字符串（绝不编日期）。"""
+    m = re.search(r"open through ([A-Z][a-z]+) (\d{1,2}), (\d{4})",
+                  text or "")
+    if not m:
+        return ""
+    mon, day, year = m.groups()
+    if mon not in _MONTHS:
+        return ""
+    return f"{int(year):04d}-{_MONTHS[mon]:02d}-{int(day):02d}"
+
+
+def parse_releaf_beta(html):
+    """releaf /beta 页：返回 [(slug, name, join_url)]。
+    卡片在文档里按同一顺序出现：应用名（alt="… app icon"）、
+    TestFlight 链接、分区 id="beta-<slug>"。按文档顺序两两配对
+    （样本核过：9 个名、9 个链接一一对上）；没有卡片的分区（如
+    占位的 redline）只有 id、没有名和链接，自然被跳过。
+    注意：slug 与 name 是按位置配对的（Freetail 的分区 id 叫 echo，
+    名字对不上号，只能按顺序认），调用方抓详情页时必须再核对页面的
+    <title> 应用名，名字对不上就不取截止日期，绝不张冠李戴。"""
+    if not html:
+        return []
+    names = re.findall(r'alt="([^"]+?)\s+app icon', html)
+    joins = []
+    seen = set()
+    for code in re.findall(
+            r"https://testflight\.apple\.com/join/([A-Za-z0-9]+)", html):
+        if code not in seen:
+            seen.add(code)
+            joins.append(code)
+    slugs = re.findall(r'id="beta-([A-Za-z0-9\-]+)"', html)
+    out = []
+    for i, (nm, code) in enumerate(zip(names, joins)):
+        slug = slugs[i] if i < len(slugs) else ""
+        out.append((slug, nm.strip(),
+                    f"https://testflight.apple.com/join/{code}"))
+    return out
+
+
+def _releaf_detail_deadline(html, expect_name):
+    """releaf 详情页：先核对 <title> 里的应用名和期望的名字一致，
+    再取 "open through <日期>"。名字对不上返回 ""（绝不张冠李戴）。"""
+    if not html:
+        return ""
+    tm = re.search(r"<title>([^<]+?)\s*\|\s*ReLeaf</title>", html)
+    page_name = tm.group(1).strip() if tm else ""
+    if not page_name or page_name.lower() != (expect_name or "").lower():
+        return ""
+    return _parse_open_through(html)
+
+
+def _build_apple_tf_item(name, join_url, source, deadline, new_id):
+    """拼一个 TestFlight 招募条目。name/join_url 必须真实；deadline 为空
+    就不写这一行，绝不编。名额数苹果从不公布：新条目只写“仅显示开放中”，
+    旧条目上已有的实测数（如 97 / 100）绝不洗成未公布。"""
+    item = {
+        "access": "direct", "builtinConfigName": "", "builtinConfigUrl": "",
+        "description": "", "descriptionOriginal": "", "details": [],
+        "id": new_id, "imageUrl": "", "name": (name or "TestFlight 测试")[:80],
+        "rank": 999, "region": "", "score": 0, "screenshots": [],
+        "section": "testflight", "sourceUrl": "", "summary": "",
+        "tags": ["自动收录"], "url": join_url, "usageKind": "",
+        "usageNote": "", "verifiedAt": today_cst(), "warning": "",
+        "auto": True, "publishedAt": "",
+    }
+    nm = item["name"]
+    item["description"] = (f"{nm} 正在 TestFlight 上招募测试者，免费参加，"
+                           "适合想提前试用新应用的人。加入方式：点开上面的 "
+                           "TestFlight 链接，点接受就能装测试版。")
+    item["summary"] = f"{nm} 正在 TestFlight 招募测试者，免费参加。"
+    set_detail(item, "现价", "免费参加")
+    set_detail(item, "招募状态", "开放中")
+    set_detail(item, "剩余名额", "仅显示开放中")
+    # FIX17 二期：TestFlight 加入链接里没有应用 id，版本号查不到——
+    # 门禁要求 apple 条目必须有这两个标签，查不到就填未公布（绝不编）。
+    set_detail(item, "最新版本", "未公布")
+    set_detail(item, "版本日期", "未公布")
+    if deadline:
+        set_detail(item, "截止加入", deadline)
+    set_detail(item, "信息来源", source)
+    return item
+
+
+def apple_tf_channel(categories, removed_keys, next_id):
+    """TestFlight 三源：pluwen（主，Y 才收）+ 1xtest（补充，详情页确认
+    Boarding 才收）+ releaf（量小，给截止日期）。返回 (next_id, stats)。
+    单源失败只跳过该源；保留条目连续 2 轮不在任何源里才删。"""
+    stats = {"added": 0, "removed": 0, "updated": 0}
+    apple = categories.get("apple") or {}
+    items = apple.get("items") or []
+    retained = [it for it in items
+                if (it.get("section") or "") == "testflight"
+                and "testflight.apple.com" in (it.get("url") or "")]
+    # --- 拉三源（各自 try/except，单源失败不拖垮别的源）---
+    pluwen_open, pluwen_status = {}, {}
+    try:
+        status, _ct, body = fetch(
+            "https://raw.githubusercontent.com/pluwen/awesome-testflight-link/main/README.md",
+            max_bytes=2 * 1024 * 1024)
+        if status != 200:
+            raise RuntimeError(f"HTTP {status}")
+        pluwen_open, pluwen_status = parse_pluwen_tf(
+            body.decode("utf-8", "replace"))
+    except Exception as e:
+        log(f"TestFlight 来源 pluwen 拉取失败：{e}")
+        try:
+            status, _ct, body = fetch(
+                "https://raw.githubusercontent.com/pluwen/awesome-testflight-link/master/README.md",
+                max_bytes=2 * 1024 * 1024)
+            if status == 200:
+                pluwen_open, pluwen_status = parse_pluwen_tf(
+                    body.decode("utf-8", "replace"))
+        except Exception:
+            pass
+    xtest_open = {}
+    try:
+        status, _ct, body = fetch("https://1xtest.com/sitemap.xml",
+                                  max_bytes=4 * 1024 * 1024)
+        if status == 200:
+            slugs = parse_1xtest_sitemap(body.decode("utf-8", "replace"))
+            room = APPLE_SECTION_CAPS["testflight"] - len(retained)
+            budget = min(TF_DETAIL_BUDGET, max(0, room * 2)) if room > 0 else 0
+            for loc in slugs[:budget]:
+                try:
+                    st2, _ct2, b2 = fetch(loc, max_bytes=512 * 1024)
+                    if st2 != 200:
+                        continue
+                    parsed = parse_1xtest_detail(
+                        b2.decode("utf-8", "replace"))
+                    if parsed:
+                        nm, ju = parsed
+                        xtest_open[ju] = nm
+                except Exception:
+                    continue
+    except Exception as e:
+        log(f"TestFlight 来源 1xtest 拉取失败：{e}")
+    releaf_open = {}
+    try:
+        status, _ct, body = fetch("https://releaf.site/beta",
+                                  max_bytes=512 * 1024)
+        if status == 200:
+            html = body.decode("utf-8", "replace")
+            for slug, nm, ju in parse_releaf_beta(html):
+                deadline = ""
+                if slug:
+                    try:
+                        st3, _ct3, b3 = fetch(f"https://releaf.site/{slug}",
+                                              max_bytes=512 * 1024)
+                        if st3 == 200:
+                            deadline = _releaf_detail_deadline(
+                                b3.decode("utf-8", "replace"), nm)
+                    except Exception:
+                        pass
+                releaf_open[ju] = (nm, deadline)
+    except Exception as e:
+        log(f"TestFlight 来源 releaf 拉取失败：{e}")
+    # --- 更新保留条目 ---
+    for it in retained:
+        try:
+            ju = (it.get("url") or "").strip()
+            miss = int(it.get("tfMiss") or 0)
+            seen = False
+            if ju in pluwen_open:
+                seen = True
+                set_detail(it, "招募状态", "开放中")
+            elif ju in pluwen_status:
+                st = pluwen_status[ju]
+                set_detail(it, "招募状态",
+                           {"F": "已满", "N": "停招",
+                            "D": "已下架"}.get(st, "未公布"))
+            if ju in xtest_open:
+                seen = True
+                set_detail(it, "招募状态", "开放中")
+            if ju in releaf_open:
+                seen = True
+                _nm, deadline = releaf_open[ju]
+                set_detail(it, "招募状态", "开放中")
+                if deadline:
+                    set_detail(it, "截止加入", deadline)
+            if seen:
+                if miss:
+                    it["tfMiss"] = 0
+                stats["updated"] += 1
+            else:
+                miss += 1
+                it["tfMiss"] = miss
+                if miss >= 2:
+                    removed_keys.add(_item_key(it))
+                    REMOVED.append(("apple", it.get("name") or "",
+                                    it.get("url") or "",
+                                    "苹果栏：TestFlight 招募结束"
+                                    "（连续 2 轮不在来源里）"))
+                    stats["removed"] += 1
+        except Exception as e:
+            log(f"TestFlight 更新跳过一条异常条目：{e}")
+            continue
+    # --- 加新条目（releaf 优先：带截止日期；其次 pluwen；最后 1xtest）---
+    have = {((it.get("url") or "").strip()) for it in items}
+    cands = {}
+    for ju, nm in xtest_open.items():
+        cands[ju] = {"name": nm, "source": "1xtest", "deadline": ""}
+    for ju, (nm, _upd) in pluwen_open.items():
+        cands[ju] = {"name": nm, "source": "pluwen", "deadline": ""}
+    for ju, (nm, deadline) in releaf_open.items():
+        cands[ju] = {"name": nm, "source": "releaf", "deadline": deadline}
+    tf_count = len(retained) - stats["removed"]
+    total = len(items) - stats["removed"]
+    for ju in sorted(cands):
+        if tf_count >= APPLE_SECTION_CAPS["testflight"]:
+            break
+        if total >= APPLE_TOTAL_CAP:
+            break
+        if ju in have:
+            continue
+        c = cands[ju]
+        if not c["name"]:
+            continue
+        new_item = _build_apple_tf_item(c["name"], ju, c["source"],
+                                        c["deadline"], next_id)
+        new_item["sourceUrl"] = TF_SOURCE_URLS[c["source"]]
+        items.append(new_item)
+        next_id += 1
+        tf_count += 1
+        total += 1
+        stats["added"] += 1
+        bump("apple_tf_added")
+    return next_id, stats
+
+
+def apple_migrate(categories, removed_keys):
+    """方案 A 迁移：现有 300 条按 keep 182 / drop 118 落地。
+    删：iapfree 整组、disguised 分区、APPLE_DROP_REPOS 里的仓库条目；
+    留：deals 商店 38、discounts 55、testflight 真链接 7、ipasign 82；
+    所有留下的条目删掉重复的「名额状态」详情行。逐条 try/except，
+    出错的条目保留不删（下轮再说），绝不因迁移丢数据。返回淘汰条数。"""
+    apple = categories.get("apple") or {}
+    items = apple.get("items") or []
+    kept = []
+    dropped = 0
+    for it in items:
+        try:
+            section = it.get("section") or ""
+            if section in ("iapfree", "disguised"):
+                removed_keys.add(_item_key(it))
+                REMOVED.append(("apple", it.get("name") or "",
+                                it.get("url") or "",
+                                "苹果栏清理：iapfree/伪装分区废除"))
+                dropped += 1
+                bump("apple_migrated_drop")
+                continue
+            repo = _repo_key(it)
+            if repo and repo in APPLE_DROP_REPOS:
+                removed_keys.add(_item_key(it))
+                REMOVED.append(("apple", it.get("name") or "",
+                                it.get("url") or "",
+                                "苹果栏清理：仓库冒充限免/内购限免/TestFlight"))
+                dropped += 1
+                bump("apple_migrated_drop")
+                continue
+            it["details"] = [d for d in (it.get("details") or [])
+                             if d.get("label") != "名额状态"]
+            kept.append(it)
+        except Exception as e:
+            log(f"苹果迁移跳过一条异常条目：{e}")
+            kept.append(it)
+    apple["items"] = kept
+    if dropped:
+        log(f"苹果迁移：淘汰 {dropped} 条，保留 {len(kept)} 条")
+    return dropped
+
+
+
 # ---------------- state.json ----------------
 
 def load_state(script_dir):
-    """读 state.json：fails（连续验活失败次数）+ pending（待补清单）。
-    返回 (fails, path, pending_list)。"""
+    """读 state.json：fails（连续验活失败次数）+ pending（待补清单）+
+    full_refresh_done（FIX17 二期全量刷新标记）。返回 (fails, path,
+    pending_list, full_refresh_done)。老文件没有这个标记时默认 False
+    （即下一轮做全量刷新）。"""
     path = os.path.join(script_dir, "state.json")
     try:
         with open(path, encoding="utf-8") as f:
@@ -4508,14 +5569,16 @@ def load_state(script_dir):
         pending = data.get("pending") or []
         if not isinstance(pending, list):
             pending = []
-        return {str(k): int(v) for k, v in fails.items()}, path, pending
+        return ({str(k): int(v) for k, v in fails.items()}, path, pending,
+                bool(data.get("full_refresh_done")))
     except Exception:
-        return {}, path, []
+        return {}, path, [], False
 
 
-def save_state(path, fails, keep_urls, pending=None):
+def save_state(path, fails, keep_urls, pending=None, full_refresh_done=False):
     """写 state.json：fails 只留还在站上的、次数 >0 的；pending（待补清单）
-    只留还在站上的条目（已解析掉 / 已删掉的自然掉出），最多 1000 条。"""
+    只留还在站上的条目（已解析掉 / 已删掉的自然掉出），最多 1000 条；
+    full_refresh_done 是 FIX17 二期全量刷新标记（跑完首轮全量刷新后打上）。"""
     pend = []
     if pending:
         for e in pending:
@@ -4523,6 +5586,7 @@ def save_state(path, fails, keep_urls, pending=None):
                 pend.append(e)
     data = {"fails": {u: n for u, n in fails.items() if u in keep_urls and n > 0},
             "pending": pend[:1000],
+            "full_refresh_done": bool(full_refresh_done),
             "updatedAt": now_iso_z()}
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
@@ -4554,6 +5618,19 @@ def write_screened(root_dir, removed):
 
 # ---------------- 主流程 ----------------
 
+def _process_item_safe(slug, item, state_fails):
+    """FIX17 二期·逐条故障隔离：单条刷新抛错只跳过该条、保留旧数据并
+    计数，绝不让一条坏数据毁掉整轮（ex.map 会把第一个异常直接抛回
+    main，全量刷新轮里 2500 多条解析，单条异常的概率不低）。"""
+    try:
+        return process_item(slug, item, state_fails)
+    except Exception as e:
+        log(f"刷新跳过一条异常条目（{slug}，保留旧数据）："
+            f"{item.get('name') or ''} {item.get('url') or ''}：{e}")
+        bump("refresh_error")
+        return False
+
+
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     default_path = os.path.join(os.path.dirname(script_dir), "data.json")
@@ -4563,13 +5640,25 @@ def main():
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
     categories = data.get("categories") or {}
-    state_fails, state_path, state_pending = load_state(script_dir)
-    # FIX14：待补清单读进内存；本轮解析预算清零（逐步替换老条目）。
+    state_fails, state_path, state_pending, full_refresh_done = load_state(
+        script_dir)
+    # FIX14：待补清单读进内存。
     for _e in state_pending:
         if isinstance(_e, dict) and _e.get("url"):
             PENDING[norm_url(_e["url"])] = _e
-    _RESOLVE_BUDGET["left"] = 120
+    # FIX17 二期·全量刷新：标记没打上时，本轮预算=全部剩余模板条目
+    # （一次性把现存约 1600 条模板简介刷完）；跑完把标记打上，之后每轮
+    # 恢复稳态预算 300。预算先判地址再扣（见 process_item），只有裸仓库
+    # 地址的条目才消费预算。
+    if full_refresh_done:
+        _RESOLVE_BUDGET["left"] = _RESOLVE_BUDGET_STEADY
+        log("刷新预算：稳态 300 条/轮（全量刷新已完成）。")
+    else:
+        _RESOLVE_BUDGET["left"] = 10 ** 9
+        log("刷新预算：首轮全量刷新（不限量），跑完打上 full_refresh_done 标记。")
     _SHOT_BUDGET["left"] = 60
+    # 苹果价格台账（冷启动为空；本轮结束时落盘）。
+    apple_ledger = load_apple_ledger(script_dir)
 
     normalize_sections(data)
 
@@ -4581,7 +5670,8 @@ def main():
     log(f"共 {total_before} 条，开始验活刷新（并发 10）……")
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as ex:
-        list(ex.map(lambda j: process_item(j[0], j[1], state_fails), jobs))
+        list(ex.map(lambda j: _process_item_safe(j[0], j[1], state_fails),
+                    jobs))
     log(f"验活：通 {STATS['checked_ok']} / 不通 {STATS['dead']}")
 
     # 安全阀一：超过 30% 不通 → 本轮不删任何条目（验活数据可能不可信），
@@ -4632,41 +5722,51 @@ def main():
     # 单源失败只跳过并记日志；条目只进 ai 栏，新增/过期删除都走下面既有流程。
     welfare_entries = collect_welfare_entries()
 
-    # ---- 苹果限免过期复核：deals 里现价不是免费的，降组或移除 ----
+    # ---- FIX17 二期·苹果方案 A ----
+    # 顺序：迁移（182/118 落地）→ 价格通道（查价/流转/发现新限免降价）
+    # → TestFlight 三源（更新招募状态/加新招募）。三个环节各自故障隔离，
+    # 一个挂了不拖垮别的；移除都走 removed_keys/REMOVED，受安全阀约束。
+    # （旧的“限免过期复核”块已被价格通道取代：价格通道一次批量查价，
+    # 覆盖 deals/discounts 两个分区的流转 + 下架 3 次未命中删除。）
     removed_keys = set()
-    apple_cat = categories.get("apple") or {}
-    for item in apple_cat.get("items") or []:
-        if (item.get("section") or "") != "deals":
-            continue
-        aid = apple_id_of(item.get("url") or "")
-        if not aid:
-            continue
-        rec = itunes_lookup(aid)
-        if not rec:
-            continue
-        price = str(rec.get("formattedPrice") or "")
-        if price in ("", "Free"):
-            continue
-        set_detail(item, "现价", price)
-        cur_amt = _price_amount(price)
-        orig_amt = _price_amount(get_detail(item, "原价"))
-        if orig_amt and cur_amt is not None and cur_amt < orig_amt:
-            item["section"] = "discounts"
-            MOVED.append(("apple", item.get("name") or "", item.get("url") or "",
-                          f"限免结束，现价 {price}，降到降价组"))
-        else:
-            removed_keys.add(id(item))
-            REMOVED.append(("apple", item.get("name") or "", item.get("url") or "",
-                            f"限免已过期，现价 {price}"))
+    _max_id = 0
+    for _cat in categories.values():
+        for _it in (_cat.get("items") or []):
+            try:
+                _max_id = max(_max_id, int(_it.get("id") or 0))
+            except Exception:
+                pass
+    next_id = _max_id + 1
+    try:
+        apple_migrate(categories, removed_keys)
+    except Exception as e:
+        log(f"苹果迁移失败（跳过）：{e}")
+    try:
+        next_id, _apple_stats = apple_price_channel(
+            categories, apple_ledger, removed_keys, next_id)
+        log(f"苹果价格通道：查价 {_apple_stats['checked']} 条，流转 "
+            f"{_apple_stats['moved']} 条，移除 {_apple_stats['removed']} 条，"
+            f"新增 {_apple_stats['added']} 条"
+            + ("（Lookup 返回不足，跳过删除/流转）"
+               if _apple_stats["skipped_valve"] else ""))
+    except Exception as e:
+        log(f"苹果价格通道失败（跳过）：{e}")
+    try:
+        next_id, _tf_stats = apple_tf_channel(
+            categories, removed_keys, next_id)
+        log(f"TestFlight 通道：更新 {_tf_stats['updated']} 条，新增 "
+            f"{_tf_stats['added']} 条，移除 {_tf_stats['removed']} 条")
+    except Exception as e:
+        log(f"TestFlight 通道失败（跳过）：{e}")
 
     # ---- 移除：连续不通（苹果 3 次、其他栏目 6 次） ----
     for slug, cat in categories.items():
         threshold = 3 if slug == "apple" else 6
         for item in cat.get("items") or []:
-            if id(item) in removed_keys:
+            if _item_key(item) in removed_keys:
                 continue
             if int(state_fails.get(norm_url(item.get("url") or ""), 0)) >= threshold:
-                removed_keys.add(id(item))
+                removed_keys.add(_item_key(item))
                 REMOVED.append((slug, item.get("name") or "", item.get("url") or "",
                                 f"连续 {threshold} 次验活不通"))
 
@@ -4676,13 +5776,13 @@ def main():
     # 的已有条目：URL 和名字都换了，正文还是同一篇）。
     for slug, cat in categories.items():
         for item in cat.get("items") or []:
-            if id(item) in removed_keys:
+            if _item_key(item) in removed_keys:
                 continue
             if (is_blocked(item.get("url") or "", item.get("name") or "")
                     or is_blocked(item.get("sourceUrl") or "")
                     or text_blocked(item.get("description") or "")
                     or text_blocked(item.get("descriptionOriginal") or "")):
-                removed_keys.add(id(item))
+                removed_keys.add(_item_key(item))
                 REMOVED.append((slug, item.get("name") or "", item.get("url") or "",
                                 "黑名单（内容安全），不再收录"))
 
@@ -4710,7 +5810,7 @@ def main():
             f"{total_before} 条的 25%，只删 {removal_cap} 条，剩下的下轮再删。")
         keep_urls = {norm_url(u) for _s, _n, u, _r in REMOVED[:removal_cap] if u}
         REMOVED[:] = REMOVED[:removal_cap]
-        removed_keys = {id(it) for cat in categories.values()
+        removed_keys = {_item_key(it) for cat in categories.values()
                         for it in (cat.get("items") or [])
                         if norm_url(it.get("url") or "") in keep_urls}
 
@@ -4728,7 +5828,7 @@ def main():
         _locs.sort(key=lambda kv: _DEDUP_RANK.get(kv[0], 99))
         _keep_slug = _locs[0][0]
         for _slug, _it in _locs[1:]:
-            if id(_it) in removed_keys:
+            if _item_key(_it) in removed_keys:
                 continue
             _cat = categories[_slug]
             _cat["items"] = [x for x in (_cat.get("items") or []) if x is not _it]
@@ -4749,7 +5849,7 @@ def main():
     if _renamed:
         log(f"标题修正：{_renamed} 条报错标题改成链接文件名。")
 
-    # ---- 新增：先补位、再扩充；不重复的新条目全数加进（每栏总量上限 300） ----
+    # ---- 新增：先补位、再扩充；不重复的新条目全数加进（每栏总量上限 500） ----
     max_id = [0]
     _id_lock = threading.Lock()
     claimed_urls = set(existing_urls)
@@ -4835,7 +5935,7 @@ def main():
 
     def _add_for_slug(slug, cat):
         items = cat.setdefault("items", [])
-        removed_here = sum(1 for it in items if id(it) in removed_keys)
+        removed_here = sum(1 for it in items if _item_key(it) in removed_keys)
         room = MAX_PER_CAT - (len(items) - removed_here)
         cap = max(0, min(MAX_ADD_PER_CAT, room))
         if cap == 0:
@@ -4861,7 +5961,7 @@ def main():
             list(ex.map(lambda kv: _add_for_slug(kv[0], kv[1]), _wave))
 
     # FIX16：四来源新条目进 ai 栏（URL 双去重 + 名称近似去重 + 黑名单 +
-    # 门禁自检 + 每栏 300 上限的 room，算法与既有新增一致；见 welfare_add）。
+    # 门禁自检 + 每栏 500 上限的 room，算法与既有新增一致；见 welfare_add）。
     welfare_add(categories, welfare_entries, existing_urls, existing_names,
                 claimed_urls, max_id, removed_keys)
 
@@ -4871,7 +5971,7 @@ def main():
     # 真正执行移除
     for cat in categories.values():
         if cat.get("items"):
-            cat["items"] = [it for it in cat["items"] if id(it) not in removed_keys]
+            cat["items"] = [it for it in cat["items"] if _item_key(it) not in removed_keys]
 
     # （安全阀二已在收集阶段按 25% 封顶，这里不再中止；新增永不拦，
     # 搜到多少不重复的新条目就加多少。）
@@ -4905,7 +6005,13 @@ def main():
         for item in cat.get("items") or []:
             if item.get("url"):
                 keep_urls.add(norm_url(item["url"]))
-    save_state(state_path, state_fails, keep_urls, pending=list(PENDING.values()))
+    # FIX17 二期·全量刷新：本轮走到这里（正常落盘）才算全量刷新完成，
+    # 打上标记；中途崩溃则标记不打，下轮重新全量刷。台账和 state.json
+    # 一起落盘（update.yml 里 data/apple_prices.json 已加进提交清单）。
+    save_state(state_path, state_fails, keep_urls,
+               pending=list(PENDING.values()),
+               full_refresh_done=True)
+    save_apple_ledger(script_dir, apple_ledger)
 
     lines = [f"新增 {len(ADDED)} 条："]
     lines += [f"- [{s}] {n}（{u}）" for s, n, u in ADDED] or ["- 无"]
