@@ -20,7 +20,7 @@ import sys
 
 EXPECTED_SLUGS = ["ai", "apple", "video", "music", "book", "live",
                   "service", "domain", "cfip", "node", "app", "adult", "proxy"]
-MAX_PER_CAT = 300
+MAX_PER_CAT = 500  # 每栏总量上限（FIX17 二期：300→500，与 collect.py 同步）
 VERSION_REQUIRED_SLUGS = ("app", "apple", "proxy")
 
 DOMAIN_Q = ["免费时长", "能否续费", "续费价格", "能否进 CF"]
@@ -126,10 +126,7 @@ def main():
                 if (item.get("section") or "") == "discounts" \
                         and "原价" not in detail_labels:
                     problems.append(f"{tag}：降价条目缺「原价」")
-                if (item.get("section") or "") == "iapfree":
-                    for lb in ("内购项目", "买断性质"):
-                        if lb not in detail_labels:
-                            problems.append(f"{tag}：零元购条目缺「{lb}」")
+                # FIX17 二期：iapfree 分区已废除，门禁不再检查它。
             if slug in ("service", "domain"):
                 have = {dd.get("label") for dd in item.get("details") or []
                         if isinstance(dd, dict)}
