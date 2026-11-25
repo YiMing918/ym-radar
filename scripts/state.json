@@ -1,19 +1,21 @@
 {
  "fails": {
-  "https://github.com/Gost-co/ModelAtlas": 4,
-  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6": 4,
-  "https://github.com/dinhdev666/free-opencode-api": 2,
-  "https://github.com/neverpaytwice/ai-token-cost-scripts": 2,
-  "https://github.com/jwqsir2-lang/newbox": 2,
-  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v7": 2,
-  "https://github.com/childpig/reader": 2,
-  "https://github.com/MythorWonder/Respocket-Changer": 2,
-  "https://github.com/Akshay7273/ProxyMan-free-proxy-list": 2,
-  "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js": 1,
-  "https://notabug.org/fantaiying/ext/raw/main/drpy2.js": 1,
-  "https://github.com/dandelions/home-iptv": 1,
-  "http://bttcj.com/inc/sapi.php": 1,
-  "http://www.010aizy.com/API/macs.php": 1
+  "https://github.com/Gost-co/ModelAtlas": 5,
+  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6": 5,
+  "https://github.com/dinhdev666/free-opencode-api": 3,
+  "https://github.com/neverpaytwice/ai-token-cost-scripts": 3,
+  "https://github.com/jwqsir2-lang/newbox": 3,
+  "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v7": 3,
+  "https://github.com/MythorWonder/Respocket-Changer": 3,
+  "https://github.com/Akshay7273/ProxyMan-free-proxy-list": 3,
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js": 2,
+  "https://notabug.org/fantaiying/ext/raw/main/drpy2.js": 2,
+  "https://github.com/dandelions/home-iptv": 2,
+  "http://bttcj.com/inc/sapi.php": 2,
+  "http://www.010aizy.com/API/macs.php": 2,
+  "https://github.com/huatong202/tvbox-custom": 1,
+  "https://github.com/shipsho/shipsho": 1,
+  "https://github.com/innoxpert/innox-tools-free-web-developer-utilities-online-financial-calculators-2668": 1
  },
  "pending": [
   {
@@ -22,8 +24,8 @@
    "slug": "ai",
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-24",
-   "lastTried": "2026-11-24",
-   "tries": 1
+   "lastTried": "2026-11-25",
+   "tries": 2
   },
   {
    "url": "https://github.com/rogergongas8/token-counter",
@@ -31,8 +33,8 @@
    "slug": "ai",
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-24",
-   "lastTried": "2026-11-24",
-   "tries": 1
+   "lastTried": "2026-11-25",
+   "tries": 2
   },
   {
    "url": "https://github.com/Gost-co/ModelAtlas",
@@ -40,8 +42,8 @@
    "slug": "ai",
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-24",
-   "lastTried": "2026-11-24",
-   "tries": 1
+   "lastTried": "2026-11-25",
+   "tries": 2
   },
   {
    "url": "https://github.com/muntasirrmahdi/minimalrouter",
@@ -49,8 +51,8 @@
    "slug": "ai",
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-24",
-   "lastTried": "2026-11-24",
-   "tries": 1
+   "lastTried": "2026-11-25",
+   "tries": 2
   },
   {
    "url": "https://github.com/ons96/free-llm-benchmarking",
@@ -58,8 +60,8 @@
    "slug": "ai",
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-24",
-   "lastTried": "2026-11-24",
-   "tries": 1
+   "lastTried": "2026-11-25",
+   "tries": 2
   },
   {
    "url": "https://github.com/angvor/tvbox-live",
@@ -168,7 +170,205 @@
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-24",
    "tries": 1
+  },
+  {
+   "url": "https://github.com/Kame696/kame-api-rotation-for-hermes",
+   "name": "Kame696/kame-api-rotation-for-hermes",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/VISHWA106/Freellmapi",
+   "name": "VISHWA106/Freellmapi",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/Super-X9/llm-freewatch",
+   "name": "Super-X9/llm-freewatch",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/c00lpeace/free-llm-tracker",
+   "name": "c00lpeace/free-llm-tracker",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/avantika-agarwal60/Tarot-Reading-website-with-LLM-API-and-animations",
+   "name": "avantika-agarwal60/Tarot-Reading-website-with-LLM-API-and-animations",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/Kame696/kame-api-rotation-for-agent-zero",
+   "name": "Kame696/kame-api-rotation-for-agent-zero",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/Patrick-mufeng/workbuddy-free",
+   "name": "Patrick-mufeng/workbuddy-free",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/dinhdev666/free-opencode-api",
+   "name": "dinhdev666/free-opencode-api",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/yehorm14/volunteer_api",
+   "name": "yehorm14/volunteer_api",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/nejib1/SummarizeAPI",
+   "name": "nejib1/SummarizeAPI",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/abtravels/free-model-tracker",
+   "name": "abtravels/free-model-tracker",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/theGoodB0rg/FreeTrialFinder",
+   "name": "theGoodB0rg/FreeTrialFinder",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/jxjhheric/freebuff2api-wokers",
+   "name": "jxjhheric/freebuff2api-wokers",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/dingdadao/dnsPorxy",
+   "name": "dingdadao/dnsPorxy",
+   "slug": "cfip",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/onlyoyrao999/cfnatddnsgomod-2",
+   "name": "onlyoyrao999/cfnatddnsgomod-2",
+   "slug": "cfip",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/grumpyspud/ha80-armbian-fd628-front-panel",
+   "name": "grumpyspud/ha80-armbian-fd628-front-panel",
+   "slug": "adult",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/zseagate/iptv-tvbox-highend-android",
+   "name": "zseagate/iptv-tvbox-highend-android",
+   "slug": "adult",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/fajrin77/anticode",
+   "name": "fajrin77/anticode",
+   "slug": "ai",
+   "reason": "没找到可用的官网/外链",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/shellsec/bolemusic-ios",
+   "name": "shellsec/bolemusic-ios",
+   "slug": "music",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/Diaszano/netrack",
+   "name": "Diaszano/netrack",
+   "slug": "cfip",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/vgmr-99/tvbox-api-backup-mirror",
+   "name": "vgmr-99/tvbox-api-backup-mirror",
+   "slug": "video",
+   "reason": "README 里找到的配置文件验活都不通",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
+  },
+  {
+   "url": "https://github.com/Harrywang0117/IPTV",
+   "name": "Harrywang0117/IPTV",
+   "slug": "video",
+   "reason": "README 里没找到可用地址",
+   "firstSeen": "2026-11-25",
+   "lastTried": "2026-11-25",
+   "tries": 1
   }
  ],
- "updatedAt": "2026-11-24T14:48:17.224Z"
+ "updatedAt": "2026-11-25T02:04:18.128Z"
 }

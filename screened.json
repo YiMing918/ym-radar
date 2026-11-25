@@ -1,18 +1,78 @@
 {
- "date": "2026-11-24",
+ "date": "2026-11-25",
  "removed": [
   {
-   "name": "reqsgjh/free-coding-agent-models",
-   "url": "https://openrouter.ai/collections/free-models",
+   "name": "cirosantilli/china-dictatorship",
+   "url": "https://github.com/cirosantilli/china-dictatorship",
+   "slug": "book",
+   "reason": "黑名单（内容安全），不再收录"
+  },
+  {
+   "name": "mRFWq7LwNPZjaVv5v6eo/cihna-dictattorshrip-8",
+   "url": "https://github.com/mRFWq7LwNPZjaVv5v6eo/cihna-dictattorshrip-8",
+   "slug": "book",
+   "reason": "黑名单（内容安全），不再收录"
+  },
+  {
+   "name": "cirosantilli/china-dictatroship-7",
+   "url": "https://github.com/cirosantilli/china-dictatroship-7",
+   "slug": "book",
+   "reason": "黑名单（内容安全），不再收录"
+  },
+  {
+   "name": "zpc1314521/PCL2",
+   "url": "https://github.com/zpc1314521/PCL2",
+   "slug": "book",
+   "reason": "黑名单（内容安全），不再收录"
+  },
+  {
+   "name": "panbinibn/OpenPacketFix_",
+   "url": "https://github.com/panbinibn/OpenPacketFix_",
+   "slug": "book",
+   "reason": "黑名单（内容安全），不再收录"
+  },
+  {
+   "name": "phishdestroy/destroylist",
+   "url": "https://github.com/phishdestroy/destroylist",
+   "slug": "domain",
+   "reason": "黑名单（内容安全），不再收录"
+  },
+  {
+   "name": "cirosantilli/cirosantilli",
+   "url": "https://github.com/cirosantilli/cirosantilli",
+   "slug": "domain",
+   "reason": "黑名单（内容安全），不再收录"
+  },
+  {
+   "name": "felipetruman/free-llm-hub",
+   "url": "https://aistudio.google.com",
    "slug": "ai",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "mnfst/awesome-free-llm-apis",
+   "name": "woniuzfb/voice-edge",
+   "url": "https://aistudio.google.com/",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "velo4705/awesome-free-byok-models",
    "url": "https://awesome.re",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "bioogo/free-api-radar",
+   "url": "https://aistudio.google.com/apikey",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "OddlyLabs/FreeBuff2API",
+   "url": "https://nodejs.org/",
    "slug": "ai",
    "reason": "跨栏重复，保留在「ai」栏"
   }
  ],
- "updatedAt": "2026-11-24T14:48:17.224Z"
+ "updatedAt": "2026-11-25T02:04:18.129Z"
 }
