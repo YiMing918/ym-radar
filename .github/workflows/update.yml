@@ -42,11 +42,11 @@ jobs:
       - name: 提交前 diff（没变化就跳过）
         id: diff
         run: |
-          if [ -z "$(git status --porcelain -- data.json scripts/state.json)" ]; then
+          if [ -z "$(git status --porcelain -- data.json scripts/state.json data/apple_prices.json)" ]; then
             echo "数据没有变化：跳过提交，不触发 Pages 构建（省构建次数）。"
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git diff --stat -- data.json scripts/state.json | tail -5
+            git diff --stat -- data.json scripts/state.json data/apple_prices.json | tail -5
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
@@ -55,7 +55,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.json scripts/state.json screened.json
+          # FIX17 二期：价格台账 data/apple_prices.json 也要一起提交，
+          # 否则台账永不落盘（下轮冷启动又从头攒）。
+          git add data.json scripts/state.json screened.json data/apple_prices.json
           {
             echo "自动采集更新 $(TZ=Asia/Shanghai date +%F)"
             echo
