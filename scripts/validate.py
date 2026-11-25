@@ -9,6 +9,8 @@
   - description 长度：人工条目 >= 30；自动收录的新条目（auto=true，深挖补全后）
     >= 40 且含用途类信息（带「适合」字样，模板的人群段）
   - cracked 分组（破解类）条目 warning 非空且含风险类词（风险/病毒/后门等）
+  - AI 栏目条目带齐 11 项额度字段（查不到填未公布，与 collect.py 的
+    AI_CREDIT_LABELS 同步：7 项原字段 + 免费模型/签到额度/每周额度/每月额度）
   - overview 里的 counts 与实际条数一致
 不过 → 打印原因并以非零码退出（GitHub Actions 里这一步失败就不会提交）。
 
@@ -27,6 +29,10 @@ DOMAIN_Q = ["免费时长", "能否续费", "续费价格", "能否进 CF"]
 HOST_Q = ["免费时长", "机器配置", "申请要求", "能干什么"]
 EMAIL_Q = ["免费时长", "容量与发信量", "申请要求", "能干什么"]
 OTHER_Q = ["免费时长", "额度", "申请要求", "能干什么"]
+# AI 11 项额度字段（与 collect.py 的 AI_CREDIT_LABELS 同步，二期第三步 7→11）
+AI_CREDIT_LABELS_V = ["首次注册送", "每天额度", "其他途径", "总额度",
+                      "额度有效期", "是否要绑卡", "领取门槛",
+                      "免费模型", "签到额度", "每周额度", "每月额度"]
 
 
 def expected_labels(slug, item):
@@ -133,6 +139,12 @@ def main():
                 for lb in expected_labels(slug, item):
                     if lb not in have:
                         problems.append(f"{tag}：缺固定字段「{lb}」（查不到应填未公布）")
+            if slug == "ai":
+                have = {dd.get("label") for dd in item.get("details") or []
+                        if isinstance(dd, dict)}
+                for lb in AI_CREDIT_LABELS_V:
+                    if lb not in have:
+                        problems.append(f"{tag}：AI 条目缺额度字段「{lb}」（查不到应填未公布）")
             if slug == "apple" and (item.get("section") or "") == "ipasign":
                 typ = ""
                 for dd in item.get("details") or []:
