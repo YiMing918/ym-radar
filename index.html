@@ -178,7 +178,9 @@
     /* FIX17 二期：iapfree/伪装分区已废除（方案 A），从苹果栏标签里拿掉 */
     apple: { deals: '限免', discounts: '降价', testflight: 'TestFlight', ipasign: '签名' },
     /* FIX17 C2：域名分堆——main 是真提供商，guide 是降级的教程/清单/工具 */
-    domain: { main: '提供商', guide: '教程/清单/工具' }
+    domain: { main: '提供商', guide: '教程/清单/工具' },
+    /* FIX17 二期第二步：proxy 新增免费 VPN 分区 */
+    proxy: { vpn: '免费VPN' }
   };
   function sectionLabel(slug, s) {
     return (CAT_SECTION_LABELS[slug] || {})[s] || SECTION_LABELS[s] || s || '其他';
