@@ -5858,10 +5858,39 @@ def main():
             if isinstance(item.get("id"), int):
                 max_id[0] = max(max_id[0], item["id"])
 
-    def _try_add_one(slug, items, cand):
-        """深挖并收一条候选；成功返回 True。
+    def _try_add_one(slug, items, cand, tried_urls=None):
+        """深挖并收一条候选；经它（含合集展开）收进 ≥1 条返回 True。
         FIX14：service/domain 合集仓库先拆成单条服务再收（合集本身不收，
-        拆不出来也不收）；收进来的条目带 _pending_reason 的进待补清单。"""
+        拆不出来也不收）；收进来的条目带 _pending_reason 的进待补清单。
+        FIX15b：合集展开改显式栈迭代，不再递归调用自身——合集仓库互相
+        引用（A 的 README 列 B、B 又列回 A）时原递归不收敛，运行 #19 在
+        983 层后 RecursionError 拖垮整轮。现同一轮新增里每个候选（按
+        规范化 URL 记进 tried_urls）最多深挖一次，必然终止；展开顺序
+        仍是深度优先、条目原序，与递归版一致。单个候选深挖抛错只跳过
+        它（与 _process_item_safe 同款隔离），不拖垮整轮。"""
+        if tried_urls is None:
+            tried_urls = set()
+        added_any = False
+        stack = [cand]
+        while stack:
+            cur = stack.pop()
+            _nu = norm_url(cur.get("url") or "")
+            if _nu in tried_urls:
+                continue
+            tried_urls.add(_nu)
+            try:
+                if _add_one_here(slug, items, cur, stack):
+                    added_any = True
+            except Exception as e:
+                log(f"新增跳过一条异常候选（{slug}）："
+                    f"{cur.get('name') or ''}（{e}）")
+                bump("add_error")
+        return added_any
+
+    def _add_one_here(slug, items, cand, stack):
+        """处理单个候选（_try_add_one 的迭代展开体）：合集仓库把拆出的
+        条目压栈待办、自己返回 False；普通候选深挖收录，收进返回 True。
+        全部判断与放弃文案与原递归版逐字一致。"""
         # FIX14b：黑名单第二道（合集拆出来的条目没走 pull_candidates，在这拦）。
         if is_blocked(cand.get("url") or "", cand.get("name") or ""):
             bump("blocked")
@@ -5902,11 +5931,10 @@ def main():
                                   f"合集仓库拆不出条目（仅 {len(entries)} 条），不收"))
                 return False
             bump("split")
-            added = 0
-            for e in entries:
-                if _try_add_one(slug, items, e):
-                    added += 1
-            return added > 0
+            # FIX15b：拆出的条目压栈待办（倒序压栈，弹出顺序与条目原序
+            # 一致），由 _try_add_one 的迭代循环处理，不再递归。
+            stack.extend(reversed(entries))
+            return False
         with _id_lock:
             if norm_url(cand["url"]) in claimed_urls:
                 ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
@@ -5942,12 +5970,22 @@ def main():
             return
         added_here = 0
         tried = 0
+        tried_urls = set()
         for cand in pools.get(slug) or []:
             if added_here >= cap or tried >= MAX_CANDIDATES_TRY:
                 break
             tried += 1
             before = len(items)
-            if _try_add_one(slug, items, cand):
+            try:
+                ok = _try_add_one(slug, items, cand, tried_urls)
+            except Exception as e:
+                # FIX15b：调用点再兜一层（_try_add_one 内部已逐条隔离），
+                # 单个候选抛任何异常都只跳过它，不拖垮整轮。
+                log(f"新增跳过一条异常候选（{slug}）："
+                    f"{cand.get('name') or ''}（{e}）")
+                bump("add_error")
+                ok = False
+            if ok:
                 added_here += len(items) - before
 
     # 两波新增：先收专栏，免费服务最后收——专栏和兜底栏同时抢到同一链接时，
