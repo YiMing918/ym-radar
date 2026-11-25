@@ -1993,6 +1993,10 @@ def process_item(slug, item, state_fails):
         if img:
             item["imageUrl"] = img
             bump("imaged")
+    # FIX17 二期第三步：模板简介重写（纯本地字符串操作，不联网、不占预算；
+    # 在所有字段更新完之后跑，facts 用的是最新值；改过的简介不再命中模板检测）。
+    if _rewrite_template_desc(slug, item):
+        bump("desc_rewritten")
     # 内容级验活汇总：假活按不通补记（连续失败计数、验活阀都算它）
     if item.pop("_content_fail", False) and alive:
         bump("content_dead")
@@ -2853,7 +2857,14 @@ PARKED_HINTS = ("parked", "domain for sale", "buy this domain", "该域名",
 # 是否把数字当确定事实展示（规范 §7：needs_check/stale 一律“待核实”）。
 
 AI_CREDIT_LABELS = ["首次注册送", "每天额度", "其他途径", "总额度",
-                    "额度有效期", "是否要绑卡", "领取门槛"]
+                    "额度有效期", "是否要绑卡", "领取门槛",
+                    # FIX17 二期第三步：7 项 → 11 项（YM 要求加免费模型、
+                    # 签到额度、每周额度、每月额度）。ai_kb.json 没有这 4 项的
+                    # 结构化列——KB 命中时从条目自己的 credits/notes 原文里
+                    # 正则抽（见 fill_ai_credit_fields），不手改知识表、不编数字；
+                    # 抽不到填“未公布”。
+                    "免费模型", "签到额度", "每周额度", "每月额度"]
+_AI_NEW_LABELS = ("免费模型", "签到额度", "每周额度", "每月额度")
 _AI_KB = {"loaded": False, "entries": [], "conflicts": set()}
 _ai_kb_lock = threading.Lock()
 
@@ -2973,6 +2984,111 @@ def _ai_near_attr(text, start, end, attrs, window=120):
     return any(a in near for a in attrs)
 
 
+# FIX17 二期第三步：4 项新字段的抽取（与上面同款纪律：只写原文明确写出的，不猜）。
+_AI_MODEL_TOKENS = (
+    "Flash", "GPT-4", "GPT-5", "GPT-4o", "GPT-3", "Claude", "Gemini",
+    "DeepSeek", "Qwen", "GLM", "Kimi", "Grok", "Llama", "gpt-oss", "Whisper",
+    "Mistral", "Mixtral", "Gemma", "Phi", "Command", "Haiku", "Sonnet", "Opus",
+    "DeepSeek-R1", "DeepSeek-V3", "Qwen3", "GLM-4", "Kimi-K2", "Doubao",
+    "豆包", "通义", "文心", "星火", "混元", "盘古",
+)
+_AI_QUOTA_UNITS = ("次", "积分", "credits", "credit", "tokens", "token",
+                   "请求", "张", "词", "分钟", "额度", "上限", "重置", "条", "个")
+
+
+def _ai_sentences(text):
+    """按句切（中文句号/英文句号/换行），去空白。"""
+    out = []
+    for s in re.split(r"(?<=[。！？])|(?<=[.!?])\s+|\n", text or ""):
+        s = re.sub(r"\s+", " ", s).strip(" \t#*>-`")
+        if s:
+            out.append(s)
+    return out
+
+
+def _ai_extract_new_fields(text, free_context=False):
+    """4 项新字段：免费模型、签到额度、每周额度、每月额度。
+    免费模型：含“免费模型”且点名模型/给个数/给速率（带数字）的句子；
+    或免费语境下提到模型名的句子。下线/停用/“不含 XX 模型”等反向表述、
+    以及“未公布（免费模型不限次数…）”这种只说限额的句子不算。
+    KB 文本本身就是免费档口径（free_context=True）时，提到“模型”或
+    限速/额度的模型名句子也算。值取整句（按句界截到 120 字）。
+    签到额度：含“签到”的句子；原文明确说无签到 → 写“无签到”；
+    有数额取整句，无数额取片段 +“（数额未公布）”。没提签到不写——
+    不能从“没提”反推“无签到”（与深审建议不同，见报告）。
+    每周/每月额度：含“每周/每月”+ 额度单位（或额度/上限/重置/赠送/
+    发放）的句子；只提“每周同步/更新/发布”的不算（那是同步频率不是额度）。
+    明确说“无每周/每月额度” → 写“无每周/每月额度”。"""
+    t = (text or "")
+    out = {}
+    if not t.strip():
+        return out
+    sents = _ai_sentences(t)
+    # 免费模型：要么点名模型，要么给个数（“7 个定价 0 元的免费模型”），
+    # 要么给免费模型的速率（带数字）。只提“免费模型不限次数/未公布”
+    # 的句子不算（那是在说限额，不是在说哪些模型免费）；下线/停用、
+    # “不含 XX 模型”这类反向表述的句子也跳过。
+    for s in sents:
+        if "免费模型" in s:
+            if s.strip().startswith("未公布"):
+                continue
+            if re.search(r"下线|停用|不再提供|已关闭|停服", s):
+                continue
+            if any(tok.lower() in s.lower() for tok in _AI_MODEL_TOKENS) \
+                    or re.search(r"\d+\s*个|定价\s*0\s*元", s) \
+                    or re.search(r"\d[\d,]*\s*(?:次|请求|tokens?|credits?)", s):
+                out["免费模型"] = _truncate_at_sentence(s, 120)
+                break
+            continue
+        low = s.lower()
+        if re.search(r"下线|停用|不再提供|已关闭|停服|不含|不包括|不提供|除外|仅限付费", s):
+            continue
+        if any(tok.lower() in low for tok in _AI_MODEL_TOKENS) and (
+                "免费" in s or "模型" in s or free_context
+                or ("free" in low and "model" in low)):
+            if re.search(r"免费|模型|额度|限速|每天|每周|每月|free|model|limit|quota|daily|weekly|monthly", s, re.I):
+                out["免费模型"] = _truncate_at_sentence(s, 120)
+                break
+    # 签到额度（中文“签到”或英文 sign in / check in / daily login）
+    for s in sents:
+        if "签到" in s:
+            if re.search(r"无签到|没有签到|无每日签到|不签到|无需签到", s):
+                out["签到额度"] = "无签到"
+                break
+            if re.search(r"\d[\d,]*\s*(?:credits?|tokens?|积分|次|张|词|点|金币|coins?|points?)", s):
+                out["签到额度"] = _truncate_at_sentence(s, 120)
+            else:
+                out["签到额度"] = _truncate_at_sentence(s, 60) + "（数额未公布）"
+            break
+        if re.search(r"\b(sign|check)[- ]in\b|\bdaily\s+login\b", s, re.I):
+            if re.search(r"\bno\s+(sign|check)[- ]in\b|\bwithout\s+(sign|check)[- ]in\b", s, re.I):
+                out["签到额度"] = "无签到"
+                break
+            if re.search(r"\d[\d,]*\s*(?:credits?|tokens?|points?|coins?)", s, re.I):
+                out["签到额度"] = _truncate_at_sentence(s, 120)
+            else:
+                out["签到额度"] = _truncate_at_sentence(s, 60) + "（数额未公布）"
+            break
+    # 每周/每月额度
+    for label, word in (("每周额度", "每周"), ("每月额度", "每月")):
+        for s in sents:
+            if word not in s:
+                continue
+            if re.search(r"非" + word + r"|不是" + word + r"|不按" + word[0] + r"|非按" + word[0], s):
+                continue
+            if re.search(r"无" + word + r"额度", s):
+                out[label] = "无" + word + "额度"
+                break
+            if re.search(r"同步|更新|发布|推送", s) and not re.search(
+                    r"额度|上限|重置|赠送|发放|免费", s):
+                continue
+            if any(u in s for u in _AI_QUOTA_UNITS) or re.search(
+                    r"额度|上限|重置|赠送|发放", s):
+                out[label] = _truncate_at_sentence(s, 120)
+                break
+    return out
+
+
 def _ai_extract_from_text(text):
     """未命中查表时，只从 descriptionOriginal 正则抽明确写出的数字（规范 §4）。
     只抽这几种格式；光有数字没有归属词不抽；单位不换算、不推导。
@@ -3046,30 +3162,43 @@ def _ai_extract_from_text(text):
                    r"|\bcredit\s+card\s+required\b"
                    r"|\bcard\s+required\b", t, re.I):
         out["是否要绑卡"] = "要"
+    # FIX17 二期第三步：4 项新字段（正则路径，free_context=False；
+    # 只返回 4 个新 label，不碰上面 7 项）。
+    out.update(_ai_extract_new_fields(t))
     return out
 
 
 def _ai_credit_sentence(item):
     """简介里写数的句子（规范 §6）：只写 details 里已有的、带数字的三项必填，
     按“首次注册送 / 每天额度 / 额度有效期”顺序串起来。没有带数字的三项
-    就返回 ""（简介里不写数）。"""
+    就返回 ""（简介里不写数）。
+    FIX17 二期第三步：4 项新字段也进简介（只写已有的实值）：免费模型写
+    模型名（截 60 字），签到/每周/每月额度只写带数字的。"""
     parts = []
     for label, prefix in (("首次注册送", "注册送"), ("每天额度", "每天额度"),
                           ("额度有效期", "有效期")):
         v = get_detail(item, label)
         if v and v != "未公布" and re.search(r"\d", v):
             parts.append(f"{prefix}：{v}")
+    v = get_detail(item, "免费模型")
+    if v and v != "未公布":
+        parts.append(f"免费模型：{v[:60]}")
+    for label, prefix in (("签到额度", "签到"), ("每周额度", "每周"),
+                          ("每月额度", "每月")):
+        v = get_detail(item, label)
+        if v and v != "未公布" and re.search(r"\d", v):
+            parts.append(f"{prefix}：{v[:60]}")
     if not parts:
         return ""
     return "；".join(parts) + "。"
 
 
 def fill_ai_credit_fields(item, write_summary=False):
-    """FIX14 D：给一条 AI 栏条目填 7 项额度字段（details）。
+    """FIX14 D：给一条 AI 栏条目填 11 项额度字段（details，二期第三步 7→11）。
     顺序：查 ai_kb.json → 未命中则从 descriptionOriginal 正则抽 → 抽不到
     填“未公布”。已有真实值（非空、非裸“未公布”）只补缺、绝不洗掉——手写
-    种子的 7 项原值原样保留。核实状态记 details「额度核实」（待核实/已核实），
-    不动 7 项原值。简介里的数只在已核实时写（write_summary=True 时），
+    种子的 11 项原值原样保留。核实状态记 details「额度核实」（待核实/已核实），
+    不动 11 项原值。简介里的数只在已核实时写（write_summary=True 时），
     且只写 details 里已有的数。
     返回 {"source": "kb"|"regex"|"none", "entry": 命中条目名或 "",
           "stale": bool, "stale_reason": str, "filled": [补上的 label]}。"""
@@ -3090,6 +3219,15 @@ def fill_ai_credit_fields(item, write_summary=False):
             v = credits.get(label)
             if isinstance(v, str) and v.strip():
                 values[label] = v.strip()
+        # 二期第三步：4 项新字段没有结构化列——从条目自己的 credits/notes
+        # 原文里抽（free_context=True：整段就是免费档口径）。抽不到不填，
+        # 由下面统一补“未公布”。
+        _kb_text = "\n".join(
+            [str(v) for v in credits.values()]
+            + [str(n) for n in (entry.get("notes") or [])])
+        for _lb, _v in _ai_extract_new_fields(_kb_text, free_context=True).items():
+            if _lb not in values:
+                values[_lb] = _v
         stale_reason = _ai_stale_reason(entry)
         stale = bool(stale_reason)
     else:
@@ -3400,7 +3538,7 @@ def build_item(slug, cand, material, new_id):
         if item.get("section") == "discounts":
             if not get_detail(item, "原价"):
                 set_detail(item, "原价", "未公布")
-    # FIX14 D：AI 新条目补 7 项额度字段（KB 命中 / 正则抽取 / 未公布）；
+    # FIX14 D：AI 新条目补 11 项额度字段（KB 命中 / 正则抽取 / 未公布）；
     # 已核实的数字才进简介，且只写 details 里已有的数。
     if slug == "ai":
         fill_ai_credit_fields(item, write_summary=True)
@@ -3408,6 +3546,8 @@ def build_item(slug, cand, material, new_id):
         img = find_image(url)
         if img:
             item["imageUrl"] = img
+    # FIX17 二期第三步：新条目也不留模板框（刚拼好的简介若命中模板检测就地重写）。
+    _rewrite_template_desc(slug, item)
     return item
 
 
@@ -3466,6 +3606,184 @@ def _rebuild_item_text(slug, item, material):
                 item["summary"] = s
                 changed = True
     return changed
+
+
+# ---------------- FIX17 二期第三步：description 模板重写 ----------------
+# 看板口径：全站 description 模板率 82.9%（拼装句式
+# “{名} 是{站} 上的一个{种类}。”+“它主要用来…。适合…”/
+# “上面一段是它自己的英文原文介绍…”）。重写只用条目已有的真实材料
+# （descriptionOriginal 首段 / 已存简介去框后的正文 / details 事实行），
+# 不编造；改后仍须过门禁（≥40 字且含“适合”），否则不动。纯字符串操作，
+# 不联网、不占预算、幂等（改过的简介不再命中模板检测）。
+
+_DESC_HEAD_RE = re.compile(r"^[^。]{0,120}?是\s*\S+ 上的一个[^。]*。")
+_DESC_TAIL_RES = (
+    re.compile(r"它主要用来[^。]*。适合[^。]*。"),
+    re.compile(r"上面一段是它自己的英文原文介绍[^。]*。"),
+    re.compile(r"页面是英文的，可以用浏览器自动翻译看。"),
+    re.compile(r"适合[^。]*。$"),
+)
+_DESC_EN_NOTE = "（英文介绍，可用浏览器自动翻译）"
+_DESC_FACT_SKIP = {"最近检查", "最近更新", "星标数", "语言", "能否改中文",
+                   "发布时间", "中文说明", "额度核实", "最近探测存活"}
+_DESC_FACT_PLACEHOLDERS = {"", "未公布", "暂无配套", "未知", "无"}
+
+
+def _is_template_desc(desc):
+    """description 是不是模板拼装句式（与看板口径对齐）：
+    开头是“是 X 上的一个…”定位句，或含“上面一段是它自己的英文原文介绍”、
+    “它主要用来”这两句拼装尾巴。"""
+    d = (desc or "").strip()
+    if not d:
+        return False
+    if _DESC_HEAD_RE.search(d):
+        return True
+    if "上面一段是它自己的英文原文介绍" in d:
+        return True
+    if "它主要用来" in d:
+        return True
+    return False
+
+
+def _real_intro(text, max_len=300):
+    """原文介绍里取第一段像正文的内容：跳过标题式短段（<40 字且无句末标点），
+    最多拼两段，按句界截到 max_len。找不到返回 ""。"""
+    paras = []
+    for para in re.split(r"\n\s*\n|\n", text or ""):
+        p = re.sub(r"\s+", " ", para).strip(" \t#*>-`")
+        if not p:
+            continue
+        if len(p) < 40 and not re.search(r"[。！？!?]", p):
+            continue
+        if _BOILERPLATE_RES[0].search(p.lower()):
+            continue
+        paras.append(p)
+        if len(paras) >= 2:
+            break
+    if not paras:
+        return ""
+    if len(paras) == 1:
+        return _truncate_at_sentence(paras[0], max_len)
+    sep = "" if paras[0][-1] in "。！？!?" else " "
+    return _truncate_at_sentence(sep.join(paras), max_len)
+
+
+def _join_sentences(sents):
+    """句级拼回：中文句号后直接拼，英文句号/!/? 后补一个空格
+    （_split_sentences 会吃掉英文句号后的空格，直接拼会粘成
+    libraries.JavaScript）。"""
+    out = ""
+    for s in sents:
+        if out and out[-1] in ".!?":
+            out += " "
+        out += s
+    return out
+
+
+def _strip_desc_frame(desc):
+    """把已存简介的拼装框拆掉：去定位句头、去三句拼装尾、句级去重、
+    修掉尾部半句话。返回剩下的正文（可能为空）。"""
+    d = (desc or "").strip()
+    d = _DESC_HEAD_RE.sub("", d, count=1)
+    for rx in _DESC_TAIL_RES:
+        d = rx.sub("", d)
+    sents = [s for s in _split_sentences(d)]
+    seen, kept = set(), []
+    for s in sents:
+        k = re.sub(r"\s+", "", s)
+        if k and k not in seen:
+            seen.add(k)
+            kept.append(s)
+    d = _join_sentences(kept).strip()
+    if d and not re.search(r"[。！？!?]$", d):
+        idx = max(d.rfind("。"), d.rfind("！"), d.rfind("？"),
+                  d.rfind("!"), d.rfind("?"))
+        if idx >= 12:
+            d = d[:idx + 1]
+        else:
+            d = ""
+    return d
+
+
+def _facts_sentence(item, core=""):
+    """从 details 里拼一句事实（已有真实值的字段，每值 ≤30 字，不与正文重复，
+    最多 3 条，总长 ≤120 字）。没事实返回 ""。"""
+    parts = []
+    total = 0
+    for dd in item.get("details") or []:
+        if not isinstance(dd, dict):
+            continue
+        lb = (dd.get("label") or "").strip()
+        v = str(dd.get("value") or "").strip()
+        if lb in _DESC_FACT_SKIP or v in _DESC_FACT_PLACEHOLDERS:
+            continue
+        if len(v) > 30 or not v:
+            continue
+        if core and v in core:
+            continue
+        frag = f"{lb}：{v}"
+        if total + len(frag) > 120:
+            continue
+        parts.append(frag)
+        total += len(frag)
+        if len(parts) >= 3:
+            break
+    if not parts:
+        return ""
+    return "；".join(parts) + "。"
+
+
+def _is_mostly_english(text):
+    """正文是否以英文为主（ASCII 字母占比超 60% 且长度 ≥20）。"""
+    t = (text or "").strip()
+    if len(t) < 20:
+        return False
+    letters = sum(1 for ch in t if ch.isascii() and ch.isalpha())
+    return letters / max(len(t), 1) > 0.6
+
+
+def _rewrite_template_desc(slug, item):
+    """重写一条模板简介（只动自动收录、简介命中模板检测的条目）。
+    材料优先级：descriptionOriginal 首段 → 已存简介去框正文 → details 事实句；
+    拼成“正文 + 适合{人群}。”；英文为主的正文末尾加一句短注（不用被禁的
+    “上面一段是它自己的英文原文介绍”写法）。改后仍命中模板检测、
+    或 <40 字、或缺“适合”时不动。返回是否改过。"""
+    if not item.get("auto"):
+        return False
+    desc = (item.get("description") or "").strip()
+    if not _is_template_desc(desc):
+        return False
+    kind, use, who = cat_context_for(slug, item.get("section") or "")
+    core = _real_intro(item.get("descriptionOriginal") or "")
+    if len(core) < 30:
+        core = _strip_desc_frame(desc)
+    if len(core) < 30:
+        return False
+    # 句级去重（已存简介常把同一段重复两遍）
+    sents = _split_sentences(core)
+    seen, kept = set(), []
+    for s in sents:
+        k = re.sub(r"\s+", "", s)
+        if k and k not in seen:
+            seen.add(k)
+            kept.append(s)
+    core = _join_sentences(kept).strip()
+    if len(core) < 30:
+        return False
+    facts = _facts_sentence(item, core) if len(core) < 120 else ""
+    composed = (core + facts).strip() if facts else core
+    # 正文没以句末标点收尾时补一个句号再接“适合…”（否则英文片段会和“适合”粘在一起）。
+    if not re.search(r"[。！？!?\.]$", composed):
+        composed += "。"
+    new_desc = composed + f"适合{who}。"
+    if _is_mostly_english(composed):
+        new_desc += _DESC_EN_NOTE
+    if len(new_desc) < 40 or "适合" not in new_desc:
+        return False
+    if _is_template_desc(new_desc):
+        return False
+    item["description"] = new_desc
+    return True
 
 
 # ---------------- 栏目结构归一 + 破解警告 ----------------
@@ -4666,6 +4984,102 @@ def fix17_cleanup(categories, removed_keys):
         log(f"FIX17：成人清理失败（跳过）：{exc}")
 
 
+# ---------------- FIX17 二期第三步：优选IP/节点存量清理 ----------------
+# 离线实测结论：仅凭名字+简介分不出“工具仓库”和“列表仓库”（评分呈连续
+# 分布、无分界点；details/tags/section 也全是同一套通用字段），所以清理
+# 只用确定性规则，不猜：
+#  1. <x>.github.io 仓库 → 改写成 https://<x>.github.io/ 站点地址（改地址不删条目；
+#     站点才是交付物；owner 与仓库前缀不一致时走项目页 https://<owner>.github.io/<repo>/）。
+#  2. 简介是模板句、且仓库名没有任何工具信号的 → 移除。
+# 绝不删：手写种子（auto=False）、通道来源（feed）、有实测条数/配置链接的、
+# YM 自己的仓库（YiMing918/）、通道上游仓库（BestCF）。
+# 每轮幂等（跟苹果迁移同规矩）：改写过的地址不再是裸仓库地址，删过的条目
+# 下轮无从再删； feeds 若把同一仓库重新收回来，下轮照样按规则处理。
+# 移除走 removed_keys/REMOVED，受 main 里两个安全阀约束。
+_CLEANUP_TOOL_NAME_RE = re.compile(
+    r"screener|scanner|speedtest|speed[-_ ]?test|optimiz|checker|panel|"
+    r"manager|client|tool|dashboard|gui|desktop|luci|openwrt|ddns|sync|"
+    r"monitor|tester|fetcher|generator|installer|scraper|crawler|"
+    r"collector|chooser|finder|skill|bot|hub|toolkit|pick|selector|app|"
+    r"cli|dns|worker|api|flclash|v2rayn|nekobox|hiddify|quantumult|"
+    r"stash|loon|egern|surge|verge|nyanpasu|sparkle|sing-box|mihomo|"
+    r"shadowrocket", re.I)
+_CLEANUP_TEMPLATE_SUM_RE = re.compile(r"（英文）。主要用来|简介待补|英文项目", re.I)
+_CLEANUP_COUNTED_LABELS = {"节点数", "条数", "频道数", "书源数", "站点数",
+                           "节点数量", "IP 数"}
+
+
+def _cleanup_has_counted(item):
+    """条目有没有数出来的实测内容（节点数/IP 数等 >0）。"""
+    for dd in item.get("details") or []:
+        if not isinstance(dd, dict):
+            continue
+        if dd.get("label") in _CLEANUP_COUNTED_LABELS:
+            m = re.search(r"\d+", str(dd.get("value") or ""))
+            if m and int(m.group()) > 0:
+                return True
+    return False
+
+
+def _cleanup_github_io_site(url):
+    """<x>.github.io 仓库对应的站点地址；不是这类仓库返回 ""。
+    用户站（仓库名 = owner.github.io）→ https://<owner>.github.io/；
+    否则走项目页 https://<owner>.github.io/<repo>/。"""
+    repo = github_repo_of(url or "") or ""
+    if "/" not in repo:
+        return ""
+    owner, name = repo.split("/", 1)
+    if not name.lower().endswith(".github.io"):
+        return ""
+    if name.lower() == f"{owner.lower()}.github.io":
+        return f"https://{owner.lower()}.github.io/"
+    return f"https://{owner.lower()}.github.io/{name}/"
+
+
+def cfip_node_cleanup(categories, removed_keys):
+    """FIX17 二期第三步：优选IP/节点存量清理。返回 {"rewritten": n, "removed": n}。"""
+    stats = {"rewritten": 0, "removed": 0}
+    for slug in ("cfip", "node"):
+        cat = categories.get(slug) or {}
+        for item in cat.get("items") or []:
+            if not item.get("auto"):
+                continue
+            url = (item.get("url") or "").strip()
+            if not _is_bare_repo_url(url):
+                continue
+            if item.get("feed"):
+                continue
+            if _cleanup_has_counted(item):
+                continue
+            if (item.get("builtinConfigUrl") or "").strip() or item.get("clientLinks"):
+                continue
+            repo = github_repo_of(url) or ""
+            if repo.lower().startswith("yiming918/"):
+                continue
+            if slug == "cfip" and repo.lower() == "dustinwin/bestcf":
+                continue
+            # 1. github.io 仓库 → 站点地址（改地址不删条目）
+            site = _cleanup_github_io_site(url)
+            if site:
+                if not (item.get("sourceUrl") or "").strip():
+                    item["sourceUrl"] = url
+                item["url"] = site
+                stats["rewritten"] += 1
+                bump("cleanup_rewritten")
+                continue
+            # 2. 模板简介 + 仓库名无工具信号 → 移除
+            if _CLEANUP_TEMPLATE_SUM_RE.search(item.get("summary") or "") \
+                    and not _CLEANUP_TOOL_NAME_RE.search(
+                        repo.split("/")[-1] if "/" in repo else repo):
+                if _item_key(item) in removed_keys:
+                    continue
+                removed_keys.add(_item_key(item))
+                REMOVED.append((slug, item.get("name") or "", url,
+                                "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"))
+                stats["removed"] += 1
+    return stats
+
+
 def fix17_candidate_block(slug, cand):
     """FIX17：已清理的误收录别再被发现流程收回来（与 is_blocked 并列）。
     返回拦截原因；不是误收录返回 ""。顺带给域名 guide 仓库的候选定分区
@@ -5575,9 +5989,10 @@ FACT_LABELS = {
     "节点数", "条数", "频道数", "书源数", "站点数", "节点数量", "IP 数",
     # 价格
     "现价", "原价",
-    # AI 额度 7 项 + 福利字段
+    # AI 额度 11 项 + 福利字段（二期第三步：7→11）
     "首次注册送", "每天额度", "其他途径", "总额度", "额度有效期",
-    "是否要绑卡", "领取门槛", "免费额度", "领取条件", "使用条件",
+    "是否要绑卡", "领取门槛", "免费模型", "签到额度", "每周额度", "每月额度",
+    "免费额度", "领取条件", "使用条件",
     # 免费服务/域名四问
     "免费时长", "能否续费", "续费价格", "能否进 CF", "机器配置",
     "申请要求", "能干什么", "容量与发信量", "额度",
@@ -6635,6 +7050,15 @@ def main():
     # FIX17 C2/C3：域名分堆 + 成人清理（判定表见 FIX17 块）。移除并进
     # 同一批 REMOVED/removed_keys，同样受下面两个安全阀约束。
     fix17_cleanup(categories, removed_keys)
+
+    # FIX17 二期第三步：优选IP/节点存量清理（github.io 改写 + 模板简介裸仓库
+    # 下架；每轮幂等；移除同样走 REMOVED/removed_keys、受安全阀约束）。
+    try:
+        _cleanup_stats = cfip_node_cleanup(categories, removed_keys)
+        log(f"存量清理：github.io 改写 {_cleanup_stats['rewritten']} 条，"
+            f"模板简介裸仓库移除 {_cleanup_stats['removed']} 条")
+    except Exception as e:
+        log(f"存量清理失败（跳过）：{e}")
 
     # FIX16：四来源过期自动删——来源抓成功的那一轮，标记条目不在最新
     # 列表里 miss+1，连续 2 轮才删；抓失败不计数不删。删除并进 REMOVED，
