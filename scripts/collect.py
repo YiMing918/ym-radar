@@ -3444,6 +3444,496 @@ def rerank(categories):
                 item["rank"] = idx
 
 
+# ================= FIX16：AI 福利四来源（懒猫 AI / AIHot / 赛博鸡蛋 / 白嫖计） =================
+# 纯增量、故障隔离：四个来源各是一个「抓列表页 → 解析」的函数，任何异常
+# 都记日志并把该来源标成失败（WELFARE_RESULTS[key]["ok"]=False），绝不让
+# 整个采集崩（FIX15 教训）。现有流程、门禁、去重、刷新预算一概不动。
+#   - 分类：四来源都是 AI 免费额度，一律只进 ai 栏（站长定：标题能看出来
+#     是什么的归专栏，AI 免费额度只放 AI 栏）。
+#   - 地址：item.url 必须是能直接用的官方/服务链接。AIHot 列表里就是官方
+#     直链；其余三家只有详情页链接——只对新条目抓详情页提官方领取链接，
+#     每轮总上限 40 个（WELFARE_DETAIL_BUDGET），提不到用详情页本身兜底。
+#     sourceUrl 填来源列表页地址。
+#   - 描述：只用来源给的真实字段拼（额度/门槛/地区/核实日期），按现有条目
+#     文风写，数字不编；拼完按 validate.py 同款门禁自检（auto 条目
+#     description >= 40 字且含「适合」、name/url/summary 非空），不过不收。
+#   - 去重：官方链接、来源详情页链接（feedUrl）都不许撞已有的 url /
+#     sourceUrl / feedUrl，再加现有的名称近似去重；同一链接全站只出现一次。
+#   - 过期自动删：条目带 feed / feedUrl / miss 三个标记字段（validate.py
+#     只校验必要字段，多余字段不拒）。来源抓成功的那一轮，标记条目不在
+#     最新列表里 miss+1，连续 miss>=2 才删（走既有 REMOVED / removed_keys，
+#     照样受两个安全阀约束）；抓失败的那一轮绝不计数、绝不删。
+
+WELFARE_LIST_URLS = {
+    "lanmao": "https://lanmao.ai/zh/offers.md",
+    "aihot": "https://aihot.news/free-tokens",
+    "jidan": "https://jidan.si/c/credit",
+    "baipiaoji": "https://baipiaoji.com/limits.json",
+}
+WELFARE_NAMES = {"lanmao": "懒猫 AI", "aihot": "AIHot",
+                 "jidan": "赛博鸡蛋", "baipiaoji": "白嫖计"}
+WELFARE_RESULTS = {}            # key -> {"ok": bool, "keys": set(norm_url 身份链接)}
+WELFARE_DETAIL_BUDGET = {"left": 40}   # 每轮最多抓多少个详情页提官方链接
+
+
+def _wf_unescape(s):
+    return ((s or "").replace("&amp;", "&").replace("&quot;", '"')
+            .replace("&#39;", "'").replace("&lt;", "<").replace("&gt;", ">")
+            .replace("&nbsp;", " "))
+
+
+def _wf_clean(s):
+    """来源文本清洗：去 markdown 加粗、合并空白。"""
+    s = (s or "").replace("**", "")
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def _wf_first_sentences(text, n=2, limit=220):
+    """白嫖计 quota 是长文：取前 1-2 句要点，不整段塞。"""
+    text = _wf_clean(text)
+    if not text:
+        return ""
+    parts = re.split(r"(?<=[。！？])", text)
+    out = ""
+    for p in parts:
+        if not p:
+            continue
+        if out and len(out) >= 80:
+            break
+        out += p
+        if out.count("。") + out.count("！") + out.count("？") >= n:
+            break
+    return _truncate_at_sentence(out, limit) if len(out) > limit else out
+
+
+# ---------- 四个来源的解析（纯函数：列表页文本 -> 条目 dict 列表） ----------
+
+def parse_lanmao_entries(text):
+    """懒猫 AI：Markdown 管道表，列为 名字|免费额度|门槛|地区|核实日期|详情。"""
+    out = []
+    for line in (text or "").splitlines():
+        if "|" not in line:
+            continue
+        parts = [p.strip() for p in line.split("|")]
+        if len(parts) < 6:
+            continue
+        detail, verified = parts[-1], parts[-2]
+        if not detail.startswith("http"):
+            continue
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", verified or ""):
+            continue
+        name = parts[0]
+        if not name or name == "名字":
+            continue
+        out.append({"feed": "lanmao", "name": name[:80],
+                    "quota": _wf_clean("|".join(parts[1:-4])),
+                    "threshold": _wf_clean(parts[-4]),
+                    "region": _wf_clean(parts[-3]),
+                    "verified": verified,
+                    "detail_url": detail, "official_url": "", "original": ""})
+    return out
+
+
+def parse_baipiaoji_entries(text):
+    """白嫖计：limits.json 的 tools[]（name/category/quota 长文/checked/page）。"""
+    data = json.loads(text)
+    out = []
+    for t in data.get("tools") or []:
+        if not isinstance(t, dict):
+            continue
+        name = (t.get("name") or "").strip()
+        page = (t.get("page") or "").strip()
+        if not name or not page:
+            continue
+        quota_full = _wf_clean(t.get("quota") or "")
+        out.append({"feed": "baipiaoji", "name": name[:80],
+                    "quota": _wf_first_sentences(quota_full),
+                    "threshold": "", "region": "",
+                    "verified": (t.get("checked") or "").strip(),
+                    "detail_url": page, "official_url": "",
+                    "original": quota_full[:1200]})
+    return out
+
+
+def _wf_aihot_date(month, day):
+    """AIHot 只写「X月X日」：按当前年份推，落到未来就用上一年。"""
+    today = datetime.datetime.now(CST).date()
+    for year in (today.year, today.year - 1):
+        try:
+            d = datetime.date(year, month, day)
+        except ValueError:
+            return ""
+        if d <= today:
+            return d.isoformat()
+    return ""
+
+
+def parse_aihot_entries(text):
+    """AIHot：free-tokens 页每条是一个 <li>，含标题、额度说明、官方直链
+    （「去领」按钮 / 「X月X日核实于官方页面」链接，同一个地址）。"""
+    out = []
+    chunks = re.split(r'<li class="flex ', text or "")
+    for ch in chunks[1:]:
+        if "核实于官方页面" not in ch:
+            continue
+        m = re.search(r'text-ui-body font-semibold text-ink">([^<]+)<', ch)
+        name = _wf_unescape(m.group(1)).strip() if m else ""
+        mo = re.search(r'href="(https?://[^"]+)"[^>]*>\s*\d+月\d+日核实于官方页面', ch)
+        if not mo:
+            mo = re.search(r'href="(https?://[^"]+)"[^>]*>去领', ch)
+        official = _wf_unescape(mo.group(1)) if mo else ""
+        mv = re.search(r"(\d+)月(\d+)日核实", ch)
+        verified = _wf_aihot_date(int(mv.group(1)), int(mv.group(2))) if mv else ""
+        quota = ""
+        mq = re.search(r'<span title="([^"]+)" class="mono ', ch)
+        if mq:
+            quota = _wf_unescape(mq.group(1))
+        if not quota:
+            ms = re.search(r'<span title="([^"]+)" class="mt-1 block truncate', ch)
+            if ms:
+                quota = _wf_unescape(ms.group(1))
+        badges = []
+        for b in re.findall(r'<span class="whitespace-nowrap">([^<]+)</span>', ch):
+            b = _wf_unescape(b).strip()
+            if b and "核实" not in b:
+                badges.append(b)
+        paras = []
+        mh = re.search(r'<div hidden="" class="basis-full[^"]*">(.*?)</li>', ch, re.S)
+        if mh:
+            for p in re.findall(r"<p[^>]*>(.*?)</p>", mh.group(1), re.S):
+                t = _wf_clean(re.sub(r"<[^>]+>", "", p))
+                if t:
+                    paras.append(t)
+        if not name or not official:
+            continue
+        out.append({"feed": "aihot", "name": name[:80],
+                    "quota": _wf_clean(quota),
+                    "threshold": "、".join(badges), "region": "",
+                    "verified": verified,
+                    "detail_url": "", "official_url": official,
+                    "original": " ".join(paras)[:1200]})
+    return out
+
+
+def parse_jidan_entries(text):
+    """赛博鸡蛋：/c/credit 页的 JSON-LD ItemList（name 是优惠标题、url 是
+    详情页）；JSON-LD 没了就退到抓 /free/ 链接。鸡蛋没有核实日期，留空。"""
+    out = []
+    seen = set()
+
+    def _add(name, url):
+        if not name or not url or url in seen:
+            return
+        seen.add(url)
+        out.append({"feed": "jidan", "name": name[:80], "quota": name[:80],
+                    "threshold": "", "region": "", "verified": "",
+                    "detail_url": url, "official_url": "", "original": ""})
+
+    for b in re.findall(r'<script type="application/ld\+json">(.*?)</script>',
+                        text or "", re.S):
+        try:
+            data = json.loads(b)
+        except Exception:
+            continue
+        if isinstance(data, dict):
+            data = [data]
+        if not isinstance(data, list):
+            continue
+        for node in data:
+            if not isinstance(node, dict) or node.get("@type") != "ItemList":
+                continue
+            for el in node.get("itemListElement") or []:
+                if isinstance(el, dict):
+                    _add((el.get("name") or "").strip(),
+                         (el.get("url") or "").strip())
+    if not out:
+        for href, inner in LINK_RE.findall(text or ""):
+            if "/free/" not in href:
+                continue
+            url = urllib.parse.urljoin("https://jidan.si/c/credit", href)
+            _add(_wf_clean(re.sub(r"<[^>]+>", "", inner)), url)
+    return out
+
+
+_WELFARE_PARSERS = {"lanmao": parse_lanmao_entries,
+                    "aihot": parse_aihot_entries,
+                    "jidan": parse_jidan_entries,
+                    "baipiaoji": parse_baipiaoji_entries}
+
+
+def _welfare_fetch_entries(key):
+    """抓一个来源的列表页并解析；成功/失败都记进 WELFARE_RESULTS。
+    失败返回 [] 且 ok=False——过期删除那一步只认 ok=True 的结果。"""
+    url = WELFARE_LIST_URLS[key]
+    try:
+        status, _ct, body = fetch(url, max_bytes=4 * 1024 * 1024, deadline=30)
+        if status != 200:
+            raise RuntimeError(f"列表页返回 {status}")
+        entries = _WELFARE_PARSERS[key](body.decode("utf-8", "replace"))
+        if not entries:
+            raise RuntimeError("解析出 0 条")
+        keys = set()
+        for e in entries:
+            ident = e.get("official_url") if key == "aihot" else e.get("detail_url")
+            if ident:
+                keys.add(norm_url(ident))
+        WELFARE_RESULTS[key] = {"ok": True, "keys": keys}
+        log(f"FIX16 来源「{WELFARE_NAMES[key]}」：列表 {len(entries)} 条")
+        return entries
+    except Exception as e:
+        WELFARE_RESULTS[key] = {"ok": False, "keys": set()}
+        log(f"FIX16 来源「{WELFARE_NAMES[key]}」抓取失败（跳过；本轮不计数、不删）：{e}")
+        return []
+
+
+def collect_welfare_entries():
+    """依次抓四个来源（单源失败只跳过，绝不连累其他来源和整轮采集）。"""
+    WELFARE_DETAIL_BUDGET["left"] = 40
+    out = []
+    for key in ("lanmao", "aihot", "baipiaoji", "jidan"):
+        try:
+            out.extend(_welfare_fetch_entries(key))
+        except Exception as e:  # _welfare_fetch_entries 内部已兜底，这里防万一
+            WELFARE_RESULTS[key] = {"ok": False, "keys": set()}
+            log(f"FIX16 来源「{WELFARE_NAMES[key]}」异常（跳过）：{e}")
+    return out
+
+
+# ---------- 详情页提官方链接（只有新条目才抓，每轮总上限 40） ----------
+
+_WF_SKIP_HOSTS = ("t.me", "telegram.me", "twitter.com", "x.com",
+                  "facebook.com", "weibo.com", "youtube.com", "bilibili.com",
+                  "apps.apple.com", "play.google.com")
+
+
+def _welfare_extract_official(html_text, detail_url):
+    """从来源详情页里挑官方领取链接：锚文本带「领取/直达官网」最优先，
+    其次「官网/官方」，再退到第一个外站链接；社交/商店/同站链接不算。"""
+    host = urllib.parse.urlparse(detail_url).netloc.lower()
+    cands = []
+    for href, inner in LINK_RE.findall(html_text or ""):
+        u = _wf_unescape(href).strip()
+        if not u.startswith(("http://", "https://")):
+            continue
+        uh = urllib.parse.urlparse(u).netloc.lower()
+        if not uh or uh == host:
+            continue
+        if any(uh == s or uh.endswith("." + s) for s in _WF_SKIP_HOSTS):
+            continue
+        t = _wf_clean(re.sub(r"<[^>]+>", "", inner))
+        if "领取" in t or "直达官网" in t or "领福利" in t:
+            score = 3
+        elif "官网" in t or "官方" in t:
+            score = 2
+        elif t:
+            score = 1
+        else:
+            score = 0
+        cands.append((score, u))
+    if not cands:
+        return ""
+    cands.sort(key=lambda x: -x[0])   # 稳定排序：同分保留页面里的先后
+    best = cands[0][1]
+    p = urllib.parse.urlparse(best)
+    qs = [(k, v) for k, v in urllib.parse.parse_qsl(p.query)
+          if k.lower() not in TRACKING_PARAMS]
+    return urllib.parse.urlunparse(
+        p._replace(query=urllib.parse.urlencode(qs), fragment=""))
+
+
+def _welfare_official_url(detail_url):
+    """抓详情页提官方链接（有界：每轮 40 个、单页 15 秒/512KB、失败隔离）。
+    提不到返回 ""，调用方用详情页本身兜底。"""
+    if WELFARE_DETAIL_BUDGET["left"] <= 0:
+        return ""
+    WELFARE_DETAIL_BUDGET["left"] -= 1
+    try:
+        status, _ct, body = fetch(detail_url, max_bytes=512 * 1024, deadline=15)
+        if status != 200:
+            return ""
+        return _welfare_extract_official(body.decode("utf-8", "replace"),
+                                          detail_url)
+    except Exception:
+        return ""
+
+
+# ---------- 拼条目（字段集与 build_item 对齐） ----------
+
+def _welfare_description(e):
+    """只用来源给的真实字段拼描述：额度/门槛（或使用条件）/地区/核实来源，
+    尾巴是 ai 栏现成的适合人群句。数字全来自来源，不编。"""
+    name = e["name"]
+    quota = (e.get("quota") or "").rstrip("。；; …")
+    parts = []
+    if quota and quota != name:
+        parts.append(f"{name}：{quota}")
+    elif quota:
+        parts.append(quota)
+    else:
+        parts.append(name)
+    if e.get("threshold"):
+        label = "领取门槛" if e["feed"] == "lanmao" else "使用条件"
+        parts.append(f"{label}：{e['threshold']}")
+    if e.get("region"):
+        parts.append(f"适用地区：{e['region']}")
+    if e.get("verified"):
+        parts.append(f"这条信息由{WELFARE_NAMES[e['feed']]}在 {e['verified']} 核实")
+    else:
+        parts.append(f"这条信息由{WELFARE_NAMES[e['feed']]}收录")
+    parts.append("适合想低成本用上 AI 的人先领来试")
+    return "。".join(parts) + "。"
+
+
+def _welfare_summary(e):
+    s = _truncate_at_sentence(e.get("quota") or e["name"], 70)
+    return s or e["name"]
+
+
+def build_welfare_item(e, new_id):
+    """把一条四来源条目拼成 ai 栏新条目。过不了门禁（validate.py 同款）
+    返回 (None, 原因)。"""
+    official = (e.get("official_url") or "").strip()
+    if not official and e.get("detail_url"):
+        official = _welfare_official_url(e["detail_url"]) or e["detail_url"]
+    if not official:
+        return None, "没有可用地址"
+    desc = _welfare_description(e)
+    summary = _welfare_summary(e)
+    if len(desc) < 40 or "适合" not in desc:
+        return None, "描述过不了门禁（<40 字或缺适合人群）"
+    if not summary:
+        return None, "简介为空"
+    item = {
+        "access": "direct", "builtinConfigName": "", "builtinConfigUrl": "",
+        "description": desc,
+        "descriptionOriginal": (e.get("original") or e.get("quota") or "")[:1200],
+        "details": [],
+        "id": new_id, "imageUrl": "", "name": e["name"], "rank": 999,
+        "region": "", "score": 0, "screenshots": [],
+        "section": "main",
+        "sourceUrl": WELFARE_LIST_URLS[e["feed"]],
+        "summary": summary,
+        "tags": ["自动收录", WELFARE_NAMES[e["feed"]]],
+        "url": official, "usageKind": "", "usageNote": "",
+        "verifiedAt": e.get("verified") or "", "warning": "", "auto": True,
+        "feed": e["feed"],
+        "feedUrl": e.get("detail_url") or official,
+        "miss": 0,
+    }
+    if e["feed"] == "lanmao":
+        r = e.get("region") or ""
+        if "国内" in r:
+            item["region"] = "国内"
+        elif "海外" in r:
+            item["region"] = "海外"
+    if e.get("quota"):
+        set_detail(item, "免费额度", _truncate_at_sentence(e["quota"], 200))
+    if e.get("threshold"):
+        set_detail(item, "领取门槛" if e["feed"] == "lanmao" else "使用条件",
+                   e["threshold"])
+    if e.get("region"):
+        set_detail(item, "适用地区", e["region"])
+    set_detail(item, "信息来源", WELFARE_NAMES[e["feed"]])
+    # 7 项标准额度字段走既有填充（KB 命中 / 正文正则 / 未公布，只补缺不洗已有值）
+    fill_ai_credit_fields(item)
+    return item, ""
+
+
+def welfare_expire(categories, removed_keys):
+    """FIX16 过期自动删：来源抓成功的那一轮，标记条目（feed 字段）不在该
+    来源最新列表里 miss+1，连续 2 轮才移进 REMOVED；还在列表里 miss 清零。
+    抓失败的来源整源跳过——不计数、不删。删除与其他移除走同一批
+    REMOVED / removed_keys，照样受 main 里两个安全阀约束。"""
+    ai_items = (categories.get("ai") or {}).get("items") or []
+    dropped = 0
+    for item in ai_items:
+        key = item.get("feed")
+        if key not in WELFARE_RESULTS:
+            continue
+        res = WELFARE_RESULTS[key]
+        if not res.get("ok"):
+            continue
+        ident = norm_url(item.get("feedUrl") or item.get("url") or "")
+        if ident and ident in res["keys"]:
+            if item.get("miss"):
+                item["miss"] = 0
+            continue
+        if not ident:
+            continue
+        item["miss"] = int(item.get("miss") or 0) + 1
+        if item["miss"] >= 2 and id(item) not in removed_keys:
+            removed_keys.add(id(item))
+            REMOVED.append(("ai", item.get("name") or "", item.get("url") or "",
+                            f"来源「{WELFARE_NAMES.get(key, key)}」已下架"
+                            "（连续 2 轮不在列表里）"))
+            dropped += 1
+    if dropped:
+        log(f"FIX16：四来源过期下架 {dropped} 条（连续 2 轮不在来源列表）")
+
+
+def welfare_add(categories, entries, existing_urls, existing_names,
+                claimed_urls, max_id, removed_keys):
+    """FIX16 新增：四来源条目进 ai 栏。规矩与现有新增一致——官方链接 +
+    来源详情页链接双去重（撞已有 url/sourceUrl/feedUrl 都算）、名称近似
+    去重、黑名单、门禁自检、每栏 300 总量上限的 room（算法同 _add_for_slug）。"""
+    if not entries:
+        return
+    cat = categories.get("ai") or {}
+    items = cat.setdefault("items", [])
+    removed_here = sum(1 for it in items if id(it) in removed_keys)
+    room = MAX_PER_CAT - (len(items) - removed_here)
+    if room <= 0:
+        log(f"FIX16：ai 栏已满 {MAX_PER_CAT} 条，四来源新条目本轮不进"
+            "（等移除腾位，下轮再进）")
+        return
+    seen = set(existing_urls) | set(claimed_urls)
+    for c in categories.values():
+        for it in c.get("items") or []:
+            if it.get("feedUrl"):
+                seen.add(norm_url(it["feedUrl"]))
+    added = 0
+    for e in entries:
+        if added >= room:
+            break
+        ident = norm_url(e.get("detail_url") or e.get("official_url") or "")
+        if ident and ident in seen:
+            continue
+        if e.get("official_url") and norm_url(e["official_url"]) in seen:
+            continue
+        if is_blocked(e.get("official_url") or e.get("detail_url") or "",
+                      e["name"]):
+            bump("blocked")
+            ABANDONED.append((e["name"], e.get("detail_url") or "",
+                              "黑名单（内容安全）"))
+            continue
+        if any(name_similar(e["name"], n) for n in existing_names):
+            ABANDONED.append((e["name"],
+                              e.get("detail_url") or e.get("official_url") or "",
+                              "与已有条目重名"))
+            continue
+        max_id[0] += 1
+        item, reason = build_welfare_item(e, max_id[0])
+        if item is None:
+            max_id[0] -= 1
+            ABANDONED.append((e["name"], e.get("detail_url") or "", reason))
+            continue
+        if norm_url(item["url"]) in seen:
+            max_id[0] -= 1
+            ABANDONED.append((e["name"], item["url"], "官方链接已存在"))
+            continue
+        items.append(item)
+        existing_names.append(item["name"])
+        claimed_urls.add(norm_url(item["url"]))
+        seen.add(norm_url(item["url"]))
+        seen.add(norm_url(item["feedUrl"]))
+        ADDED.append(("ai", item["name"], item["url"]))
+        bump("welfare")
+        added += 1
+    if added:
+        log(f"FIX16：四来源新增 {added} 条进 ai 栏")
+
+
+
 # ---------------- state.json ----------------
 
 def load_state(script_dir):
@@ -3577,6 +4067,10 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
         list(ex.map(_pull_pool, list(categories.keys())))
 
+    # FIX16：AI 福利四来源（懒猫 AI / AIHot / 赛博鸡蛋 / 白嫖计）——纯增量：
+    # 单源失败只跳过并记日志；条目只进 ai 栏，新增/过期删除都走下面既有流程。
+    welfare_entries = collect_welfare_entries()
+
     # ---- 苹果限免过期复核：deals 里现价不是免费的，降组或移除 ----
     removed_keys = set()
     apple_cat = categories.get("apple") or {}
@@ -3630,6 +4124,11 @@ def main():
                 removed_keys.add(id(item))
                 REMOVED.append((slug, item.get("name") or "", item.get("url") or "",
                                 "黑名单（内容安全），不再收录"))
+
+    # FIX16：四来源过期自动删——来源抓成功的那一轮，标记条目不在最新
+    # 列表里 miss+1，连续 2 轮才删；抓失败不计数不删。删除并进 REMOVED，
+    # 和其他移除一样受下面两个安全阀约束。
+    welfare_expire(categories, removed_keys)
 
     # 安全阀一落地：本轮验活不可信，不删任何条目（失败次数已记在 state.json，
     # 下轮复核时再按规矩删；苹果限免的降组不受影响，那是按现价核实的）。
@@ -3788,6 +4287,11 @@ def main():
             continue
         with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
             list(ex.map(lambda kv: _add_for_slug(kv[0], kv[1]), _wave))
+
+    # FIX16：四来源新条目进 ai 栏（URL 双去重 + 名称近似去重 + 黑名单 +
+    # 门禁自检 + 每栏 300 上限的 room，算法与既有新增一致；见 welfare_add）。
+    welfare_add(categories, welfare_entries, existing_urls, existing_names,
+                claimed_urls, max_id, removed_keys)
 
     # 真正执行移除
     for cat in categories.values():
