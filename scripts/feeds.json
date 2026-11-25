@@ -1,5 +1,5 @@
 {
-  "_说明": "雷达站发现源清单。每栏至少 2 个互相独立的源，单个源失败只跳过并记日志。type 四类：github_search=GitHub 搜索 API（query 是搜索式，按最近更新排序）；repo_json=聚合仓库/公开接口的 JSON 清单（parse 说明解析方式）；rss=官方榜单 feed（苹果营销工具 RSS 的 JSON 形态）；page_links=聚合导航页，抓页面外链作候选。选源标准：公开、免令牌、结构稳定。",
+  "_说明": "雷达站发现源清单。每栏至少 2 个互相独立的源，单个源失败只跳过并记日志。type 四类：github_search=GitHub 搜索 API（query 是搜索式，按最近更新排序）；repo_json=聚合仓库/公开接口的 JSON 清单（parse 说明解析方式）；rss=官方榜单 feed；page_links=聚合导航页，抓页面外链作候选。选源标准：公开、免令牌、结构稳定。苹果栏说明（FIX17 二期）：RSS 榜单和 TestFlight 来源不在此处——RSS 由 collect.py 里的价格通道直接拉（带价格台账比对，见 APPLE_RSS_FEEDS），TestFlight 由 pluwen/1xtest/releaf 三源直拉（见 apple_tf_channel）；此处苹果只留 ipasign 的 GitHub 搜索源。",
   "categories": {
     "adult": [
       {
@@ -136,76 +136,6 @@
       }
     ],
     "apple": [
-      {
-        "parse": "苹果官方美区免费榜，feed.results 取 name+url",
-        "type": "rss",
-        "url": "https://rss.applemarketingtools.com/api/v2/us/apps/top-free/25/apps.json",
-        "section": "deals"
-      },
-      {
-        "parse": "苹果官方国区免费榜，feed.results 取 name+url",
-        "type": "rss",
-        "url": "https://rss.applemarketingtools.com/api/v2/cn/apps/top-free/25/apps.json",
-        "section": "deals"
-      },
-      {
-        "parse": "苹果官方美区付费榜（降价观察），feed.results 取 name+url",
-        "type": "rss",
-        "url": "https://rss.applemarketingtools.com/api/v2/us/apps/top-paid/25/apps.json",
-        "section": "discounts"
-      },
-      {
-        "parse": "苹果官方国区付费榜（降价观察），feed.results 取 name+url",
-        "type": "rss",
-        "url": "https://rss.applemarketingtools.com/api/v2/cn/apps/top-paid/25/apps.json",
-        "section": "discounts"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "testflight apps",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "ios free apps list",
-        "type": "github_search"
-      },
-      {
-        "type": "github_search",
-        "query": "testflight public links",
-        "section": "testflight",
-        "parse": "维护 TestFlight 公开链接清单的仓库，取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "TestFlight 招募",
-        "section": "testflight",
-        "parse": "取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "testflight beta list",
-        "section": "testflight",
-        "parse": "取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "内购 限免",
-        "section": "iapfree",
-        "parse": "内购限免聚合仓库，取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "iap free ios",
-        "section": "iapfree",
-        "parse": "取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "伪装 app ios 计算器",
-        "section": "disguised",
-        "parse": "伪装类应用聚合（按来源页归类收，脚本不自己判断伪装）"
-      },
       {
         "type": "github_search",
         "query": "ios ipa library",
