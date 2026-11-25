@@ -168,13 +168,16 @@
     discounts: '降价', testflight: 'TestFlight', deals: '限时赠金', permanent: '长期免费',
     long_term: '长期免费', long: '长视频', short: '短视频', app: 'APP',
     disguised: '伪装类应用', iapfree: '内购限免', ipasign: '签名',
+    guide: '教程/清单/工具',
     'android-free': '安卓好用软件', 'android-cracked': '安卓破解软件',
     'pc-free': '电脑全免费软件', 'pc-cracked': '电脑破解软件',
     android: '安卓', ios: 'iOS', windows: 'Windows', mac: 'macOS',
     linux: 'Linux', router: '路由器', all: '全平台'
   };
   var CAT_SECTION_LABELS = {
-    apple: { deals: '限免', discounts: '降价', testflight: 'TestFlight', disguised: '伪装类应用', iapfree: '内购限免', ipasign: '签名' }
+    apple: { deals: '限免', discounts: '降价', testflight: 'TestFlight', disguised: '伪装类应用', iapfree: '内购限免', ipasign: '签名' },
+    /* FIX17 C2：域名分堆——main 是真提供商，guide 是降级的教程/清单/工具 */
+    domain: { main: '提供商', guide: '教程/清单/工具' }
   };
   function sectionLabel(slug, s) {
     return (CAT_SECTION_LABELS[slug] || {})[s] || SECTION_LABELS[s] || s || '其他';
@@ -182,7 +185,7 @@
   var SEC_ORDER = ['deals', 'discounts', 'iapfree', 'testflight', 'ipasign', 'permanent',
     'long_term', 'long', 'short', 'app', 'android-free', 'pc-free', 'android-cracked',
     'pc-cracked', 'disguised', 'all', 'ios', 'android', 'windows', 'mac', 'linux',
-    'router', 'adult', 'main'];
+    'router', 'adult', 'main', 'guide'];
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -195,11 +198,18 @@
     if (isNaN(d.getTime())) return iso;
     return d.toLocaleString('zh-CN', { hour12: false });
   }
+  /* FIX17 C7：verifiedAt 的真实口径是「最近一次探测链接还活着的日期」，
+     不是内容/额度已重新核实过，文案如实改成「最近探测存活」 */
   function fmtVerified(v) {
     if (!v) return '';
     var m = String(v).match(/^(\d{4})-(\d{2})-(\d{2})/);
-    if (m) return '核实于 ' + parseInt(m[2], 10) + '月' + parseInt(m[3], 10) + '日';
-    return '核实于 ' + v;
+    if (m) return '最近探测存活 ' + parseInt(m[2], 10) + '月' + parseInt(m[3], 10) + '日';
+    return '最近探测存活 ' + v;
+  }
+  /* FIX17 C6：纯自动条目（auto）先不显示评分——评分公式对自动条目
+     区分度不足，摆出来只会误导；人工种子（非 auto）正常显示 */
+  function showScore(item) {
+    return !!item && !item.auto && item.score != null;
   }
   function isUrl(v) {
     return typeof v === 'string' && /^https?:\/\/\S+$/.test(v.trim());
@@ -416,6 +426,8 @@
     var badges = '';
     if (showCat) badges += '<span class="tag cat">' + esc(catName(slug)) + '</span>';
     if (item.section) badges += '<span class="tag sec">' + esc(sectionLabel(slug, item.section)) + '</span>';
+    /* FIX17 C4：AI 工具类条目（开源工具/项目，无免费额度）打标区分 */
+    if (slug === 'ai' && item.aiKind === 'tool') badges += '<span class="tag sec">开源工具</span>';
     var h = '<div class="item-card" data-item="' + item.id + '" data-slug="' + esc(slug) + '">' + thumbHtml(item) +
       '<div class="item-main"><div class="nm">' + esc(item.name) + (isDead(item) ? deadBadge() : '') + '</div>' +
       '<div class="sm">' + esc(item.summary) + '</div>' +
@@ -427,7 +439,7 @@
     var ver = fmtVerified(item.verifiedAt);
     if (ver) h += '<div class="ver">' + esc(ver) + '</div>';
     h += '</div><div class="item-side">' +
-      (item.score != null ? '<div class="score">' + item.score + '</div>' : '') +
+      (showScore(item) ? '<div class="score">' + item.score + '</div>' : '') +
       '<div class="rank">第 ' + item.rank + ' 名</div>' +
       (item.url ? '<a class="open-btn" data-open href="' + esc(item.url) + '" target="_blank" rel="noopener">打开</a><br><button class="copy-btn sm" data-copy="' + esc(item.url) + '">复制地址</button>' : '') + '</div></div>';
     return h;
@@ -507,7 +519,7 @@
       '<div class="toolbar"><span class="lb">排序</span><select class="sortsel" id="sortsel">' +
       '<option value="rank"' + (curSort === 'rank' ? ' selected' : '') + '>默认（名次）</option>' +
       '<option value="score"' + (curSort === 'score' ? ' selected' : '') + '>评分最高</option>' +
-      '<option value="verified"' + (curSort === 'verified' ? ' selected' : '') + '>最近核实</option></select></div>' +
+      '<option value="verified"' + (curSort === 'verified' ? ' selected' : '') + '>最近探测</option></select></div>' +
       chipsSec + chipsSub;
     if (!items.length) {
       h += '<div class="empty">没有找到符合的条目</div>';
@@ -566,9 +578,13 @@
     var h = '<span class="back" id="back-cat">← 返回' + esc(pack.category.name) + '</span>' + gsearchHtml('') +
       '<div class="detail-card"><div class="detail-head">' + thumbHtml(item) +
       '<div><h2>' + esc(item.name) + (isDead(item) ? deadBadge() : '') + '</h2><div class="sm">' + esc(item.summary) + '</div>' +
-      '<div class="meta-line">' + (item.score != null ? '评分 ' + item.score + ' · ' : '') + '第 ' + item.rank + ' 名' + (item.region ? ' · ' + esc(item.region) : '') + (item.section ? ' · ' + esc(sectionLabel(slug, item.section)) : '') + '</div>' +
+      '<div class="meta-line">' + (showScore(item) ? '评分 ' + item.score + ' · ' : '') + '第 ' + item.rank + ' 名' + (item.region ? ' · ' + esc(item.region) : '') + (item.section ? ' · ' + esc(sectionLabel(slug, item.section)) : '') + '</div>' +
       (item.tags && item.tags.length ? '<div class="tags">' + item.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>' : '') +
       '</div></div>' + metaTags(slug, item);
+    /* FIX17 C4：AI 工具类条目在详情页明示形态，不摆额度表装样子 */
+    if (slug === 'ai' && item.aiKind === 'tool') {
+      h += '<div class="kind-big api"><b>类型：开源工具/项目</b><span class="note">这类条目没有免费额度一说，下面只列基本信息</span></div>';
+    }
     if (item.usageKind === 'config' || item.usageKind === 'api') {
       var label = item.usageKind === 'config' ? '整份配置' : '单个接口（零件）';
       h += '<div class="kind-big ' + item.usageKind + '"><b>类型：' + label + '</b>' +
@@ -598,7 +614,7 @@
       }
     }
     if (item.details && item.details.length) {
-      var PRIO = ['类别', '首次注册送', '每天额度', '总额度', '额度有效期', '是否要绑卡', '领取门槛', '其他途径', '免费额度', '使用条件', '适用地区', '信息来源', '规则格式', '模块支持', '分流方式', '配套规则', '可加的东西', '上手步骤', '平台', '官方下载', '收费', '免费时长', '能否续费', '续费价格', '能否进 CF', '机器配置', '容量与发信量', '额度', '申请要求', '能干什么', '类型', '语言', '能否改中文', '下载地区', '现价', '原价', '最新版本', '版本日期', '最近更新', '最近检查'];
+      var PRIO = ['类别', '首次注册送', '每天额度', '总额度', '额度有效期', '是否要绑卡', '领取门槛', '其他途径', '免费额度', '使用条件', '适用地区', '信息来源', '规则格式', '模块支持', '分流方式', '配套规则', '可加的东西', '上手步骤', '平台', '官方下载', '收费', '免费时长', '能否续费', '续费价格', '能否进 CF', '机器配置', '容量与发信量', '额度', '申请要求', '能干什么', '类型', '语言', '能否改中文', '下载地区', '现价', '原价', '最新版本', '版本日期', '发布时间', '最近更新', '最近检查'];
       var sortedDetails = item.details.slice().sort(function (a, b) {
         var ia = PRIO.indexOf(a.label), ib = PRIO.indexOf(b.label);
         return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
@@ -620,7 +636,7 @@
     if (item.sourceUrl) {
       h += '<h4 class="sec">出处</h4><div class="urlrow"><span class="u"><a href="' + esc(item.sourceUrl) + '" target="_blank" rel="noopener">' + esc(item.sourceUrl) + '</a></span>' + copyBtn(item.sourceUrl) + '</div>';
     }
-    h += '<div class="meta-line">核查时间：' + esc(item.verifiedAt || '—') + '</div></div>';
+    h += '<div class="meta-line">最近探测存活：' + esc(item.verifiedAt || '—') + '（只代表链接能打开，不代表内容/额度已复核）</div></div>';
     h += footerHtml();
     app.innerHTML = h;
     bindGsearch();
