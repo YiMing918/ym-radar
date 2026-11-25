@@ -143,7 +143,10 @@ BLOCKED_TEXT_SNIPPETS = ("大陆修宪香港恶法台湾武统朝鲜毁约美中
 STATS = {"checked_ok": 0, "dead": 0, "content_dead": 0, "github": 0, "counted": 0, "imaged": 0,
          "lang": 0, "region": 0, "cnswitch": 0, "cnswitch_en": 0,
          "deep_ok": 0, "resolved": 0, "pending": 0, "split": 0,
-         "summary_fixed": 0, "ai_credit": 0, "shots": 0, "blocked": 0}
+         "summary_fixed": 0, "ai_credit": 0, "shots": 0, "blocked": 0,
+         # FIX17：published=发布时间回填数；shots_tried=补图真正发起抓取的
+         # 次数（与 shots 命中数一起看命中率，排查补图通道用）。
+         "published": 0, "shots_tried": 0}
 _lock = threading.Lock()
 _repo_cache = {}
 _repo_lock = threading.Lock()
@@ -289,6 +292,10 @@ def github_info(repo):
             data = json.loads(body.decode("utf-8", "replace"))
             info = {
                 "pushed_at": (data.get("pushed_at") or "")[:10],
+                # FIX17 A1：发布时间（仓库创建时间），与 pushed_at 同一份
+                # 接口数据，之前没存；process_item/build_item 用它写
+                # publishedAt + 详情「发布时间」，存量靠刷新回填。
+                "created_at": (data.get("created_at") or "")[:10],
                 "stars": data.get("stargazers_count"),
                 "description": data.get("description") or "",
                 "default_branch": data.get("default_branch") or "main",
@@ -689,18 +696,29 @@ def fdroid_package_of(url):
     return m.group(1) if m else None
 
 
+_FDROID_HAS_CACHE = {}
+
+
 def fdroid_has_package(pkg):
-    """F-Droid 官方 API 查有没有这个包。返回 True/False/None（查不到）。"""
+    """F-Droid 官方 API 查有没有这个包。返回 True/False/None（查不到）。
+    FIX17 加深轮：本轮内同包只查一次（确定性答案 True/False 才缓存；
+    None 是网络没定论，不缓存，下轮照常重试）。同一应用被多条条目
+    以不同网址引用时，不再重复打 F-Droid API。"""
+    if pkg in _FDROID_HAS_CACHE:
+        return _FDROID_HAS_CACHE[pkg]
+    res = None
     try:
         status, _ct, _b = fetch(f"https://f-droid.org/api/v1/packages/{pkg}",
                                 max_bytes=64 * 1024)
         if status == 200:
-            return True
-        if status == 404:
-            return False
+            res = True
+        elif status == 404:
+            res = False
     except Exception:
-        pass
-    return None
+        res = None
+    if res is not None:
+        _FDROID_HAS_CACHE[pkg] = res
+    return res
 
 
 def fdroid_version(pkg):
@@ -1794,6 +1812,17 @@ def process_item(slug, item, state_fails):
             if info.get("stars") is not None:
                 set_detail(item, "星标数", str(info["stars"]))
                 changed = True
+            # FIX17 A1：发布时间回填——只补缺，写过的不动（created_at
+            # 是仓库创建时间，不会变）。顶层字段 publishedAt + 详情行。
+            # FIX17 加深轮：顶层和详情行分开补——原写法要求顶层为空才
+            # 进整段，顶层已有值但详情行缺失（比如中间版本写过一半的
+            # 数据）时详情行永远补不上，前端详情页就缺这一行。
+            if info.get("created_at"):
+                if not (item.get("publishedAt") or ""):
+                    item["publishedAt"] = info["created_at"]
+                    bump("published")
+                if not get_detail(item, "发布时间"):
+                    set_detail(item, "发布时间", info["created_at"])
             if changed:
                 bump("github")
         # GitHub 托管的软件：查最新 release 的版本和日期
@@ -1863,17 +1892,31 @@ def process_item(slug, item, state_fails):
     # FIX14 C：app 老条目缺截图时补 F-Droid 包页截图（每轮预算 60 条，
     # 只补空的；apple 在 label_item 里已用缓存的 iTunes 数据补过；
     # Play 链接先查 F-Droid 有没有同款包，有才补——Play 本身不提图）。
-    if slug == "app" and not (item.get("screenshots") or []) \
-            and _shot_budget_take():
+    # FIX17 A12：先定包名、再扣预算。旧顺序是先 _shot_budget_take() 再算
+    # 包名——app 栏 288 条无图条目里绝大多数是 GitHub 仓库地址，根本推不出
+    # F-Droid 包名，60 条预算被并发刷新里先跑到的无资格条目烧光，真能补的
+    # F-Droid/Play 条目轮不到，通道长期 0 产出。现在：推不出包名不扣预算；
+    # 真发起抓取记 shots_tried，与 shots 一起看命中率。
+    if slug == "app" and not (item.get("screenshots") or []):
         _pkg = fdroid_package_of(url) or fdroid_package_of(
             item.get("sourceUrl") or "")
-        if not _pkg and "play.google.com" in urllib.parse.urlparse(
-                url).netloc.lower():
-            _q = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
-            _pp = (_q.get("id") or [None])[0]
-            if _pp and fdroid_has_package(_pp) is True:
-                _pkg = _pp
-        if _pkg:
+        if not _pkg:
+            # FIX17 加深轮：urlparse 对畸形网址（非法 IPv6 等）会抛
+            # ValueError——FIX15 那次整轮崩溃就是这个类。FIX16 时这段
+            # 藏在预算门后面每轮最多跑 60 次，FIX17 改成先定包名后，
+            # 它对每条无图 app 条目都跑，暴露面变大，必须自己兜住：
+            # 解析不了就当不是 Play 链接，跳过探测，绝不向上抛。
+            try:
+                _pu = urllib.parse.urlparse(url)
+            except Exception:
+                _pu = None
+            if _pu is not None and "play.google.com" in _pu.netloc.lower():
+                _q = urllib.parse.parse_qs(_pu.query)
+                _pp = (_q.get("id") or [None])[0]
+                if _pp and fdroid_has_package(_pp) is True:
+                    _pkg = _pp
+        if _pkg and _shot_budget_take():
+            bump("shots_tried")
             _shots = fdroid_screenshots(_pkg)
             if _shots:
                 item["screenshots"] = _shots
@@ -3101,6 +3144,8 @@ def build_item(slug, cand, material, new_id):
         "sourceUrl": "", "summary": "", "tags": ["自动收录"],
         "url": url, "usageKind": "", "usageNote": "",
         "verifiedAt": today_cst(), "warning": "", "auto": True,
+        # FIX17 A1：发布时间（GitHub 仓库 created_at / 无来源时空字符串）
+        "publishedAt": "",
     }
     position = f"{name} 是{host} 上的一个{kind}"
     if material.get("github"):
@@ -3168,6 +3213,10 @@ def build_item(slug, cand, material, new_id):
             set_detail(item, "最近更新", gh["pushed_at"])
         if gh.get("stars") is not None:
             set_detail(item, "星标数", str(gh["stars"]))
+        # FIX17 A1：新条目入库就带上发布时间（同 gh 数据，零额外请求）
+        if gh.get("created_at"):
+            item["publishedAt"] = gh["created_at"]
+            set_detail(item, "发布时间", gh["created_at"])
     # usageKind 默认规则：四栏直链文件=config、单个接口=api，拿不准留空
     if slug in ("video", "music", "book", "live"):
         if cand.get("kind_hint") == "api":
@@ -3379,11 +3428,20 @@ def _recency_days(item):
 
 
 def _score_of(item, alive, days):
+    # FIX17 A8：旧公式地板太高（存活 35 + 30 天内更新 30 + 有图 5 = 70 分
+    # 地板，星标只 ±2/4/7/10），自动条目被压成 5 个台阶、1907 条挤在
+    # 70/72/74；更糟的是尺度倒挂——人工种子没有 GitHub 更新时间，按
+    # 「天数未知 +5」封顶在 45 分，系统性低于 0 星自动仓库（70 分）。
+    # 改法：存活 35→25 压低地板；星标权重拉开（2/5/9/12）；天数未知时
+    # 区分来源——自动条目仍 +5，人工种子 +25 并给 62 分保底，保证活着的
+    # 人工种子不低于「0 星、无实测条数」的自动仓库（新公式下最高 60 分：
+    # 25+30+0+0+5）。自动条目若有实测条数（节点数/频道数等）仍可凭内容
+    # 超过种子，那是有真数据支撑，不算倒挂。
     s = 0
     if alive:
-        s += 35
+        s += 25
     if days is None:
-        s += 5
+        s += 5 if item.get("auto") else 25
     elif days <= 30:
         s += 30
     elif days <= 90:
@@ -3407,15 +3465,17 @@ def _score_of(item, alive, days):
     m = re.search(r"\d+", stars or "")
     st = int(m.group()) if m else 0
     if st >= 1000:
-        s += 10
+        s += 12
     elif st >= 100:
-        s += 7
+        s += 9
     elif st >= 10:
-        s += 4
+        s += 5
     elif st >= 1:
         s += 2
     if (item.get("imageUrl") or "").strip():
         s += 5
+    if alive and not item.get("auto"):
+        s = max(s, 62)
     if not alive:
         s = min(s, 15)
     return max(0, min(100, int(s)))
@@ -3546,10 +3606,17 @@ def parse_baipiaoji_entries(text):
         if not name or not page:
             continue
         quota_full = _wf_clean(t.get("quota") or "")
+        # FIX17 加深轮：核实日期必须与懒猫同口径校验成 YYYY-MM-DD 才收。
+        # 原先原样透传——回填靠字符串比大小决定 verifiedAt 取谁，源站
+        # 哪天把格式改成 2026/11/20 之类，比较结果就会静默出错，还会把
+        # 非 ISO 日期写进 data.json（前端 fmtVerified 按 ISO 解析）。
+        checked = (t.get("checked") or "").strip()
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", checked):
+            checked = ""
         out.append({"feed": "baipiaoji", "name": name[:80],
                     "quota": _wf_first_sentences(quota_full),
                     "threshold": "", "region": "",
-                    "verified": (t.get("checked") or "").strip(),
+                    "verified": checked,
                     "detail_url": page, "official_url": "",
                     "original": quota_full[:1200]})
     return out
@@ -3816,6 +3883,8 @@ def build_welfare_item(e, new_id):
         "tags": ["自动收录", WELFARE_NAMES[e["feed"]]],
         "url": official, "usageKind": "", "usageNote": "",
         "verifiedAt": e.get("verified") or "", "warning": "", "auto": True,
+        # FIX17 A1：字段集与 build_item 对齐（四来源不是 GitHub，无发布时间）
+        "publishedAt": "",
         "feed": e["feed"],
         "feedUrl": e.get("detail_url") or official,
         "miss": 0,
@@ -3871,6 +3940,61 @@ def welfare_expire(categories, removed_keys):
         log(f"FIX16：四来源过期下架 {dropped} 条（连续 2 轮不在来源列表）")
 
 
+def _wf_placeholder(v):
+    """FIX17 A9：details 值算不算「没填」——空 / 未公布 / 待核实都算。"""
+    v = (v or "").strip()
+    return (not v) or v == "未公布" or v == "未公布。" \
+        or v.startswith("待核实")
+
+
+def welfare_backfill(item, e):
+    """FIX17 A9：四来源条目撞上已有 AI 条目时回填（FIX16 §2 的补法）。
+    只填当前为空/未公布/待核实的字段——「免费额度」「领取门槛/使用条件」
+    「适用地区」「信息来源」；verifiedAt 取两者较新的一方；
+    descriptionOriginal 为空才补。绝不覆盖真实值（人工种子、已核实数字
+    原样保留）。补完调 fill_ai_credit_fields 让 7 项标准字段跟着补缺
+    （它本身只补缺，安全）。名称近似撞上的不走这里（匹配不精确，
+    容易认错人）。全程故障隔离：出任何问题只记日志、返回已填数。"""
+    filled = 0
+    try:
+        if e.get("quota") and _wf_placeholder(get_detail(item, "免费额度")):
+            set_detail(item, "免费额度",
+                       _truncate_at_sentence(e["quota"], 200))
+            filled += 1
+        if e.get("threshold"):
+            label = "领取门槛" if e["feed"] == "lanmao" else "使用条件"
+            if _wf_placeholder(get_detail(item, label)):
+                set_detail(item, label, e["threshold"])
+                filled += 1
+        if e.get("region") and _wf_placeholder(get_detail(item, "适用地区")):
+            set_detail(item, "适用地区", e["region"])
+            filled += 1
+        if _wf_placeholder(get_detail(item, "信息来源")):
+            set_detail(item, "信息来源", WELFARE_NAMES[e["feed"]])
+            filled += 1
+        nv = e.get("verified") or ""
+        if nv and nv > (item.get("verifiedAt") or ""):
+            item["verifiedAt"] = nv
+        if not (item.get("descriptionOriginal") or "").strip():
+            orig = e.get("original") or e.get("quota") or ""
+            if orig:
+                item["descriptionOriginal"] = orig[:1200]
+        try:
+            fill_ai_credit_fields(item)
+        except Exception as exc:
+            log(f"FIX17：回填后补额度字段失败（{item.get('name')}）：{exc}")
+    except Exception as exc:
+        log(f"FIX17：回填失败（{e.get('name')}）：{exc}")
+    return filled
+
+
+def _wf_same_entry(item, e):
+    """已有条目就是这条四来源条目本身（同源同详情页）——它不是「撞上」，
+    新鲜度由 welfare_expire 管，不回填。"""
+    return item.get("feed") == e.get("feed") and bool(e.get("detail_url")) \
+        and norm_url(item.get("feedUrl") or "") == norm_url(e["detail_url"])
+
+
 def welfare_add(categories, entries, existing_urls, existing_names,
                 claimed_urls, max_id, removed_keys):
     """FIX16 新增：四来源条目进 ai 栏。规矩与现有新增一致——官方链接 +
@@ -3883,22 +4007,53 @@ def welfare_add(categories, entries, existing_urls, existing_names,
     removed_here = sum(1 for it in items if id(it) in removed_keys)
     room = MAX_PER_CAT - (len(items) - removed_here)
     if room <= 0:
+        # FIX17 A9：满栏只是新条目进不来，撞上已有条目的回填照常做
+        # （回填不占名额），不再整轮早退。
         log(f"FIX16：ai 栏已满 {MAX_PER_CAT} 条，四来源新条目本轮不进"
-            "（等移除腾位，下轮再进）")
-        return
+            "（等移除腾位，下轮再进）；撞上已有条目的照常回填")
     seen = set(existing_urls) | set(claimed_urls)
     for c in categories.values():
         for it in c.get("items") or []:
             if it.get("feedUrl"):
                 seen.add(norm_url(it["feedUrl"]))
+    # FIX17 A9：norm_url -> 已有条目索引（撞链接时定位回填对象；
+    # 本轮待删的条目不回填）。
+    # FIX17 加深轮：索引只收 ai 栏条目。原写法遍历全部栏目——同一链接
+    # 若同时挂在别的栏目（跨栏重复），回填会把 AI 的额度字段和
+    # fill_ai_credit_fields 写进不相干栏目的条目里。回填的规矩本来
+    # 就只针对 ai 栏（FIX16 §2），索引范围与之一致。
+    by_url = {}
+    for it in cat.get("items") or []:
+        if id(it) in removed_keys:
+            continue
+        for u in (it.get("url"), it.get("sourceUrl"), it.get("feedUrl")):
+            nu = norm_url(u or "")
+            if nu and nu not in by_url:
+                by_url[nu] = it
     added = 0
+    backfilled = 0
     for e in entries:
-        if added >= room:
-            break
+        # FIX17 加深轮：回填通道同样过黑名单——新增路径有 is_blocked
+        # 拦着，回填原先没有；来源条目本身命中黑名单时，它的数据
+        # （额度文案/地区/来源标注）不许借回填写进已有条目。
+        e_blocked = is_blocked(
+            e.get("official_url") or e.get("detail_url") or "",
+            e.get("name") or "")
         ident = norm_url(e.get("detail_url") or e.get("official_url") or "")
         if ident and ident in seen:
+            # FIX17 A9：链接精确撞上已有条目 → 回填，不新增
+            tgt = by_url.get(ident)
+            if tgt is not None and not e_blocked \
+                    and not _wf_same_entry(tgt, e):
+                backfilled += welfare_backfill(tgt, e)
             continue
         if e.get("official_url") and norm_url(e["official_url"]) in seen:
+            tgt = by_url.get(norm_url(e["official_url"]))
+            if tgt is not None and not e_blocked \
+                    and not _wf_same_entry(tgt, e):
+                backfilled += welfare_backfill(tgt, e)
+            continue
+        if added >= room:
             continue
         if is_blocked(e.get("official_url") or e.get("detail_url") or "",
                       e["name"]):
@@ -3931,6 +4086,412 @@ def welfare_add(categories, entries, existing_urls, existing_names,
         added += 1
     if added:
         log(f"FIX16：四来源新增 {added} 条进 ai 栏")
+    if backfilled:
+        log(f"FIX17：四来源撞上已有条目，回填 {backfilled} 个字段")
+
+
+
+
+
+# ================= FIX17：分堆清理 / AI 形态标记 =================
+# 依据 FIX17 深审报告 §十四（C2 域名分堆、C3 成人清理、C4 AI 工具降级）。
+# 全部故障隔离：任一子环节出错只记日志跳过，绝不拖垮整轮；移除走既有
+# removed_keys / REMOVED，与其他移除同批、同样受 main 里两个安全阀
+# 约束；门禁、预算、安全阀语义一概不动。
+#
+# 域名判定表（285 条自动条目，来源：深审附件 domain_providers.json +
+# domain_auto_desc.txt 逐条按名称+仓库自述复核）：
+#   - DOMAIN_PROVIDER_REPOS：40 家真提供商（深审名单），留主区。
+#   - DOMAIN_GUIDE_REPOS：139 条教程/清单/工具（含邮件域名清单），
+#     降级到新分区 guide 展示，不再冒充提供商。
+#   - DOMAIN_DROP_REPOS：106 条与域名注册完全无关的误收录（public
+#     domain 版权义误匹配、Domain-Driven Design、钱包工具、许可证
+#     全文仓、MDMA 教程等），移出栏目。
+#   审计口径是 113 条移出；本表按自述证据复核得 106 条，另约 7 条
+#   证据不足的边界条目保守留在 guide 分区，不硬删。
+# 成人判定表（来源：深审附件 adult_mapping.json 口径）：57 条 main 里
+# 51 个 GitHub 仓库全是 TVBox/IPTV/固件/Home Assistant 插件/有声书源
+# 等误收录，3 条报错标题接口一并清掉；只留 3 条真成人站（见
+# ADULT_KEEP_LONG_NAMES），按证据（MacCMS 点播 API）归长视频。
+# 「国产/中文字幕」深审实测明示仅种子 2 条 / 0 条，没证据不标，本期不碰。
+
+DOMAIN_PROVIDER_REPOS = frozenset((
+    "aitji/id.thatako.net", "au-bcube/b-cube-subdomain-lending",
+    "creepersbs/register", "digitalplatdev/freedomain",
+    "electric-otter/connectblock", "free-domains/is-a.bot",
+    "got-a-page/claim", "ilyap358/fluxcast-domains",
+    "intentfreedomain/freedomain",
+    "intentfreedomain/intentfreedomain.github.io",
+    "intuinode/omnexlab-registry", "is-a-software/is-a-software",
+    "is-app-top/register", "is-cod-in/register", "is-cool-me/register",
+    "jn-aman/is-my.app", "js-org/js.org", "kasefuchs/domains",
+    "katorlys/rweb.site", "kevinwhite-387/freedns-my",
+    "kumarsumit68439-code/free-domain-hub", "lewisstarkov/ownowl",
+    "lgbt-sh/lgbt-sh-v1", "moodyawhvh/freedomain-chinese",
+    "mrsyaid/freedomain", "mujtbabbas/freedomain", "nsl-sh/mesh-router-root",
+    "open-domains/register", "partofmyid/register", "pokymon/foo.ng",
+    "rc-chuah/termi-domain", "rh-devlab/torch-dns",
+    "shanmukhasaireddy13/go-live", "sofalegacy/lituk-register",
+    "ternilabs/made-in.app", "thedev-me/register", "til-my-id/register",
+    "tinybrickboy/register", "w3teal/ill.my.id", "zordhalo/runs-on.dev",))
+
+DOMAIN_GUIDE_REPOS = frozenset((
+    "0xdaniellopez/phishunt-feed", "13896167343/cloudflare_temp_email",
+    "2439905184/free_domain_list", "27gscn/pcb.pub",
+    "4bdulllahh/homingpigeon", "970thunder/hyfreedom",
+    "abdullahdevrel/all-email-domains", "abpoyk28/xyz-domain-pricing",
+    "adysec/top_1m_domains", "alexandrosmagos/dyn-dns-list",
+    "amradawii/delivercheck", "andreee94/cert-manager-webhook-freenom",
+    "apifyforge/bulk-email-verifier",
+    "bert-janp/open-source-threat-intel-feeds", "bovachen/free-domain-email",
+    "broom609/domain-intelligence-api",
+    "canutethegreat/security-txt-auditor", "caripay/email-domain-lists",
+    "collabray/domain-generator", "d3vniks/free-domain", "daotun6847/daye",
+    "darin40/improvmx", "dev-shiki/domain-intel-mcp",
+    "devmuhammad05/company-email-validator",
+    "dreamdata-io/free-email-providers",
+    "dreamhunter2333/cloudflare_temp_email", "dwightmulcahy/noip-bot",
+    "einguterwaran/awesome-free-seo-backlinks",
+    "email-check-app/free-email-providers", "eminkowski/freedom-list-sync",
+    "faidodaisen/sitessaver", "federicodon/growthcab-gtm-skills",
+    "fillup/freemail", "find-xposed-magisk/cloudflare_temp_email",
+    "free-domain-name/free-domain-browser-cef",
+    "free-domain-name/free-domain-name.github.io",
+    "free-domain-name/tauri-browser",
+    "free-website-domains/free-web-hosting", "funtionalfrost/frostmail",
+    "gaozitian/digitalplat-renew", "glitchr-omnisense/omnidns-gandi",
+    "glitchr-omnisense/omnidns-ovh", "glitchr-omnisense/omnidns-scaleway",
+    "glitchr-omnisense/omnishield-disposable", "gricatan/devhub-domaines",
+    "harys722/free-domains", "henricook/free-email-domains-java",
+    "httpsok/httpsok", "ichtally/ichtally.github.io",
+    "ihmpavel/free-email-domains-list", "instax-dutta/subdomainor",
+    "ipythoning/ssl-guide-zh", "jiao77/llmflare",
+    "jitao6666/jiwangwebsite-.ime.tech-", "jocab0212/primepidomainlease",
+    "jonkbriggs/saa-email-exposure-check", "katamaze/leap",
+    "kenryu42/openvmap", "ksravan0770/good-coupon-deals",
+    "lancelotrar/best-cf-domains", "langyouge/langyouyuming",
+    "lizilong0326/website-deploy-guide", "lukaswhite/email-checker",
+    "lukemccrea/freesubdomains", "luri99/ycweb",
+    "m-ali-raza-dev/company-puller", "mafulong/mafulong.github.io",
+    "mapsim-co/mapsim_scanner_utility", "maritnbk/digitalplat-auto-renew",
+    "marsandsea/excelrouter", "mehdreaming/shardmail",
+    "microlinkhq/free-email-domains",
+    "mikedkmilk/instabox-cloudflare-deploy", "mobaiit/luri-blog",
+    "muhammdabdulla251-lab/check", "nas200-timmy/caddy-ddns-nas",
+    "neihyud/cloudflare_temp_email", "neshboy/ioclens",
+    "nikhgupta/mail_provider", "ntxmarketing/expired-domains",
+    "null-object-0000/newbie-cloud", "nurmantg/awesome-free-subdomains",
+    "oekhf486/rainyun-domain-ssl", "okhosting/awesome-dns",
+    "pathumzcode/hacktoberfest-free-tech-domain-guide",
+    "peterdavehello/nrd-list-downloader", "peterdavehello/top-1m-domains",
+    "pksorensen/alp-domain-watch", "quantumproxies/whois-api",
+    "rafaeelaudibert/bloommx", "raman-kumar-kheti/freemailo",
+    "raymortwinkle/digitalplat-auto-renew", "rdwz/freesubdoma.in",
+    "rohithzr/email-provider-filter", "rohittiwari-dev/mr-email-checker",
+    "sajjadh47/disposable-email-blocker-gravityforms",
+    "sajjadh47/disposable-email-blocker-wpforms",
+    "salaros/is-biz-mail-dotnet", "salaros/is-biz-mail-js",
+    "salaros/is-biz-mail-php", "sebdata-tools/sebdata-tools.github.io",
+    "shabby-666/apirouter", "shizuku-x/shizukudomainbox",
+    "skygreen2001/report", "smetcz/newly-registered-domains",
+    "solcreek/terraform-provider-gandi",
+    "solcreek/terraform-provider-kinsta", "srworksllc/free-email-domains",
+    "stefanzeljkic/resenje-site-mover", "stymiee/email-validator",
+    "sujon-ahmed/free-developer-resources",
+    "thomasnordenetr/email-domain-filter",
+    "tomba-io/free-email-provider-detector",
+    "tompec/public-email-providers-domains", "tooladda-online/dns-lookup",
+    "us-group-hub/cloudflare-email-webhook-router",
+    "validemailchecker/disposable-email-domains",
+    "validemailchecker/free-email-provider-domains",
+    "vallic/domain-investors", "vempvhs/tencent-ssl-pricing",
+    "vijay399399/semrush-api-for-bulk-traffic-check",
+    "vinds476283/custom_domain_blocker", "vmpalcon/email-domain-lists",
+    "wanconglab/liauto-lark-push", "waybackpress/wayback-html-export",
+    "wdhdev/free-for-life", "web-free-site/web-free-hub",
+    "webbuilderai/free.subdomain", "whitebite/domain-hunter",
+    "whxhjdp/tencent-ssl-certificate", "wicuw1/hexo-cloud-server-blog",
+    "wodzy/disposable-email", "xiongleiyyds/xl", "xransum/freemail-domains",
+    "xtianowner/mailhub-kit", "xxx91n/cf-email-api",
+    "yeshan-jun/free-bulk-domain-rating-checker", "yethdev/freedns-filters",
+    "yxcops/cloudflare-site-deploy",))
+
+DOMAIN_DROP_REPOS = frozenset((
+    "abhay0406/capstone-project---customer-churn", "afaroo01/frond",
+    "agiledataguides/business-event-matrix", "ajay04323/cpanel_cpsp",
+    "aryia-behroziuan/neurons",
+    "awais-2005/oracle-instance-creation-automation",
+    "beast-clone/goocampus-domain-hub", "bhwilkoff/archive-watch",
+    "bmeshary-crypto/abofarwla", "boysgmng/eksvancrawgithublicense",
+    "calin-m/bookarium", "camircode/twofree-packages",
+    "cashcoin123/cashcoin123",
+    "clayjartranslation/clayjartranslation.github.io", "codeboy2012/derlist",
+    "correia95/word-unscrambler", "danzuep/usfmbible",
+    "dev-shiki/apify-mcp-suite", "dhanya-s-14/course_hub-",
+    "dormatthew/windrose-pressure", "drsamonline/corpus-extendum",
+    "dulanadias/login-screen", "farhadhsn8/search-engine",
+    "florisheedless915/grok-register",
+    "frankmalcolmkembery/gnu-general-public-license-version-3-29-june-2007-copy",
+    "gadziunet/stackmoor",
+    # 注：审计清单里这个仓库名被截断成 ...2020-2，线上实际全名是 ...2020-2027
+    # （区块链市场报告，与域名无关，移出）——按全名匹配。
+    "gmiresearch1/blockchain-as-a-service-market-size-industry-forecast-report-2020-2027",
+    "goldenoakmarketing/pinspector", "guagua-666/s008trainingregistration",
+    "impydy/admiral", "issamjwd/ginfowell-bot", "jdegreef/ochorus",
+    "joek306090/vps-node-skill", "justakhi/hotspot-monitor",
+    "key-solana-finder-private-wallet/key-solana-finder-private-wallet",
+    "krsnasgr/awesome-saas-startup-listing",
+    "lanrenbao/emby-cloudflare-tunnel-deploy", "lazy-mantou/historysentry",
+    "limefinance-org/rustdesk-for-cloudflare-worker", "long060106/incipit",
+    "lunnar211/resumelab", "manoinc/mano-mobile",
+    "matharrismma/concordance-2",
+    "me-wallet-balance-solana-api-tool/wallet-balance-solana-api-tool",
+    "mehrdad-shahizad/damfeed", "mezmer90/saas-directories",
+    "michalik-maciej/projektownia-calculator", "miniuid/pickads",
+    "misty-step/scry", "mjansson/rpmalloc", "mjzd7/freellm-api-with-proxy",
+    "mr033/-1123", "myon-bioinformatics/pysaiyanweboo", "n-13thehat/morgana",
+    "nate0634034090/bug-free-memory", "neodata-io/neokit",
+    "ning-utdgss/gegvl", "nomandhoni-cs/nomandhoni-cs",
+    "noykarde/noykarderepository", "oksigeniasl/oga-veve",
+    "olk453/wallet-balance-solana-api-tool",
+    "one-wallet-balance-solana-api-tool/wallet-balance-solana-api-tool",
+    "pasnya/vpn-panel-5x-uev", "payroad/payroad-core",
+    "piyushranakoti/personal-website",
+    "prosefashion/advantages-of-group-buys", "qwsedrtgh/qw-register-helper",
+    "rastaman4e/-1", "rcsafter/v50-f50-carplay-box-mu300",
+    "ronelyehouenou-sketch/best-brawl-stars-domain",
+    "roni5604/hebrew-words-db", "rramatchandran/big-o-performance-java",
+    "rtrentjones/greenlight", "rty753/indonesiapayments",
+    "rtynbirf/free-man", "ryanaoh/tabrack",
+    "santhoshsivan-dev/strapi-plugin-azure-sso",
+    "seeken/selecto-api-console", "select/movies-deluxe",
+    "shivam-das-191a/shivam-das-news", "shokki-engineering/freebusy",
+    "shubham-safaya/us-consumer-pulse", "solardev-xyz/freedom-browser",
+    "space-wallet-balance-solana-api-tool/wallet-balance-solana-api-tool",
+    "stand-out-of-my-sun/diogenes-micro-gateway",
+    "submitaitools/free-ai-directories", "talktorana/agent-harness",
+    "themellowhost/full-roblox-domain", "tracyliving606/regpwn",
+    "uraeva-nataqhya/how-to-browse-darknet", "vaixlns/vaixlns",
+    "vamsikrishna-04/it-and-non-it---course-resource-sheet",
+    "verified-wallet-balance-solana-api-tool/wallet-balance-solana-api-tool",
+    "vetrihiori23-debug/internship-board", "wbauer-dev/freezer-manager",
+    "wgoerlkt/darkmatter-link-darkmatterurl", "wild0oose43/how-to-buy-mdma",
+    "woshichenghaibo/creditcards", "wpmoo-org/core",
+    "wxissmel01/buy-us-paypal-account", "xinbetween/flowlight",
+    "yeayraww24/public-apis", "yindudegugezhanghao-lgtm/hk-brokers-rules",
+    "yukido0205/android-agentic-sdlc", "zszszszsz/.config",
+    "zuujiscom/free-game-assets",))
+ADULT_DROP_REPOS = frozenset((
+    "ballad0324/hoopoetv", "bywilliams/homehub_tvbox", "cc-lab7/tvbox-host",
+    "cony8888/tvbox-ipv4-live", "davisweee/vod-hub",
+    "day253/tvboxosc-tcl-hwdecode", "evenbsies/tvbox-harvest",
+    "fe-spark/ecohub", "gabrick75/tvbox-allwinner-h3-with-linux",
+    "gabrick75/tvbox-h3-otimizacao", "gasiepgodoy/hackathon-tv-box-e10",
+    "grumpyspud/ha80-armbian-fd628-front-panel", "guke1991/safetvbox",
+    "guxia66898/tvbox-hub", "hailehu/hubox", "haogege8888/katelyatv",
+    "haonanren118/hd-source", "htwmedia/htv", "jycao2/hongguotv",
+    "kittymoona/happytv", "lastsurvivalon/ozone-hd-deb-firmware",
+    "leohmoraes/hackathon-tech-floripa-incubitech-tvbox-2-hotspot-captivate",
+    "liucz000/tvbox-hub", "ljz704/iptv-hub", "longben314/tvbox-hub",
+    "louisykl/tvbox-dolbyvision-hdr10-edition", "marschen1984/katelyatv",
+    "matheuspiassic/tvbox-hpc-cluster", "mryang2023/video-hub",
+    "muedsa/ha-plugin", "openhwlabcom/hg680r-desktop-pc",
+    "shandianchengzi/listen-book-src-hzkjdx-chineseall",
+    "slothsheepking/iptv-api-home", "smallmarker/tvbox-spider-hub",
+    "smallniangao/tvboxhome", "spencerlishaobing/tvboxhelper",
+    "starsoul666/tvbox-harmonyos", "suyizhang/harmony-tvbox-client",
+    "sylvan97/tvbox-hub", "tao-2026-beep/iptv-hub",
+    "thiagonogit/pihole-tvbox-homelab", "ttu571/mediahub-api",
+    "tvbox342078879/probe-hub",
+    "web-developer-db/t95-tvbox-to-armbian-home-server", "wj-ui/katelyatv2",
+    "wtc1069/hanime1-tvbox-source", "xiangfeng681-lang/h618-tvbox-linux",
+    "xuehai888/iptv-platform", "yuppiesnotzhuhao/tvboxharmony",
+    "zlu1123/tvbox-hub", "zseagate/iptv-tvbox-highend-android",))
+
+ADULT_DROP_URLS = (
+    "https://www.mgav1.cc/api.php/provide/vod/at/xml/",
+    "https://apihjzy.com/api.php/provide/vod/at/xml/",
+    "http://bttcj.com/inc/sapi.php",
+)
+ADULT_DROP_NORMURLS = frozenset(norm_url(u) for u in ADULT_DROP_URLS)
+# 报错/垃圾标题（norm_name 口径：去标点空格后比对，改名也拦得住一部分）
+ADULT_DROP_NORMNAMES = frozenset((
+    "attentionrequiredcloudflare", "onlinebrowserbrowsersandboxbrowserling",
+    "系统发生错误"))
+# 真成人站：深审 §五 点名的 3 条，url 都是 MacCMS 点播 API（长视频源）
+ADULT_KEEP_LONG_NAMES = frozenset(("🥈91md", "🥈鲨鱼", "🥇010爱"))
+# FIX17 加深轮：保留判定不能只靠名字——刷新时 label_item 会按页面标题
+# 改名，名字一变名字匹配就落空。3 条的网址都是各自站点的点播 API、
+# 特征稳定，名字或网址任一命中就算保留（网址走 norm_url 同口径比对）。
+ADULT_KEEP_LONG_NORMURLS = frozenset(norm_url(u) for u in (
+    "https://91md.me/api.php/provide/vod/from/mdm3u8/",
+    "https://shayuapi.com/api.php/provide/vod/",
+    "http://www.010aizy.com/API/macs.php"))
+
+
+def _repo_key(item):
+    """条目的仓库标识（小写 owner/repo）：先看 url，再看 sourceUrl。"""
+    repo = github_repo_of(item.get("url") or "") \
+        or github_repo_of(item.get("sourceUrl") or "")
+    return repo.lower() if repo else ""
+
+
+def _fix17_domain_split(categories, removed_keys):
+    """域名分堆：提供商留主区、教程/清单/工具归 guide、无关移出。
+    名单外的仓库（今后新发现的）一律不动，等下一轮深审再判。
+    FIX17 加深轮：逐条故障隔离——单条数据畸形（比如条目不是 dict）
+    只跳过该条并计数，不再让整堆分堆陪葬；日志只在本轮真有移出或
+    新归分区时打，不再每轮把存量数字重复刷一遍。"""
+    cat = categories.get("domain") or {}
+    n_main = n_guide = n_drop = n_new_guide = n_fail = 0
+    for item in cat.get("items") or []:
+        if id(item) in removed_keys:
+            continue
+        try:
+            repo = _repo_key(item)
+            if not repo:
+                continue
+            if repo in DOMAIN_DROP_REPOS:
+                removed_keys.add(id(item))
+                REMOVED.append(("domain", item.get("name") or "",
+                                item.get("url") or "",
+                                "与域名注册无关的误收录（FIX17 深审清理）"))
+                n_drop += 1
+            elif repo in DOMAIN_GUIDE_REPOS:
+                if (item.get("section") or "") != "guide":
+                    item["section"] = "guide"
+                    n_new_guide += 1
+                n_guide += 1
+            elif repo in DOMAIN_PROVIDER_REPOS:
+                n_main += 1
+        except Exception:
+            n_fail += 1
+    if n_fail:
+        log(f"FIX17：域名分堆有 {n_fail} 条处理失败（已跳过该条，"
+            "不影响其余条目）")
+    if n_drop or n_new_guide:
+        log(f"FIX17：域名分堆——提供商 {n_main} 条留主区，教程/清单/工具 "
+            f"{n_guide} 条在 guide 分区（本轮新归 {n_new_guide} 条），"
+            f"无关误收录移出 {n_drop} 条")
+
+
+def _fix17_adult_cleanup(categories, removed_keys):
+    """成人清理：误收录（TVBox/IPTV/固件/报错标题）移出；3 条真成人站
+    按证据归长视频。种子（long/short/app 分区）不在判定表里，不受影响。
+    FIX17 加深轮：保留判定名字/网址双通道（见 ADULT_KEEP_LONG_NORMURLS
+    注释）；逐条故障隔离；日志只在本轮真有移出或新归长视频时打。"""
+    cat = categories.get("adult") or {}
+    n_drop = n_long = n_new_long = n_fail = 0
+    for item in cat.get("items") or []:
+        if id(item) in removed_keys:
+            continue
+        try:
+            name = (item.get("name") or "").strip()
+            if name in ADULT_KEEP_LONG_NAMES \
+                    or norm_url(item.get("url") or "") \
+                    in ADULT_KEEP_LONG_NORMURLS:
+                if (item.get("section") or "") != "long":
+                    item["section"] = "long"
+                    n_new_long += 1
+                n_long += 1
+                continue
+            repo = _repo_key(item)
+            if (repo and repo in ADULT_DROP_REPOS) \
+                    or norm_url(item.get("url") or "") in ADULT_DROP_NORMURLS \
+                    or norm_name(name) in ADULT_DROP_NORMNAMES:
+                removed_keys.add(id(item))
+                REMOVED.append(("adult", item.get("name") or "",
+                                item.get("url") or "",
+                                "成人栏误收录清理（FIX17 深审：非成人内容）"))
+                n_drop += 1
+        except Exception:
+            n_fail += 1
+    if n_fail:
+        log(f"FIX17：成人清理有 {n_fail} 条处理失败（已跳过该条，"
+            "不影响其余条目）")
+    if n_drop or n_new_long:
+        log(f"FIX17：成人清理——误收录移出 {n_drop} 条，"
+            f"真成人站 {n_long} 条归长视频（本轮新归 {n_new_long} 条）")
+
+
+def fix17_cleanup(categories, removed_keys):
+    """FIX17 C2/C3 总入口（main 在黑名单移除后调用）：两个子环节各自
+    故障隔离，一个挂了另一个照常。"""
+    try:
+        _fix17_domain_split(categories, removed_keys)
+    except Exception as exc:
+        log(f"FIX17：域名分堆失败（跳过）：{exc}")
+    try:
+        _fix17_adult_cleanup(categories, removed_keys)
+    except Exception as exc:
+        log(f"FIX17：成人清理失败（跳过）：{exc}")
+
+
+def fix17_candidate_block(slug, cand):
+    """FIX17：已清理的误收录别再被发现流程收回来（与 is_blocked 并列）。
+    返回拦截原因；不是误收录返回 ""。顺带给域名 guide 仓库的候选定分区
+    （候选对象在 build_item 之前改 section 是安全的）。"""
+    if slug == "domain":
+        repo = github_repo_of(cand.get("url") or "")
+        repo = repo.lower() if repo else ""
+        if repo and repo in DOMAIN_DROP_REPOS:
+            return "域名栏已清理的无关误收录（FIX17）"
+        if repo and repo in DOMAIN_GUIDE_REPOS:
+            cand["section"] = "guide"
+    elif slug == "adult":
+        repo = github_repo_of(cand.get("url") or "")
+        repo = repo.lower() if repo else ""
+        if repo and repo in ADULT_DROP_REPOS:
+            return "成人栏已清理的误收录（FIX17）"
+        if norm_url(cand.get("url") or "") in ADULT_DROP_NORMURLS:
+            return "成人栏已清理的误收录（FIX17）"
+    return ""
+
+
+def _ai_kind_of(item):
+    """FIX17 C4：一条 AI 条目是 platform（平台服务，额度字段适用）还是
+    tool（GitHub 工具/项目，11 项额度字段先天不适用）。只认硬证据：
+    四来源条目、人工种子、已有真实额度值、非 GitHub 的官网型地址
+    → platform；自动条目、本体（url）是 GitHub 仓库、且无任何真实
+    额度值 → tool（与深审 §八 按 url 分类的口径一致；url 已解析到
+    服务站/项目页的按 platform）。判据带自愈：工具条目日后被 kb/
+    回填补上真实额度值，下一轮自动翻成 platform。"""
+    if item.get("feed"):
+        return "platform"
+    if not item.get("auto"):
+        return "platform"
+    for lb in AI_CREDIT_LABELS:
+        v = get_detail(item, lb)
+        if v and v != "未公布":
+            return "platform"
+    repo = github_repo_of(item.get("url") or "")
+    if repo:
+        return "tool"
+    return "platform"
+
+
+def mark_ai_kinds(categories):
+    """FIX17 C4：给 ai 栏每条标 aiKind（tool/platform），展示层据此
+    区分呈现：工具类不摆额度表，只显示是什么/干什么。幂等，故障隔离。"""
+    try:
+        items = (categories.get("ai") or {}).get("items") or []
+        tools = plats = changed = 0
+        for item in items:
+            kind = _ai_kind_of(item)
+            if kind and item.get("aiKind") != kind:
+                item["aiKind"] = kind
+                changed += 1
+            if kind == "tool":
+                tools += 1
+            elif kind == "platform":
+                plats += 1
+        # FIX17 加深轮：日志只在本轮真有标记变化时打——稳态下每轮 300 条
+        # 标记都不变，原写法会把同一行数字无限重复进每轮日志。
+        if changed:
+            log(f"FIX17：AI 条目形态标记——平台 {plats} 条 / 工具 {tools} 条"
+                f"（本轮变更 {changed} 条）")
+    except Exception as exc:
+        log(f"FIX17：AI 形态标记失败（跳过）：{exc}")
 
 
 
@@ -4125,6 +4686,10 @@ def main():
                 REMOVED.append((slug, item.get("name") or "", item.get("url") or "",
                                 "黑名单（内容安全），不再收录"))
 
+    # FIX17 C2/C3：域名分堆 + 成人清理（判定表见 FIX17 块）。移除并进
+    # 同一批 REMOVED/removed_keys，同样受下面两个安全阀约束。
+    fix17_cleanup(categories, removed_keys)
+
     # FIX16：四来源过期自动删——来源抓成功的那一轮，标记条目不在最新
     # 列表里 miss+1，连续 2 轮才删；抓失败不计数不删。删除并进 REMOVED，
     # 和其他移除一样受下面两个安全阀约束。
@@ -4202,6 +4767,13 @@ def main():
             bump("blocked")
             ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
                               "黑名单（内容安全）"))
+            return False
+        # FIX17：已清理的误收录别收回来（域名无关项/成人误收录）；
+        # 域名 guide 仓库的候选在这里定好分区。
+        _f17_block = fix17_candidate_block(slug, cand)
+        if _f17_block:
+            ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
+                              _f17_block))
             return False
         if norm_url(cand["url"]) in claimed_urls:
             ABANDONED.append((cand.get("name") or "", cand.get("url") or "",
@@ -4293,6 +4865,9 @@ def main():
     welfare_add(categories, welfare_entries, existing_urls, existing_names,
                 claimed_urls, max_id, removed_keys)
 
+    # FIX17 C4：AI 条目形态标记（平台/工具），展示层据此区分呈现。
+    mark_ai_kinds(categories)
+
     # 真正执行移除
     for cat in categories.values():
         if cat.get("items"):
@@ -4361,6 +4936,8 @@ def main():
         f"简介重建成真实内容 {STATS['summary_fixed']} 条；"
         f"合集仓库拆分 {STATS['split']} 个；待补清单 {len(PENDING)} 条")
     log(f"FIX14b：黑名单拦下 {STATS['blocked']} 条（候选 + 已有条目）")
+    log(f"FIX17：发布时间回填 {STATS['published']} 条；"
+        f"补图命中 {STATS['shots']} / 发起 {STATS['shots_tried']} 次")
     for name, url, reason in ABANDONED:
         log(f"ABANDONED {name} | {url} | {reason}")
     return 0
