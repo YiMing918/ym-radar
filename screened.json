@@ -2,989 +2,1583 @@
  "date": "2026-11-25",
  "removed": [
   {
-   "name": "Gost-co/ModelAtlas",
-   "url": "https://github.com/Gost-co/ModelAtlas",
+   "name": "rorkai/App-Store-Connect-CLI",
+   "url": "https://github.com/rorkai/App-Store-Connect-CLI/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "wilburwing-art/phase-training2",
+   "url": "https://github.com/wilburwing-art/phase-training2/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "ourostack/apple-distribution-kit",
+   "url": "https://github.com/ourostack/apple-distribution-kit/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "ndabney562/hive-kit",
+   "url": "https://github.com/ndabney562/hive-kit/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "PowerBeef/Vocello",
+   "url": "https://github.com/PowerBeef/Vocello/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "arf4th/testflight-availability-monitor",
+   "url": "https://github.com/arf4th/testflight-availability-monitor/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Dash1971/critique-ai-2",
+   "url": "https://github.com/Dash1971/critique-ai-2/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "tianhaoz95/hejitech-apps",
+   "url": "https://github.com/tianhaoz95/hejitech-apps/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "getfoulee/foulee",
+   "url": "https://github.com/getfoulee/foulee/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "3LGroup/prevelet-app-build",
+   "url": "https://github.com/3LGroup/prevelet-app-build",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "kush-coder/autopilot-app-store-connect-cli-v10",
+   "url": "https://github.com/kush-coder/autopilot-app-store-connect-cli-v10/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "pluwen/awesome-testflight-link",
+   "url": "https://github.com/pluwen/awesome-testflight-link/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "alexdlaird/fastlane-plugin-bosun",
+   "url": "https://github.com/alexdlaird/fastlane-plugin-bosun/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "idoo/app-store-connect-mcp",
+   "url": "https://github.com/idoo/app-store-connect-mcp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "takasusuke/app-policies",
+   "url": "https://github.com/takasusuke/app-policies/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "hangbose/qiling-ios",
+   "url": "https://github.com/hangbose/qiling-ios/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "kush-coder/autopilot-app-store-connect-cli-v9",
+   "url": "https://github.com/kush-coder/autopilot-app-store-connect-cli-v9/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "aliujun/asc-uploader",
+   "url": "https://github.com/aliujun/asc-uploader/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "indiagrams/apple-shipkit",
+   "url": "https://github.com/indiagrams/apple-shipkit/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "BHUVAN-RJ/midas",
+   "url": "https://github.com/BHUVAN-RJ/midas/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Re13orn/IPA-Decrypt",
+   "url": "https://github.com/Re13orn/IPA-Decrypt/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "blakecrosley/appstore-connect-mcp",
+   "url": "https://github.com/blakecrosley/appstore-connect-mcp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "altic-dev/FluidVoice",
+   "url": "https://github.com/altic-dev/FluidVoice/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "nepenth/synara-desktop",
+   "url": "https://github.com/nepenth/synara-desktop/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "isherous/score_predictor",
+   "url": "https://github.com/isherous/score_predictor/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "abhaymettu/appmatch",
+   "url": "https://github.com/abhaymettu/appmatch/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "sonia6891/InvestToGo",
+   "url": "https://github.com/sonia6891/InvestToGo/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "OrellBuehler/testflight-mcp",
+   "url": "https://github.com/OrellBuehler/testflight-mcp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "teaualune/mobile-dev-skills",
+   "url": "https://github.com/teaualune/mobile-dev-skills/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "now-network/now-app-privacy",
+   "url": "https://github.com/now-network/now-app-privacy/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Compo-CF/cosmica",
+   "url": "https://github.com/Compo-CF/cosmica/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "marko-p/SpoolKid",
+   "url": "https://github.com/marko-p/SpoolKid/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "pofky/asc-mcp",
+   "url": "https://github.com/pofky/asc-mcp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Miguelosaurus/Swift-Sim",
+   "url": "https://github.com/Miguelosaurus/Swift-Sim/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "vitalygashkov/app-sneak",
+   "url": "https://github.com/vitalygashkov/app-sneak/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "AustineA/app-sdlc",
+   "url": "https://github.com/AustineA/app-sdlc/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "pexatasoy/build-pipelines",
+   "url": "https://github.com/pexatasoy/build-pipelines/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "issaghostlife/streamwears",
+   "url": "https://github.com/issaghostlife/streamwears/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "kulaklikkontrol/kulaklikkontrol.github.io",
+   "url": "https://github.com/kulaklikkontrol/kulaklikkontrol.github.io/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "timokoethe/appstoreconnect-mcp",
+   "url": "https://github.com/timokoethe/appstoreconnect-mcp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "nickustinov/itsyconnect-macos",
+   "url": "https://github.com/nickustinov/itsyconnect-macos/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "AbdurahmanAlmehdi/x-path",
+   "url": "https://github.com/AbdurahmanAlmehdi/x-path/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "appibara-ltd/appitool",
+   "url": "https://github.com/appibara-ltd/appitool/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "katapote/katapote-games-site",
+   "url": "https://github.com/katapote/katapote-games-site/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "rurza/hangar",
+   "url": "https://github.com/rurza/hangar/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "opd-ai/grow-companion",
+   "url": "https://github.com/opd-ai/grow-companion/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Steffan005/Kairos-Bridge-iOS",
+   "url": "https://github.com/Steffan005/Kairos-Bridge-iOS/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "pjones7-del/slate-app",
+   "url": "https://github.com/pjones7-del/slate-app/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "builde7b0b/ios-doctrine",
+   "url": "https://github.com/builde7b0b/ios-doctrine/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Bayou-Brains/tigerdroppings-ios-app",
+   "url": "https://github.com/Bayou-Brains/tigerdroppings-ios-app/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "sdrew85-jpg/cricket-empire",
+   "url": "https://github.com/sdrew85-jpg/cricket-empire/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Joed1986/app-updates",
+   "url": "https://github.com/Joed1986/app-updates/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "kush-coder/autopilot-app-store-connect-cli-v8",
+   "url": "https://github.com/kush-coder/autopilot-app-store-connect-cli-v8/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Hiru-ge/asc-mcp",
+   "url": "https://github.com/Hiru-ge/asc-mcp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "kelvinkosbab/AppBootstrapAI",
+   "url": "https://github.com/kelvinkosbab/AppBootstrapAI/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Javiemir/Paperpals3D",
+   "url": "https://github.com/Javiemir/Paperpals3D/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "tryzealot/zealot",
+   "url": "https://github.com/tryzealot/zealot/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Odevio/Odevio-CLI",
+   "url": "https://github.com/Odevio/Odevio-CLI/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "NgoMinhToan/MyAndroidTestflight",
+   "url": "https://github.com/NgoMinhToan/MyAndroidTestflight/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "NgoMinhToan/MyTestflightServer",
+   "url": "https://github.com/NgoMinhToan/MyTestflightServer/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "UmutSERIFLER/publish-ios-appstore",
+   "url": "https://github.com/UmutSERIFLER/publish-ios-appstore/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Kind-Unes/HabitNow",
+   "url": "https://github.com/Kind-Unes/HabitNow/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "needle-mirror/com.unity.purchasing",
+   "url": "https://github.com/needle-mirror/com.unity.purchasing/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "Axorax/awesome-free-apps",
+   "url": "https://github.com/Axorax/awesome-free-apps/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "arc-hub/ivyarchackathon",
+   "url": "https://github.com/arc-hub/ivyarchackathon/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "fmz200/global-testflight-link",
+   "url": "https://github.com/fmz200/global-testflight-link/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "gadominas/Vintly",
+   "url": "https://github.com/gadominas/Vintly/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "dancingpea/libertyscan",
+   "url": "https://github.com/dancingpea/libertyscan/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "VidiPT89/ShoppingListHome",
+   "url": "https://github.com/VidiPT89/ShoppingListHome/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "leguagou-debug/Longshot",
+   "url": "https://github.com/leguagou-debug/Longshot/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "ByteBrewIO/ByteBrewUnitySDK",
+   "url": "https://github.com/ByteBrewIO/ByteBrewUnitySDK/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "duceum/appstore-ppp-pricing-agent-skill",
+   "url": "https://github.com/duceum/appstore-ppp-pricing-agent-skill/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "delonsampaio/LiftLogic",
+   "url": "https://github.com/delonsampaio/LiftLogic/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "alfredang/freefoodapp",
+   "url": "https://github.com/alfredang/freefoodapp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "jmarrr/ios-submission-checklist",
+   "url": "https://github.com/jmarrr/ios-submission-checklist/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "materadetzky/best-free-ios-apps",
+   "url": "https://github.com/materadetzky/best-free-ios-apps/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "luminati-io/apple-app-store-scraper",
+   "url": "https://github.com/luminati-io/apple-app-store-scraper/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "pierpaologumina/open-source-apps",
+   "url": "https://github.com/pierpaologumina/open-source-apps/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "kelleyparker/UIL_PML_iOS",
+   "url": "https://github.com/kelleyparker/UIL_PML_iOS/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "hrshitkunwar-tech/argumentsaver",
+   "url": "https://github.com/hrshitkunwar-tech/argumentsaver/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "ByteBrewIO/ByteBrewiOSSDK",
+   "url": "https://github.com/ByteBrewIO/ByteBrewiOSSDK/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "anuragvd/Movies-App",
+   "url": "https://github.com/anuragvd/Movies-App/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "natelee2030/awesome-truly-free-ios",
+   "url": "https://github.com/natelee2030/awesome-truly-free-ios/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "nlpope/SwiftNovice",
+   "url": "https://github.com/nlpope/SwiftNovice/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "christian-cunanan-caparra/TaskSwift-Premium-Minimalist-Daily-Planner-To-Do-List",
+   "url": "https://github.com/christian-cunanan-caparra/TaskSwift-Premium-Minimalist-Daily-Planner-To-Do-List/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "KhushbooSingh12/OrderYourFood-SwiftUIApp",
+   "url": "https://github.com/KhushbooSingh12/OrderYourFood-SwiftUIApp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "zkSac/iBlockFilter",
+   "url": "https://github.com/zkSac/iBlockFilter/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "flexih/SnakeList",
+   "url": "https://github.com/flexih/SnakeList/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "dcmoderator/apple-testflight-codes",
+   "url": "https://github.com/dcmoderator/apple-testflight-codes/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "amadotejada/testflight-beta-watcher",
+   "url": "https://github.com/amadotejada/testflight-beta-watcher/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "stefancrigler/EasyListApp",
+   "url": "https://github.com/stefancrigler/EasyListApp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "FinnKliewer/ShoppingList",
+   "url": "https://github.com/FinnKliewer/ShoppingList/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Masudbro94/python-hacked-mobile-phone-",
+   "url": "https://github.com/Masudbro94/python-hacked-mobile-phone-/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "namiml/figma-ios-paywall-design",
+   "url": "https://github.com/namiml/figma-ios-paywall-design/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "ElementalEquityCode/Organyze-iOS",
+   "url": "https://github.com/ElementalEquityCode/Organyze-iOS/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "ftzi/cloud-functions-iap",
+   "url": "https://github.com/ftzi/cloud-functions-iap/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "anatanczak/meslistes",
+   "url": "https://github.com/anatanczak/meslistes/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "ajayrandhawa/Grocery-App-Documentation",
+   "url": "https://github.com/ajayrandhawa/Grocery-App-Documentation/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "ekncarcc/OSG",
+   "url": "https://github.com/ekncarcc/OSG/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Ronald106/Surviv.io",
+   "url": "https://github.com/Ronald106/Surviv.io/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "swati1024/torrents",
+   "url": "https://github.com/swati1024/torrents/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "SouhaibBenFarhat/Karhabti-IOS",
+   "url": "https://github.com/SouhaibBenFarhat/Karhabti-IOS/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "philberhane/FadeListApp",
+   "url": "https://github.com/philberhane/FadeListApp/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "DinaJdayeh/Graduation-Project",
+   "url": "https://github.com/DinaJdayeh/Graduation-Project/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "choiceshack/The-Arcana-hack",
+   "url": "https://github.com/choiceshack/The-Arcana-hack/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "JoshuaKozlo/gameswithgold",
+   "url": "https://github.com/JoshuaKozlo/gameswithgold/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Soundet/SRB",
+   "url": "https://github.com/Soundet/SRB/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Boondharika/QUiNT-Coin-Community-for-free",
+   "url": "https://github.com/Boondharika/QUiNT-Coin-Community-for-free/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "rurom/newnews",
+   "url": "https://github.com/rurom/newnews/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "repat/ibreak",
+   "url": "https://github.com/repat/ibreak/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "MengchuanFu/Suspecious-Apps-Detection",
+   "url": "https://github.com/MengchuanFu/Suspecious-Apps-Detection/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "ImProbablyIsaac/Pandora-Official-Guide",
+   "url": "https://github.com/ImProbablyIsaac/Pandora-Official-Guide/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "leverdeterre/iAppInfos",
+   "url": "https://github.com/leverdeterre/iAppInfos/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：iapfree/伪装分区废除"
+  },
+  {
+   "name": "gyde-tv/beta-tester-sync",
+   "url": "https://github.com/gyde-tv/beta-tester-sync/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "AdamWilfred/How-to-create-an-interactive-ebook",
+   "url": "https://github.com/AdamWilfred/How-to-create-an-interactive-ebook/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "wordisborn/beta-sync",
+   "url": "https://github.com/wordisborn/beta-sync/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "goneforever13/Tor-Links",
+   "url": "https://github.com/goneforever13/Tor-Links/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Andrewpk/iOS_appsAndDaemons",
+   "url": "https://github.com/Andrewpk/iOS_appsAndDaemons/releases",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "whx57/paper-radar",
+   "url": "https://github.com/whx57/paper-radar",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "sane-apps/viapatrum-translations",
+   "url": "https://viapatrum.org",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "App-othecary/Aublix-V2",
+   "url": "https://aublix-v20.vercel.app",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Harinand Sindukumar | Full Stack Developer & Innovator",
+   "url": "https://iths.online/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "MIT License",
+   "url": "https://mit-license.org/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "NanoComp/meep",
+   "url": "http://meep.readthedocs.io/en/latest/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "yoloboydelis/yoloboydelis.github.io",
+   "url": "https://yoloboydelis.github.io",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "qhquanghuy/shipit",
+   "url": "https://github.com/qhquanghuy/shipit",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "me-warkari/santkrupa",
+   "url": "https://github.com/me-warkari/santkrupa",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "OpenStax",
+   "url": "https://openstax.org",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Human Verification | Open Library",
+   "url": "https://archive.org",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Spine · free books to read and hear",
+   "url": "https://josbeak.github.io/spine/#/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "OpenParEM/OpenParEM",
+   "url": "https://openparem.org/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "openIE-dev/free-evtol-corpus",
+   "url": "https://openie-dev.github.io/free-evtol-corpus",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "openIE-dev/free-wearable-corpus",
+   "url": "https://openie-dev.github.io/free-wearable-corpus",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "davidmcdougall/conversation-with-machiavelli",
+   "url": "https://github.com/davidmcdougall/conversation-with-machiavelli",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "erikpr1994/open-exercise-db",
+   "url": "https://github.com/erikpr1994/open-exercise-db",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "openIE-dev/free-humanoid-corpus",
+   "url": "https://openie.dev",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "orthodoxoskomvos/orthodoxoskomvos.github.io",
+   "url": "https://orthodoxoskomvos.github.io/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "awaism257/the-mantle-library",
+   "url": "https://the-mantle-library.netlify.app/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "JCarpe315/Divided-House",
+   "url": "https://github.com/JCarpe315/Divided-House",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "api/iocs/public/feed.txt`",
+   "url": "https://threatcluster.io/api/iocs/public/feed.txt",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "api/iocs/public/domains.txt`",
+   "url": "https://threatcluster.io/api/iocs/public/domains.txt",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "api/iocs/public/ips.txt`",
+   "url": "https://threatcluster.io/api/iocs/public/ips.txt",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "api/iocs/public/hashes.txt`",
+   "url": "https://threatcluster.io/api/iocs/public/hashes.txt",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "api/iocs/public/crypto.txt`",
+   "url": "https://threatcluster.io/api/iocs/public/crypto.txt",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "api/iocs/public/full/domains.txt`",
+   "url": "https://threatcluster.io/api/iocs/public/full/domains.txt",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "api/iocs/public/full/ips.txt`",
+   "url": "https://threatcluster.io/api/iocs/public/full/ips.txt",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "api/iocs/public/full/hashes.txt`",
+   "url": "https://threatcluster.io/api/iocs/public/full/hashes.txt",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "api/iocs/public/full/crypto.txt`",
+   "url": "https://threatcluster.io/api/iocs/public/full/crypto.txt",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "URL: `",
+   "url": "https://threatcluster.io/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "LevelBlue - Open Threat Exchange",
+   "url": "https://otx.alienvault.com/user/projectargus/pulses",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "ThreatFox | User threatcluster",
+   "url": "https://community.abuse.ch",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "RSS & Atom Feeds — ThreatCluster",
+   "url": "https://threatcluster.io/feeds#main",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Free threat intelligence feed: malicious domains, IPs and hashes (IOC blocklists",
+   "url": "https://threatcluster.io/iocs#main",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Integrations",
+   "url": "https://threatcluster.io/integrations#main",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "IOC feed formats, endpoints and STIX exports | ThreatCluster",
+   "url": "https://threatcluster.io/formats#main",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Ransomware-Intel",
+   "url": "https://threatcluster.io/dark-web",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "AshayK003/DataSmith",
+   "url": "https://www.gnu.org/licenses/agpl-3.0",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "mkhalid1/claude-certification-study-notes",
+   "url": "https://prepclubs.com/free-practice-tests/claude-certified-associate?utm_source=github&utm_medium=referral&utm_campaign=study-notes&utm_content=claude-certified-associate",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "mkhalid1/comptia-network-plus-study-notes",
+   "url": "https://prepclubs.com/free-practice-tests/network-plus?utm_source=github&utm_medium=referral&utm_campaign=study-notes&utm_content=network-plus",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "mkhalid1/comptia-a-plus-study-notes",
+   "url": "https://prepclubs.com/free-practice-tests/a-plus?utm_source=github&utm_medium=referral&utm_campaign=study-notes&utm_content=a-plus",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "mkhalid1/comptia-security-plus-study-notes",
+   "url": "https://prepclubs.com/free-practice-tests/security-plus?utm_source=github&utm_medium=referral&utm_campaign=study-notes&utm_content=security-plus",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "wahah2048-cell/landsat",
+   "url": "https://pan.baidu.com/s/14epFmJfcwpYPpUm2i_NojA?pwd=8888",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "clto/hongguo-adblock",
+   "url": "https://www.cniuu.com/dl/hongguo_adblock.apk",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "jameslee0623/line-factcheck-bot",
+   "url": "https://aistudio.google.com/",
    "slug": "ai",
-   "reason": "连续 6 次验活不通"
+   "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "xyzjhe/tvbox-silicon_bigtaoge_v6",
-   "url": "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6",
+   "name": "flam-ing/free-api-harvest-hub",
+   "url": "https://aistudio.google.com/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "gunjanjaswal/Awesome-Public-Free-Apis",
+   "url": "https://awesome.re",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "precis1onz/tokenation",
+   "url": "https://aistudio.google.com/apikey",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "ayushi-n/chatbot_api",
+   "url": "https://openrouter.ai",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "glacode/Suggestio",
+   "url": "https://openrouter.ai/",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "gricatan/devhub-domaines",
+   "url": "https://nodejs.org",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "viaanshetty3-debug/relay-whatsapp-mcp",
+   "url": "https://nodejs.org",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "NilsMorczinietz/nod",
+   "url": "https://nodejs.org",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "smith8ca/Glint",
+   "url": "https://nodejs.org",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "powroom/powview",
+   "url": "https://nodejs.org",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "skygreen2001/report",
+   "url": "https://ollama.com",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "kaitlyn-serena-bush/freept",
+   "url": "https://ollama.com",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "nekopara-ai/CLIProxyAPI",
+   "url": "https://www.kimi.com/code/?aff=cliproxyapi",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "NaturalSelect/CLIProxyAPI",
+   "url": "https://www.kimi.com/code/?aff=cliproxyapi",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "unstableneutron/CLIProxyAPI",
+   "url": "https://www.kimi.com/code/?aff=cliproxyapi",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "waw666waw666/deepgram-register",
+   "url": "https://www.python.org/",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "yonbaiman/cloudflare-gateway-analyzer",
+   "url": "https://www.python.org/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "bejad21/widescrape",
+   "url": "https://docs.astral.sh/uv/",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "Mayank14211/GRACE_VOICE_AGENT",
+   "url": "https://docs.astral.sh/uv/",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "FAHTHIZ/OASIS-ROUTE",
+   "url": "https://docs.astral.sh/uv/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "paladini/i-love-open-converter",
+   "url": "https://docs.astral.sh/uv/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "sohampatki31-off/clipforge",
+   "url": "https://docs.astral.sh/uv/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "tfwcn/ai-model-gateway",
+   "url": "https://www.python.org/downloads/",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "Likhixang/cpa-freetier2api-plugin",
+   "url": "https://go.dev/",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "cxy2730/CLIProxyAPI-freetier2api-plugin",
+   "url": "https://go.dev/",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "umerdarazkha-debug/seo-audit-dashboard",
+   "url": "https://example.com",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "apimarts3l8pmoc/ai-gateway-free-tier",
+   "url": "https://go.apimart.ai/k-055875",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "cw11ark/hc-api-review",
+   "url": "https://api.hcnsec.cn/sign-up?aff=aLyp",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "Mohamed-Basem87/n8n-freelance-autobid",
+   "url": "https://console.groq.com/keys",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "AllRates-Today/exchange-rates-api",
+   "url": "https://allratestoday.com/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "collabray/domain-generator",
+   "url": "https://www.rust-lang.org",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "apimartop9jtsd/ai-api-gateway-free-tier",
+   "url": "https://go.apimart.ai/k-505b78",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "youhunwl/TVAPP",
+   "url": "https://9280.kstore.vip/newwex.json",
    "slug": "video",
-   "reason": "连续 6 次验活不通"
+   "reason": "跨栏重复，保留在「video」栏"
   },
   {
-   "name": "rtynbirf/free-man",
-   "url": "https://github.com/rtynbirf/free-man",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+   "name": "thqPrivateRepo/tvbox-dc",
+   "url": "https://9280.kstore.vip/newwex.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
   },
   {
-   "name": "zuujiscom/free-game-assets",
-   "url": "https://github.com/zuujiscom/free-game-assets",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+   "name": "aa3151036158/tvbox-config",
+   "url": "https://6296.kstore.vip/facat.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
   },
   {
-   "name": "calin-m/Bookarium",
-   "url": "https://github.com/calin-m/Bookarium",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+   "name": "Lightconer/tvbox-ysc-config",
+   "url": "https://6296.kstore.vip/facat.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
   },
   {
-   "name": "select/movies-deluxe",
-   "url": "https://github.com/select/movies-deluxe",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+   "name": "58285474/tvbox",
+   "url": "https://6296.kstore.vip/facat.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
   },
   {
-   "name": "bhwilkoff/Archive-Watch",
-   "url": "https://github.com/bhwilkoff/Archive-Watch",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+   "name": "qist/tvbox",
+   "url": "http://home.jundie.top:81/top98.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
   },
   {
-   "name": "clayjartranslation/clayjartranslation.github.io",
-   "url": "https://github.com/clayjartranslation/clayjartranslation.github.io",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "afaroo01/FROND",
-   "url": "https://github.com/afaroo01/FROND",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "yukido0205/android-agentic-sdlc",
-   "url": "https://github.com/yukido0205/android-agentic-sdlc",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "pasnya/vpn-panel-5x-uev",
-   "url": "https://github.com/pasnya/vpn-panel-5x-uev",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "dormatthew/windrose-pressure",
-   "url": "https://github.com/dormatthew/windrose-pressure",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "gadziunet/stackmoor",
-   "url": "https://github.com/gadziunet/stackmoor",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "shokki-engineering/freebusy",
-   "url": "https://github.com/shokki-engineering/freebusy",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "justakhi/hotspot-monitor",
-   "url": "https://github.com/justakhi/hotspot-monitor",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "myon-bioinformatics/PySaiyanWeBoo",
-   "url": "https://github.com/myon-bioinformatics/PySaiyanWeBoo",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "neodata-io/neokit",
-   "url": "https://github.com/neodata-io/neokit",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "long060106/incipit",
-   "url": "https://github.com/long060106/incipit",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "AgileDataGuides/business-event-matrix",
-   "url": "https://github.com/AgileDataGuides/business-event-matrix",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "mjansson/rpmalloc",
-   "url": "https://github.com/mjansson/rpmalloc",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "beast-clone/goocampus-domain-hub",
-   "url": "https://github.com/beast-clone/goocampus-domain-hub",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "drsamonline/corpus-extendum",
-   "url": "https://github.com/drsamonline/corpus-extendum",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "bmeshary-crypto/abofarwla",
-   "url": "https://github.com/bmeshary-crypto/abofarwla",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "dev-shiki/apify-mcp-suite",
-   "url": "https://github.com/dev-shiki/apify-mcp-suite",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "themellowhost/full-roblox-domain",
-   "url": "https://github.com/themellowhost/full-roblox-domain",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "danzuep/UsfmBible",
-   "url": "https://github.com/danzuep/UsfmBible",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "stand-out-of-my-sun/diogenes-micro-gateway",
-   "url": "https://github.com/stand-out-of-my-sun/diogenes-micro-gateway",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "OksigeniaSL/oga-veve",
-   "url": "https://github.com/OksigeniaSL/oga-veve",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Shivam-das-191a/shivam-das-news",
-   "url": "https://github.com/Shivam-das-191a/shivam-das-news",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "lazy-mantou/HistorySentry",
-   "url": "https://github.com/lazy-mantou/HistorySentry",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "codeboy2012/DerList",
-   "url": "https://github.com/codeboy2012/DerList",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "guagua-666/S008TrainingRegistration",
-   "url": "https://github.com/guagua-666/S008TrainingRegistration",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "RTrentJones/Greenlight",
-   "url": "https://github.com/RTrentJones/Greenlight",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "wbauer-dev/freezer-manager",
-   "url": "https://github.com/wbauer-dev/freezer-manager",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Rcsafter/V50-F50-Carplay-box-mu300",
-   "url": "https://github.com/Rcsafter/V50-F50-Carplay-box-mu300",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "lanrenbao/emby-cloudflare-tunnel-deploy",
-   "url": "https://github.com/lanrenbao/emby-cloudflare-tunnel-deploy",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "joek306090/vps-node-skill",
-   "url": "https://github.com/joek306090/vps-node-skill",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "mjzd7/FreeLLM-Api-with-Proxy",
-   "url": "https://github.com/mjzd7/FreeLLM-Api-with-Proxy",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "LimeFinance-org/rustdesk-for-cloudflare-worker",
-   "url": "https://github.com/LimeFinance-org/rustdesk-for-cloudflare-worker",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "krsnasgr/awesome-saas-startup-listing",
-   "url": "https://github.com/krsnasgr/awesome-saas-startup-listing",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "roni5604/hebrew-words-db",
-   "url": "https://github.com/roni5604/hebrew-words-db",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "SanthoshSivan-Dev/strapi-plugin-azure-sso",
-   "url": "https://github.com/SanthoshSivan-Dev/strapi-plugin-azure-sso",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "vetrihiori23-debug/internship-board",
-   "url": "https://github.com/vetrihiori23-debug/internship-board",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "yindudegugezhanghao-lgtm/hk-brokers-rules",
-   "url": "https://github.com/yindudegugezhanghao-lgtm/hk-brokers-rules",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Florisheedless915/grok-register",
-   "url": "https://github.com/Florisheedless915/grok-register",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "qwsedrtgh/qw-register-helper",
-   "url": "https://github.com/qwsedrtgh/qw-register-helper",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "tracyliving606/RegPwn",
-   "url": "https://github.com/tracyliving606/RegPwn",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "yeayraww24/public-apis",
-   "url": "https://github.com/yeayraww24/public-apis",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "submitaitools/Free-AI-Directories",
-   "url": "https://github.com/submitaitools/Free-AI-Directories",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Cashcoin123/Cashcoin123",
-   "url": "https://github.com/Cashcoin123/Cashcoin123",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "goldenoakmarketing/pinspector",
-   "url": "https://github.com/goldenoakmarketing/pinspector",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "correia95/word-unscrambler",
-   "url": "https://github.com/correia95/word-unscrambler",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "rty753/indonesiapayments",
-   "url": "https://github.com/rty753/indonesiapayments",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "woshichenghaibo/creditcards",
-   "url": "https://github.com/woshichenghaibo/creditcards",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "camircode/twofree-packages",
-   "url": "https://github.com/camircode/twofree-packages",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "farhadhsn8/search-engine",
-   "url": "https://github.com/farhadhsn8/search-engine",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "key-Solana-finder-private-wallet/key-Solana-finder-private-wallet",
-   "url": "https://github.com/key-Solana-finder-private-wallet/key-Solana-finder-private-wallet",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "VAIXLNS/VAIXLNS",
-   "url": "https://github.com/VAIXLNS/VAIXLNS",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "awais-2005/oracle-instance-creation-automation",
-   "url": "https://github.com/awais-2005/oracle-instance-creation-automation",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "space-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
-   "url": "https://github.com/space-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "one-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
-   "url": "https://github.com/one-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "olk453/wallet-balance-Solana-API-tool",
-   "url": "https://github.com/olk453/wallet-balance-Solana-API-tool",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "verified-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
-   "url": "https://github.com/verified-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "me-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
-   "url": "https://github.com/me-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "RyanAoh/TabRack",
-   "url": "https://github.com/RyanAoh/TabRack",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "n-13thehat/morgana",
-   "url": "https://github.com/n-13thehat/morgana",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Dhanya-S-14/Course_Hub-",
-   "url": "https://github.com/Dhanya-S-14/Course_Hub-",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "wpmoo-org/core",
-   "url": "https://github.com/wpmoo-org/core",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "mezmer90/saas-directories",
-   "url": "https://github.com/mezmer90/saas-directories",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "lunnar211/ResumeLab",
-   "url": "https://github.com/lunnar211/ResumeLab",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "VamsiKrishna-04/IT-and-Non-IT---course-resource-sheet",
-   "url": "https://github.com/VamsiKrishna-04/IT-and-Non-IT---course-resource-sheet",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "wild0oose43/how-to-buy-mdma",
-   "url": "https://github.com/wild0oose43/how-to-buy-mdma",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "uraeva-nataqhya/how-to-browse-darknet",
-   "url": "https://github.com/uraeva-nataqhya/how-to-browse-darknet",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "wgoerlkt/darkmatter-link-darkmatterurl",
-   "url": "https://github.com/wgoerlkt/darkmatter-link-darkmatterurl",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "wxissmel01/buy-us-paypal-account",
-   "url": "https://github.com/wxissmel01/buy-us-paypal-account",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "payroad/payroad-core",
-   "url": "https://github.com/payroad/payroad-core",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "PiyushRanakoti/personal-website",
-   "url": "https://github.com/PiyushRanakoti/personal-website",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Aryia-Behroziuan/neurons",
-   "url": "https://github.com/Aryia-Behroziuan/neurons",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "zszszszsz/.config",
-   "url": "https://github.com/zszszszsz/.config",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "ajay04323/cpanel_CPSP",
-   "url": "https://github.com/ajay04323/cpanel_CPSP",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "rramatchandran/big-o-performance-java",
-   "url": "https://github.com/rramatchandran/big-o-performance-java",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Mr033/-1123",
-   "url": "https://github.com/Mr033/-1123",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "BoysGmNg/EksvancRawGithubLicense",
-   "url": "https://github.com/BoysGmNg/EksvancRawGithubLicense",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Nate0634034090/bug-free-memory",
-   "url": "https://github.com/Nate0634034090/bug-free-memory",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "frankmalcolmkembery/GNU-GENERAL-PUBLIC-LICENSE-Version-3-29-June-2007-Copy",
-   "url": "https://github.com/frankmalcolmkembery/GNU-GENERAL-PUBLIC-LICENSE-Version-3-29-June-2007-Copy",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Ning-utdgss/GEGVL",
-   "url": "https://github.com/Ning-utdgss/GEGVL",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "abhay0406/Capstone-Project---Customer-Churn",
-   "url": "https://github.com/abhay0406/Capstone-Project---Customer-Churn",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Gmiresearch1/Blockchain-as-a-Service-Market-Size-Industry-Forecast-Report-2020-2",
-   "url": "https://github.com/Gmiresearch1/Blockchain-as-a-Service-Market-Size-Industry-Forecast-Report-2020-2027",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Prosefashion/Advantages-Of-Group-Buys",
-   "url": "https://github.com/Prosefashion/Advantages-Of-Group-Buys",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Rastaman4e/-1",
-   "url": "https://github.com/Rastaman4e/-1",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "dulanaDias/login-screen",
-   "url": "https://github.com/dulanaDias/login-screen",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Mehrdad-shahizad/DamFeed",
-   "url": "https://github.com/Mehrdad-shahizad/DamFeed",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Noykarde/NoykardeRepository",
-   "url": "https://github.com/Noykarde/NoykardeRepository",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "jdegreef/ochorus",
-   "url": "https://github.com/jdegreef/ochorus",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "solardev-xyz/freedom-browser",
-   "url": "https://github.com/solardev-xyz/freedom-browser",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "issamjwd/ginfowell-bot",
-   "url": "https://github.com/issamjwd/ginfowell-bot",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "misty-step/scry",
-   "url": "https://github.com/misty-step/scry",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "ronelyehouenou-sketch/best-brawl-stars-domain",
-   "url": "https://github.com/ronelyehouenou-sketch/best-brawl-stars-domain",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "michalik-maciej/projektownia-calculator",
-   "url": "https://github.com/michalik-maciej/projektownia-calculator",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "matharrismma/concordance-2",
-   "url": "https://github.com/matharrismma/concordance-2",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "Shubham-Safaya/us-consumer-pulse",
-   "url": "https://github.com/Shubham-Safaya/us-consumer-pulse",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "impydy/ADmiral",
-   "url": "https://github.com/impydy/ADmiral",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "manoinc/mano-mobile",
-   "url": "https://github.com/manoinc/mano-mobile",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "miniuid/Pickads",
-   "url": "https://github.com/miniuid/Pickads",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "talktorana/agent-harness",
-   "url": "https://github.com/talktorana/agent-harness",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "seeken/selecto-api-console",
-   "url": "https://github.com/seeken/selecto-api-console",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "nomandhoni-cs/nomandhoni-cs",
-   "url": "https://skillicons.dev",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "xinbetween/flowlight",
-   "url": "http://flowlight.xinbetween.com/",
-   "slug": "domain",
-   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
-  },
-  {
-   "name": "TAO-2026-beep/iptv-hub",
-   "url": "https://github.com/TAO-2026-beep/iptv-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "evenbsies/tvbox-harvest",
-   "url": "https://github.com/evenbsies/tvbox-harvest",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "jycao2/hongguoTV",
-   "url": "https://github.com/jycao2/hongguoTV",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "ljz704/iptv-hub",
-   "url": "https://github.com/ljz704/iptv-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "slothsheepking/iptv-api-home",
-   "url": "https://github.com/slothsheepking/iptv-api-home",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "fe-spark/EcoHub",
-   "url": "https://github.com/fe-spark/EcoHub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "guxia66898/tvbox-hub",
-   "url": "https://github.com/guxia66898/tvbox-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "sylvan97/tvbox-hub",
-   "url": "https://github.com/sylvan97/tvbox-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "muedsa/ha-plugin",
-   "url": "https://github.com/muedsa/ha-plugin",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "davisWeee/vod-hub",
-   "url": "https://github.com/davisWeee/vod-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "xiangfeng681-lang/h618-tvbox-linux",
-   "url": "https://github.com/xiangfeng681-lang/h618-tvbox-linux",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "smallniangao/TVBoxHome",
-   "url": "https://github.com/smallniangao/TVBoxHome",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "zlu1123/tvbox-hub",
-   "url": "https://github.com/zlu1123/tvbox-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "Web-Developer-DB/t95-tvbox-to-armbian-home-server",
-   "url": "https://github.com/Web-Developer-DB/t95-tvbox-to-armbian-home-server",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "MatheusPiassiC/tvbox-hpc-cluster",
-   "url": "https://github.com/MatheusPiassiC/tvbox-hpc-cluster",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "LastSurvivalOn/ozone-hd-deb-firmware",
-   "url": "https://github.com/LastSurvivalOn/ozone-hd-deb-firmware",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "louisYKL/TVBOX-DolbyVision-HDR10-Edition",
-   "url": "https://github.com/louisYKL/TVBOX-DolbyVision-HDR10-Edition",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "ballad0324/HoopoeTV",
-   "url": "https://github.com/ballad0324/HoopoeTV",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "tvbox342078879/probe-hub",
-   "url": "https://github.com/tvbox342078879/probe-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "HTWMedia/HTV",
-   "url": "https://github.com/HTWMedia/HTV",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "haonanren118/hd-source",
-   "url": "https://github.com/haonanren118/hd-source",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "Gabrick75/tvbox-h3-otimizacao",
-   "url": "https://github.com/Gabrick75/tvbox-h3-otimizacao",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "cc-lab7/tvbox-host",
-   "url": "https://github.com/cc-lab7/tvbox-host",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "kittymoona/happytv",
-   "url": "https://github.com/kittymoona/happytv",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "Mryang2023/video-hub",
-   "url": "https://github.com/Mryang2023/video-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "liucz000/tvbox-hub",
-   "url": "https://github.com/liucz000/tvbox-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "cony8888/tvbox-ipv4-live",
-   "url": "https://github.com/cony8888/tvbox-ipv4-live",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "OpenHWLabcom/hg680r-desktop-pc",
-   "url": "https://github.com/OpenHWLabcom/hg680r-desktop-pc",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "HaileHu/Hubox",
-   "url": "https://github.com/HaileHu/Hubox",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "wtc1069/hanime1-tvbox-source",
-   "url": "https://github.com/wtc1069/hanime1-tvbox-source",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "gasiepgodoy/Hackathon-TV-Box-E10",
-   "url": "https://github.com/gasiepgodoy/Hackathon-TV-Box-E10",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "shandianchengzi/listen-book-src-hzkjdx-chineseall",
-   "url": "https://github.com/shandianchengzi/listen-book-src-hzkjdx-chineseall",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "yuppiesnotzhuhao/TvBoxHarmony",
-   "url": "https://github.com/yuppiesnotzhuhao/TvBoxHarmony",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "spencerlishaobing/TvBoxHelper",
-   "url": "https://github.com/spencerlishaobing/TvBoxHelper",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "ttu571/MediaHub-API",
-   "url": "https://github.com/ttu571/MediaHub-API",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "starsoul666/tvbox-harmonyos",
-   "url": "https://github.com/starsoul666/tvbox-harmonyos",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "Xuehai888/iptv-platform",
-   "url": "https://github.com/Xuehai888/iptv-platform",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "bywilliams/homehub_tvbox",
-   "url": "https://github.com/bywilliams/homehub_tvbox",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "leohmoraes/hackathon-tech-floripa-incubitech-tvbox-2-hotspot-captivate",
-   "url": "https://github.com/leohmoraes/hackathon-tech-floripa-incubitech-tvbox-2-hotspot-captivate",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "smallmarker/tvbox-spider-hub",
-   "url": "https://github.com/smallmarker/tvbox-spider-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "thiagoNoGIT/pihole-tvbox-homelab",
-   "url": "https://github.com/thiagoNoGIT/pihole-tvbox-homelab",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "day253/TVBoxOSC-TCL-HWDecode",
-   "url": "https://github.com/day253/TVBoxOSC-TCL-HWDecode",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "longben314/tvbox-hub",
-   "url": "https://github.com/longben314/tvbox-hub",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "suyizhang/harmony-tvbox-client",
-   "url": "https://github.com/suyizhang/harmony-tvbox-client",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "Gabrick75/TVBox-Allwinner-H3-with-Linux",
-   "url": "https://github.com/Gabrick75/TVBox-Allwinner-H3-with-Linux",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "wj-ui/KatelyaTV2",
-   "url": "https://github.com/wj-ui/KatelyaTV2",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "guke1991/SafeTVBox",
-   "url": "https://github.com/guke1991/SafeTVBox",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "haogege8888/KatelyaTV",
-   "url": "https://github.com/haogege8888/KatelyaTV",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "marschen1984/KatelyaTV",
-   "url": "https://github.com/marschen1984/KatelyaTV",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "Attention Required! | Cloudflare",
-   "url": "https://www.mgav1.cc/api.php/provide/vod/at/xml/",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "Online Browser & Browser Sandbox – Browserling",
-   "url": "https://apihjzy.com/api.php/provide/vod/at/xml/",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "系统发生错误",
-   "url": "http://bttcj.com/inc/sapi.php",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "grumpyspud/ha80-armbian-fd628-front-panel",
-   "url": "https://github.com/grumpyspud/ha80-armbian-fd628-front-panel",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "zseagate/iptv-tvbox-highend-android",
-   "url": "https://github.com/zseagate/iptv-tvbox-highend-android",
-   "slug": "adult",
-   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
-  },
-  {
-   "name": "mlzbest/tvbox-api-backup",
+   "name": "lubin776/tvbox-api-backup",
    "url": "http://bd.qiqiv.cn/666.json",
    "slug": "video",
    "reason": "跨栏重复，保留在「video」栏"
   },
   {
-   "name": "zdh2021/MusicFree-ios-beta4",
+   "name": "zxsla/tvboxlaqu",
+   "url": "http://bd.qiqiv.cn/666.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "wzxxcz/dyr1980musicfree-plugins20261121",
+   "url": "https://gh.padao.fun/https://raw.githubusercontent.com/hebijunge/musicfree-plugins/master/sub/padao/main.json",
+   "slug": "music",
+   "reason": "跨栏重复，保留在「music」栏"
+  },
+  {
+   "name": "tsukiyo-zero/MusicFree-ios-ipa",
    "url": "https://raw.githubusercontent.com/zhuguibiao/m-plugins/refs/heads/main/bilibili.js",
    "slug": "music",
    "reason": "跨栏重复，保留在「music」栏"
+  },
+  {
+   "name": "ytzb/MusicFree-ios-beta4",
+   "url": "https://raw.githubusercontent.com/zhuguibiao/m-plugins/refs/heads/main/bilibili.js",
+   "slug": "music",
+   "reason": "跨栏重复，保留在「music」栏"
+  },
+  {
+   "name": "aoaostar/legado",
+   "url": "https://legado.aoaostar.com/sources/b778fe6b.json",
+   "slug": "book",
+   "reason": "跨栏重复，保留在「book」栏"
+  },
+  {
+   "name": "MajoSissi/legado-source",
+   "url": "https://raw.githubusercontent.com/MajoSissi/legado-source/main/source/light-novel.json",
+   "slug": "book",
+   "reason": "跨栏重复，保留在「book」栏"
+  },
+  {
+   "name": "4yt1k/m3u-autoupdate",
+   "url": "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.m3u",
+   "slug": "live",
+   "reason": "跨栏重复，保留在「live」栏"
+  },
+  {
+   "name": "Cloudflare Pages",
+   "url": "https://pages.cloudflare.com/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "Cloudflare Workers",
+   "url": "https://workers.cloudflare.com/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "jntegz/shorthop",
+   "url": "https://workers.cloudflare.com/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "GitHub Pages",
+   "url": "https://pages.github.com/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "cdnjs/packages",
+   "url": "https://cdnjs.com",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「service」栏"
+  },
+  {
+   "name": "pirlruc/gitlab-mcp",
+   "url": "https://modelcontextprotocol.io/",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「service」栏"
+  },
+  {
+   "name": "gdameneses/financas",
+   "url": "https://hono.dev",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「service」栏"
+  },
+  {
+   "name": "npanj188/ddos-protection-vps-tiers",
+   "url": "https://my.ava.hosting/aff.php?aff=15562",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「service」栏"
+  },
+  {
+   "name": "CanuteTheGreat/cert-transparency-watcher",
+   "url": "https://errant.solutions",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "clawdiapai/OWRadio",
+   "url": "https://www.duckdns.org",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "Max-Zit/hostzit",
+   "url": "https://maxzit.com/products/#hostzit",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「service」栏"
+  },
+  {
+   "name": "is-a-dev/register",
+   "url": "https://is-a.dev",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "4ngel2769/freedns.afraid.org-domain-scraper",
+   "url": "https://freedns.afraid.org/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "creepers.sbs - Free Subdomains for Everyone",
+   "url": "https://creepers.sbs/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "free-domain-name/free-domain-name.github.io",
+   "url": "https://free-domain-name.github.io/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "PeterDaveHello/top-1m-domains",
+   "url": "https://alexa.com/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "neihyud/cloudflare_temp_email",
+   "url": "https://mail.awsl.uk",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "oekhf486/rainyun-domain-ssl",
+   "url": "https://bit.ly/RaiNyun",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "GitHub - Pokymon/foo.ng: Free subdomains for everyone. · GitHub",
+   "url": "https://foo.ng/#start-of-content",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "intentfreedomain/FreeDomain",
+   "url": "https://int.yt/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "Intent | Free Subdomains™",
+   "url": "https://int.yt/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "solcreek/terraform-provider-gandi",
+   "url": "https://terraform.io",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "salaros/is-biz-mail-php",
+   "url": "https://codecave.pro/#projects",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "salaros/is-biz-mail-dotnet",
+   "url": "https://codecave.pro#projects",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "DigitalPlatDev/FreeDomain",
+   "url": "https://dev.to/edwardhsing/i-bought-a-domain-at-15-now-it-powers-400000-users-7ol",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "luri99/ycweb",
+   "url": "https://luri.cc.cd",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "vempvhs/tencent-ssl-pricing",
+   "url": "https://bit.ly/yunhuodong",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "wicuw1/hexo-cloud-server-blog",
+   "url": "https://bit.ly/yunhuodong",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "GoLive.me — Free Domains & Instant Subdomains for Developers",
+   "url": "https://go-live.me/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "Attention Required! | Cloudflare",
+   "url": "https://www.cloudflare.com/5xx-error-landing",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "tashfeenahmed/AgentDomains-web",
+   "url": "https://agentdomains.co",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "tashfeenahmed/AgentDomains-mcp",
+   "url": "https://agentdomains.co",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "everett7623/airport-recommendations-2026",
+   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「cfip」栏"
+  },
+  {
+   "name": "Clash Verge Rev 桌面客户端",
+   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
+   "slug": "proxy",
+   "reason": "跨栏重复，保留在「cfip」栏"
+  },
+  {
+   "name": "diyros/cf-bestip",
+   "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt",
+   "slug": "cfip",
+   "reason": "跨栏重复，保留在「cfip」栏"
+  },
+  {
+   "name": "free18/v2ray",
+   "url": "https://ghfast.top/https://raw.githubusercontent.com/free18/v2ray/refs/heads/main/v.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "jichangx/free-nodes",
+   "url": "https://ghfast.top/https://raw.githubusercontent.com/free18/v2ray/refs/heads/main/v.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "nodesradar/nodesradar-es",
+   "url": "https://radarhub.top/v2ray.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "nodesradar/nodesradar-my",
+   "url": "https://radarhub.top/v2ray.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "nodesradar/nodesradar-id",
+   "url": "https://radarhub.top/v2ray.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "nodesradar/nodesradar-vi",
+   "url": "https://radarhub.top/v2ray.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "nodesradar/nodesradar-ur",
+   "url": "https://radarhub.top/v2ray.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "nodesradar/nodesradar-ar",
+   "url": "https://radarhub.top/v2ray.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "nodesradar/nodesradar-tr",
+   "url": "https://radarhub.top/v2ray.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "nodesradar/nodesradar-ru",
+   "url": "https://radarhub.top/v2ray.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "nodesradar/nodesradar-fa",
+   "url": "https://radarhub.top/v2ray.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "kooker/FreeSubsCheck",
+   "url": "https://raw.githubusercontent.com/kooker/FreeSubsCheck/main/base64.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "WLget/V2Ray_configs_64",
+   "url": "https://raw.githubusercontent.com/WLget/V2Ray_configs_64/refs/heads/master/ConfigSub_list.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "crashgfw/free-airport-nodes",
+   "url": "https://ndxy.fn0821.xyz/nodes/09dec08b23cdb69b62985c0d3e06edeb",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "TG-NAV/clashnode",
+   "url": "https://sfdr.zaixianyouxi.dpdns.org/uploads/2026/11/20261125.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "clashv2rayu/clashv2rayu.github.io",
+   "url": "https://sfdr.zaixianyouxi.dpdns.org/uploads/2026/11/20261125.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "tglaoshiji/nodeshare",
+   "url": "https://sfdr.zaixianyouxi.dpdns.org/uploads/2026/11/20261125.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
+  },
+  {
+   "name": "dongyubin/Free-AppleId-Serve",
+   "url": "https://www.xrayvip.com/free.txt",
+   "slug": "node",
+   "reason": "跨栏重复，保留在「node」栏"
   }
  ],
- "updatedAt": "2026-11-25T05:06:19.033Z"
+ "updatedAt": "2026-11-25T12:03:36.511Z"
 }
