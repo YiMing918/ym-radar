@@ -167,7 +167,7 @@
     main: '主榜', adult: '成人榜', limited_free: '限免', price_drop: '降价',
     discounts: '降价', testflight: 'TestFlight', deals: '限时赠金', permanent: '长期免费',
     long_term: '长期免费', long: '长视频', short: '短视频', app: 'APP',
-    disguised: '伪装类应用', iapfree: '内购限免', ipasign: '签名',
+    ipasign: '签名',
     guide: '教程/清单/工具',
     'android-free': '安卓好用软件', 'android-cracked': '安卓破解软件',
     'pc-free': '电脑全免费软件', 'pc-cracked': '电脑破解软件',
@@ -175,16 +175,17 @@
     linux: 'Linux', router: '路由器', all: '全平台'
   };
   var CAT_SECTION_LABELS = {
-    apple: { deals: '限免', discounts: '降价', testflight: 'TestFlight', disguised: '伪装类应用', iapfree: '内购限免', ipasign: '签名' },
+    /* FIX17 二期：iapfree/伪装分区已废除（方案 A），从苹果栏标签里拿掉 */
+    apple: { deals: '限免', discounts: '降价', testflight: 'TestFlight', ipasign: '签名' },
     /* FIX17 C2：域名分堆——main 是真提供商，guide 是降级的教程/清单/工具 */
     domain: { main: '提供商', guide: '教程/清单/工具' }
   };
   function sectionLabel(slug, s) {
     return (CAT_SECTION_LABELS[slug] || {})[s] || SECTION_LABELS[s] || s || '其他';
   }
-  var SEC_ORDER = ['deals', 'discounts', 'iapfree', 'testflight', 'ipasign', 'permanent',
+  var SEC_ORDER = ['deals', 'discounts', 'testflight', 'ipasign', 'permanent',
     'long_term', 'long', 'short', 'app', 'android-free', 'pc-free', 'android-cracked',
-    'pc-cracked', 'disguised', 'all', 'ios', 'android', 'windows', 'mac', 'linux',
+    'pc-cracked', 'all', 'ios', 'android', 'windows', 'mac', 'linux',
     'router', 'adult', 'main', 'guide'];
 
   function esc(s) {
