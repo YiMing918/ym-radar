@@ -398,460 +398,178 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "88┃看球",
-   "url": "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js",
+   "name": "huatong202/tvbox-custom",
+   "url": "https://github.com/huatong202/tvbox-custom",
    "slug": "video",
    "reason": "连续 6 次验活不通"
   },
   {
-   "name": "虎牙┃直播",
-   "url": "https://notabug.org/fantaiying/ext/raw/main/drpy2.js",
-   "slug": "video",
+   "name": "shipsho/shipsho",
+   "url": "https://github.com/shipsho/shipsho",
+   "slug": "service",
    "reason": "连续 6 次验活不通"
   },
   {
-   "name": "dandelions/home-iptv",
-   "url": "https://github.com/dandelions/home-iptv",
-   "slug": "live",
+   "name": "innoxpert/innox-tools-free-web-developer-utilities-online-financial-calculators-",
+   "url": "https://github.com/innoxpert/innox-tools-free-web-developer-utilities-online-financial-calculators-2668",
+   "slug": "service",
    "reason": "连续 6 次验活不通"
   },
   {
-   "name": "🥇010爱",
-   "url": "http://www.010aizy.com/API/macs.php",
-   "slug": "adult",
-   "reason": "连续 6 次验活不通"
-  },
-  {
-   "name": "gricatan/devhub-domaines",
-   "url": "https://nodejs.org",
+   "name": "Human Verification | Open Library",
+   "url": "https://archive.org",
    "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "a57875847/cf-ip",
+   "url": "https://github.com/a57875847/cf-ip",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "qq4756283/cf-ip",
+   "url": "https://github.com/qq4756283/cf-ip",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "asd52112/FishIPA",
+   "url": "https://github.com/asd52112/FishIPA",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "z1131392774/cfnb-ip",
+   "url": "https://github.com/z1131392774/cfnb-ip",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "335459215/cfst-ip-pool",
+   "url": "https://github.com/335459215/cfst-ip-pool",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "alextend/my-best-cf-ips",
+   "url": "https://github.com/alextend/my-best-cf-ips",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "sdfiuhwieuh/best-cf-ips",
+   "url": "https://github.com/sdfiuhwieuh/best-cf-ips",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "niuyeye1206/cf-preferred-ip",
+   "url": "https://github.com/niuyeye1206/cf-preferred-ip",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "anglesgirl/cf-preferred-ips",
+   "url": "https://github.com/anglesgirl/cf-preferred-ips",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "luckysonyu99/cfdata-cmliu-ip",
+   "url": "https://github.com/luckysonyu99/cfdata-cmliu-ip",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "yyywming/cf-ip",
+   "url": "https://github.com/yyywming/cf-ip",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "myohtetpaing2021/personal-best-cf-ips",
+   "url": "https://github.com/myohtetpaing2021/personal-best-cf-ips",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "elvis4139/CloudflareData",
+   "url": "https://github.com/elvis4139/CloudflareData",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "zszszszsz/.config",
+   "url": "https://github.com/zszszszsz/.config",
+   "slug": "cfip",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "alireza786786/Free-V2ray-Configs",
+   "url": "https://github.com/alireza786786/Free-V2ray-Configs",
+   "slug": "node",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "shifeiquan520/shifeiquan3",
+   "url": "https://github.com/shifeiquan520/shifeiquan3",
+   "slug": "node",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "Aswita19/BloodAid",
+   "url": "https://github.com/Aswita19/BloodAid",
+   "slug": "node",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "dfhhvc/freenodes",
+   "url": "https://github.com/dfhhvc/freenodes",
+   "slug": "node",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "gfw-killer/Free-v2Ray-Nodes",
+   "url": "https://github.com/gfw-killer/Free-v2Ray-Nodes",
+   "slug": "node",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "519558784-cyber/v2ray-sub",
+   "url": "https://github.com/519558784-cyber/v2ray-sub",
+   "slug": "node",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "imaex/free-sub",
+   "url": "https://github.com/imaex/free-sub",
+   "slug": "node",
+   "reason": "存量清理：模板简介的裸仓库条目（非工具/非种子/非通道）"
+  },
+  {
+   "name": "mnfst/awesome-free-llm-apis",
+   "url": "https://awesome.re",
+   "slug": "ai",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "powroom/powview",
-   "url": "https://nodejs.org",
+   "name": "AlexSergey/fresher",
+   "url": "https://rustup.rs",
    "slug": "service",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "smith8ca/Glint",
-   "url": "https://nodejs.org",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "skygreen2001/report",
-   "url": "https://ollama.com",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "nekopara-ai/CLIProxyAPI",
-   "url": "https://www.kimi.com/code/?aff=cliproxyapi",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "NaturalSelect/CLIProxyAPI",
-   "url": "https://www.kimi.com/code/?aff=cliproxyapi",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "paladini/i-love-open-converter",
-   "url": "https://docs.astral.sh/uv/",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "tfwcn/ai-model-gateway",
-   "url": "https://www.python.org/downloads/",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "cxy2730/CLIProxyAPI-freetier2api-plugin",
-   "url": "https://go.dev/",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "Likhixang/cpa-freetier2api-plugin",
-   "url": "https://go.dev/",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "collabray/domain-generator",
-   "url": "https://www.rust-lang.org",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "apimartop9jtsd/ai-api-gateway-free-tier",
-   "url": "https://go.apimart.ai/k-505b78",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "thqPrivateRepo/tvbox-dc",
-   "url": "https://9280.kstore.vip/newwex.json",
-   "slug": "video",
-   "reason": "跨栏重复，保留在「video」栏"
-  },
-  {
-   "name": "youhunwl/TVAPP",
-   "url": "https://9280.kstore.vip/newwex.json",
-   "slug": "video",
-   "reason": "跨栏重复，保留在「video」栏"
-  },
-  {
-   "name": "58285474/tvbox",
-   "url": "https://6296.kstore.vip/facat.json",
-   "slug": "video",
-   "reason": "跨栏重复，保留在「video」栏"
-  },
-  {
-   "name": "Lightconer/tvbox-ysc-config",
-   "url": "https://6296.kstore.vip/facat.json",
-   "slug": "video",
-   "reason": "跨栏重复，保留在「video」栏"
-  },
-  {
-   "name": "qist/tvbox",
-   "url": "http://home.jundie.top:81/top98.json",
-   "slug": "video",
-   "reason": "跨栏重复，保留在「video」栏"
-  },
-  {
-   "name": "lubin776/tvbox-api-backup",
-   "url": "http://bd.qiqiv.cn/666.json",
-   "slug": "video",
-   "reason": "跨栏重复，保留在「video」栏"
-  },
-  {
-   "name": "aa3151036158/tvbox-config",
-   "url": "http://xhztv.top/4k.json",
-   "slug": "video",
-   "reason": "跨栏重复，保留在「video」栏"
-  },
-  {
-   "name": "wzxxcz/dyr1980musicfree-plugins20261121",
-   "url": "https://gh.padao.fun/https://raw.githubusercontent.com/hebijunge/musicfree-plugins/master/sub/padao/main.json",
-   "slug": "music",
-   "reason": "跨栏重复，保留在「music」栏"
-  },
-  {
-   "name": "ytzb/MusicFree-ios-beta4",
+   "name": "zdh2021/MusicFree-ios-beta4",
    "url": "https://raw.githubusercontent.com/zhuguibiao/m-plugins/refs/heads/main/bilibili.js",
    "slug": "music",
    "reason": "跨栏重复，保留在「music」栏"
   },
   {
-   "name": "tsukiyo-zero/MusicFree-ios-ipa",
-   "url": "https://raw.githubusercontent.com/zhuguibiao/m-plugins/refs/heads/main/bilibili.js",
-   "slug": "music",
-   "reason": "跨栏重复，保留在「music」栏"
-  },
-  {
-   "name": "aoaostar/legado",
-   "url": "https://legado.aoaostar.com/sources/b778fe6b.json",
-   "slug": "book",
-   "reason": "跨栏重复，保留在「book」栏"
-  },
-  {
-   "name": "MajoSissi/legado-source",
-   "url": "https://raw.githubusercontent.com/MajoSissi/legado-source/main/source/light-novel.json",
-   "slug": "book",
-   "reason": "跨栏重复，保留在「book」栏"
-  },
-  {
-   "name": "4yt1k/m3u-autoupdate",
-   "url": "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.m3u",
-   "slug": "live",
-   "reason": "跨栏重复，保留在「live」栏"
-  },
-  {
-   "name": "ZenithStellar/mytv-playlist",
-   "url": "https://raw.githubusercontent.com/ZenithStellar/astro-playlist/main/astro.m3u",
-   "slug": "live",
-   "reason": "跨栏重复，保留在「live」栏"
-  },
-  {
-   "name": "gdameneses/financas",
-   "url": "https://hono.dev",
+   "name": "brbadhon22335/loading-screen-gold-entry",
+   "url": "https://make.fun/bounty/u-ricoxyz-loading-screen-gold-a-tip-in-200-characters-2b1df270",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "fastapi/fastapi",
-   "url": "https://fastapi.tiangolo.com/",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "Aamir Zameer (@Amz34): akv-cache-engine corpus | XERJ Hub",
-   "url": "https://xerj.org",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "AZ Consultants | Saudi Arabia",
-   "url": "https://wa.me/966574268856?text=Hello%2C%20I%20would%20like%20to%20discuss%20advisory%20support%20in%20Saudi%20Arabia.",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "Aamir Zameer — Principal AI Systems Architect & Tech Recruiter | Autonomous Agen",
-   "url": "https://amz34.github.io/ai-can-run/",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "Redirecting to LangGraph Documentation",
-   "url": "https://docs.langchain.com/oss/python/langgraph/overview",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "OpenAlex: The open catalog to the global research system",
-   "url": "https://help.openalex.org/",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "Google News",
-   "url": "https://news.google.com/?hl=en-US&gl=US&ceid=US%3Aen",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "ZoniBoy00 · GitHub",
-   "url": "https://docs.github.com/en",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "sn-lui · GitHub",
-   "url": "https://docs.github.com/en",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "connerlambden",
-   "url": "https://docs.github.com/en",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "bensynapse (Ben Abulafia) · GitHub",
-   "url": "https://docs.github.com/en",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "farhannk17 (Farhan Kotwal) · GitHub",
-   "url": "https://docs.github.com/en",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "yumaheymans · GitHub",
-   "url": "https://docs.github.com/en",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "sweesama · GitHub",
-   "url": "https://docs.github.com/en",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Amz34 (Aamir Zameer) · GitHub",
-   "url": "https://docs.github.com/en",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "jntegz/shorthop",
-   "url": "https://workers.cloudflare.com/",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "clawdiapai/OWRadio",
-   "url": "https://www.duckdns.org",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "CanuteTheGreat/cert-transparency-watcher",
-   "url": "https://errant.solutions",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "is-a-dev/register",
-   "url": "https://is-a.dev",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "4ngel2769/freedns.afraid.org-domain-scraper",
-   "url": "https://freedns.afraid.org/",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "neihyud/cloudflare_temp_email",
-   "url": "https://mail.awsl.uk",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "oekhf486/rainyun-domain-ssl",
-   "url": "https://bit.ly/RaiNyun",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "intentfreedomain/FreeDomain",
-   "url": "https://int.yt/",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "solcreek/terraform-provider-gandi",
-   "url": "https://terraform.io",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "salaros/is-biz-mail-php",
-   "url": "https://codecave.pro/#projects",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "salaros/is-biz-mail-dotnet",
-   "url": "https://codecave.pro#projects",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "DigitalPlatDev/FreeDomain",
-   "url": "https://dev.to/edwardhsing/i-bought-a-domain-at-15-now-it-powers-400000-users-7ol",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "vempvhs/tencent-ssl-pricing",
-   "url": "https://bit.ly/yunhuodong",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "wicuw1/hexo-cloud-server-blog",
-   "url": "https://bit.ly/yunhuodong",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "is-a.bot - Free subdomains for developers",
-   "url": "https://docs.is-a.dev",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Domain Names, Registration, Websites & Hosting | name.com",
-   "url": "https://www.name.com/",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Attention Required! | Cloudflare",
-   "url": "https://www.cloudflare.com/5xx-error-landing",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Attention Required! | Cloudflare",
-   "url": "https://www.cloudflare.com/5xx-error-landing",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "thedev.id - A free identity for developers on the web",
-   "url": "https://thedev.id/dns-leak-test",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "pp.ua - free domain for people!",
-   "url": "https://pp.ua/eng/index.html",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "tashfeenahmed/AgentDomains-web",
-   "url": "https://agentdomains.co",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Free eu.cc Domain Registration for Everyone | GNAME Official Promo-Buy Domain Na",
-   "url": "https://www.gname.com/",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Site not found · GitHub Pages",
-   "url": "https://help.github.com/pages/",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Free dynamic DNS service | Dynu Systems, Inc.",
-   "url": "https://www.dynu.com/en-US/",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Free dynamic DNS for IPv6",
-   "url": "https://dynv6.com/docs/apis#rest",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Free DDNS",
-   "url": "https://freemyip.com/main",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "Free domain names — freedns.my",
-   "url": "https://freedns.my/index.php",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "from-mm.dev - Free subdomains for Myanmar developers",
-   "url": "https://www.from-mm.dev/waiting-room",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "LovieMe — The Subdomain & Anycast DNS Cloud Built for Developers & AI Agents",
-   "url": "https://www.lovie.me/docs",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
-  },
-  {
-   "name": "List of most popular email domains (by number of live emails)",
-   "url": "https://email-verify.my-addr.com/",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
    "name": "Free Email Domains List | WhoisXML API",
@@ -860,8 +578,32 @@
    "reason": "跨栏重复，保留在「domain」栏"
   },
   {
+   "name": "Cisco Popularity List",
+   "url": "http://s3-us-west-1.amazonaws.com/umbrella-static/top-1m.csv.zip",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "Majestic Million",
+   "url": "https://majestic.com/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
    "name": "Top 1,000 Domains by Open Page Rank",
    "url": "https://keywordseverywhere.com/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "Top 1,000 Domains by Open Page Rank",
+   "url": "https://keywordseverywhere.com/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "Top 1 Million Most Popular Websites - NetAPI",
+   "url": "https://netapi.com/",
    "slug": "domain",
    "reason": "跨栏重复，保留在「domain」栏"
   },
@@ -876,13 +618,7 @@
    "url": "https://bestcf.pages.dev/vps789/top20.txt",
    "slug": "cfip",
    "reason": "跨栏重复，保留在「cfip」栏"
-  },
-  {
-   "name": "Clash Verge Rev 桌面客户端",
-   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
-   "slug": "proxy",
-   "reason": "跨栏重复，保留在「cfip」栏"
   }
  ],
- "updatedAt": "2026-11-25T16:59:24.860Z"
+ "updatedAt": "2026-11-25T23:46:32.275Z"
 }
