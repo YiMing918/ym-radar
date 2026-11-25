@@ -1,650 +1,588 @@
 {
-  "_说明": "雷达站发现源清单。每栏至少 2 个互相独立的源，单个源失败只跳过并记日志。type 四类：github_search=GitHub 搜索 API（query 是搜索式，按最近更新排序）；repo_json=聚合仓库/公开接口的 JSON 清单（parse 说明解析方式）；rss=官方榜单 feed；page_links=聚合导航页，抓页面外链作候选。选源标准：公开、免令牌、结构稳定。苹果栏说明（FIX17 二期）：RSS 榜单和 TestFlight 来源不在此处——RSS 由 collect.py 里的价格通道直接拉（带价格台账比对，见 APPLE_RSS_FEEDS），TestFlight 由 pluwen/1xtest/releaf 三源直拉（见 apple_tf_channel）；此处苹果只留 ipasign 的 GitHub 搜索源。",
-  "categories": {
-    "adult": [
-      {
-        "parse": "成人 TVBox 配置，取 sites 数组的 name+api 作候选",
-        "type": "repo_json",
-        "url": "https://raw.githubusercontent.com/2hacc/TVBox/main/h/h.json"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "tvbox h",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "TVBox 成人",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "hong tvbox",
-        "type": "github_search"
-      }
-    ],
-    "ai": [
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "free llm api",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "topic:llm free api",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "openai free api",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "free ai api key",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "gemini free api",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "免费 ai api",
-        "type": "github_search"
-      }
-    ],
-    "app": [
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "topic:android topic:open-source",
-        "type": "github_search",
-        "section": "android-free"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "topic:fdroid",
-        "type": "github_search",
-        "section": "android-free"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "open source android app",
-        "type": "github_search",
-        "section": "android-free"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "f-droid apps",
-        "type": "github_search",
-        "section": "android-free"
-      },
-      {
-        "type": "fdroid",
-        "url": "https://f-droid.org/en/packages/",
-        "section": "android-free",
-        "parse": "F-Droid 应用列表页（同站包链接）"
-      },
-      {
-        "parse": "F-Droid 商店目录页，抓包页外链作候选",
-        "type": "page_links",
-        "url": "https://f-droid.org/en/packages/",
-        "section": "android-free"
-      },
-      {
-        "type": "github_search",
-        "query": "windows free software open source",
-        "section": "pc-free",
-        "parse": "取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "open source alternative windows",
-        "section": "pc-free",
-        "parse": "取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "pc freeware list",
-        "section": "pc-free",
-        "parse": "取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "安卓 破解 软件 清单",
-        "section": "android-cracked",
-        "parse": "维护破解软件清单的公开仓库，取仓库名+主页+简介作候选（条目强制带风险警告）"
-      },
-      {
-        "type": "github_search",
-        "query": "android mod apps list",
-        "section": "android-cracked",
-        "parse": "取仓库名+主页+简介作候选（条目强制带风险警告）"
-      },
-      {
-        "type": "github_search",
-        "query": "windows cracked software list",
-        "section": "pc-cracked",
-        "parse": "维护破解软件清单的公开仓库，取仓库名+主页+简介作候选（条目强制带风险警告）"
-      },
-      {
-        "type": "github_search",
-        "query": "电脑 破解软件 合集",
-        "section": "pc-cracked",
-        "parse": "取仓库名+主页+简介作候选（条目强制带风险警告）"
-      }
-    ],
-    "apple": [
-      {
-        "type": "github_search",
-        "query": "ios ipa library",
-        "section": "ipasign",
-        "parse": "维护 IPA 包清单的仓库，取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
-      },
-      {
-        "type": "github_search",
-        "query": "ipa 资源库 ios",
-        "section": "ipasign",
-        "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
-      },
-      {
-        "type": "github_search",
-        "query": "esign ipa repo",
-        "section": "ipasign",
-        "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
-      },
-      {
-        "type": "github_search",
-        "query": "苹果 ipa 包 自签",
-        "section": "ipasign",
-        "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
-      },
-      {
-        "type": "github_search",
-        "query": "altstore apps ipa",
-        "section": "ipasign",
-        "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
-      }
-    ],
-    "book": [
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "legado 书源",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "topic:legado",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "阅读 书源 合集",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "legado sources",
-        "type": "github_search"
-      },
-      {
-        "parse": "aoaostar 书源站，抓页面外链作候选",
-        "type": "page_links",
-        "url": "https://legado.aoaostar.com/"
-      }
-    ],
-    "cfip": [
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "cloudflare 优选 ip",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "best cloudflare ip",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "cloudflare speed test",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "cf 优选",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "cloudflare preferred ip",
-        "type": "github_search"
-      },
-      {
-        "parse": "BestCF 导航页，抓页面外链作候选",
-        "type": "page_links",
-        "url": "https://bestcf.pages.dev/"
-      }
-    ],
-    "domain": [
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "free domain",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "topic:free-domain",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "free domains list",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "free domain name provider",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "免费域名",
-        "type": "github_search"
-      },
-      {
-        "type": "github_search",
-        "query": "free domain aggregator list",
-        "parse": "取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "免费域名 合集",
-        "parse": "取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "free domain providers",
-        "parse": "取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "freenom alternative free domains",
-        "parse": "取仓库名+主页+简介作候选"
-      }
-    ],
-    "live": [
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "iptv m3u",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "topic:iptv",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "iptv playlist",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "直播源 m3u",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "free iptv",
-        "type": "github_search"
-      }
-    ],
-    "music": [
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "MusicFree",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "topic:musicfree",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "lx-music 音源",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "洛雪 音源",
-        "type": "github_search"
-      },
-      {
-        "parse": "MusicFree 插件聚合清单，取插件 name+url 作候选",
-        "type": "repo_json",
-        "url": "https://gitee.com/maotoumao/MusicFreePlugins/raw/master/plugins.json"
-      },
-      {
-        "parse": "MusicFree 插件中心清单，取插件 name+url 作候选",
-        "type": "repo_json",
-        "url": "https://musicfreepluginshub.2020818.xyz/plugins.json"
-      }
-    ],
-    "node": [
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "v2ray free subscription",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "clash free subscription",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "topic:v2ray",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "free nodes subscription",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "sing-box free subscription",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "免费节点 订阅",
-        "type": "github_search"
-      }
-    ],
-    "service": [
-      {
-        "type": "github_search",
-        "query": "free for developers",
-        "parse": "free-for-dev 类免费服务大全仓库（主聚合源），取仓库名+主页+简介作候选"
-      },
-      {
-        "type": "github_search",
-        "query": "free for dev list",
-        "parse": "免费服务大全类仓库（主聚合源）"
-      },
-      {
-        "type": "github_search",
-        "query": "free domain name service",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费域名"
-      },
-      {
-        "type": "github_search",
-        "query": "free subdomain provider",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费域名"
-      },
-      {
-        "type": "github_search",
-        "query": "free hosting tier",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费主机/托管"
-      },
-      {
-        "type": "github_search",
-        "query": "free vps tier",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费主机/托管"
-      },
-      {
-        "type": "github_search",
-        "query": "free tier cloud hosting",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费主机/托管"
-      },
-      {
-        "type": "github_search",
-        "query": "free email hosting",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费邮箱"
-      },
-      {
-        "type": "github_search",
-        "query": "free custom domain email",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费邮箱"
-      },
-      {
-        "type": "github_search",
-        "query": "free database hosting",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费数据库"
-      },
-      {
-        "type": "github_search",
-        "query": "free postgres mysql tier",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费数据库"
-      },
-      {
-        "type": "github_search",
-        "query": "free ssl certificate",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费证书"
-      },
-      {
-        "type": "github_search",
-        "query": "free https certificate acme",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费证书"
-      },
-      {
-        "type": "github_search",
-        "query": "free object storage tier",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费存储/图床"
-      },
-      {
-        "type": "github_search",
-        "query": "free image hosting",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费存储/图床"
-      },
-      {
-        "type": "github_search",
-        "query": "public apis free list",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费 API"
-      },
-      {
-        "type": "github_search",
-        "query": "free api tier",
-        "parse": "取仓库名+主页+简介作候选",
-        "subcat": "免费 API"
-      }
-    ],
-    "video": [
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "tvbox",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "topic:tvbox",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "tvbox 配置",
-        "type": "github_search"
-      },
-      {
-        "parse": "取仓库名+主页+简介作候选",
-        "query": "影视仓 配置",
-        "type": "github_search"
-      },
-      {
-        "parse": "TVBox 大配置，取 sites 数组的 name+api 作单个接口候选",
-        "type": "repo_json",
-        "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/0821.json"
-      },
-      {
-        "parse": "TVBox 配置，取 sites 数组的 name+api 作单个接口候选",
-        "type": "repo_json",
-        "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/js.json"
-      }
-    ],
-    "proxy": [
-      {
-        "type": "github_repo",
-        "repo": "MetaCubeX/mihomo",
-        "section": "all",
-        "parse": "代理内核 mihomo 官方仓库"
-      },
-      {
-        "type": "github_repo",
-        "repo": "SagerNet/sing-box",
-        "section": "all",
-        "parse": "代理内核 sing-box 官方仓库"
-      },
-      {
-        "type": "github_repo",
-        "repo": "XTLS/Xray-core",
-        "section": "all",
-        "parse": "代理内核 Xray 官方仓库"
-      },
-      {
-        "type": "github_repo",
-        "repo": "2dust/v2rayNG",
-        "section": "android",
-        "parse": "安卓 v2rayNG 客户端"
-      },
-      {
-        "type": "github_repo",
-        "repo": "tindy2013/subconverter",
-        "section": "all",
-        "parse": "订阅转换工具 subconverter"
-      },
-      {
-        "type": "github_repo",
-        "repo": "sub-store-org/Sub-Store",
-        "section": "all",
-        "parse": "订阅管理工具 Sub-Store"
-      },
-      {
-        "type": "github_repo",
-        "repo": "MatsuriDayo/NekoBoxForAndroid",
-        "section": "android",
-        "parse": "安卓 sing-box 客户端 NekoBox（猫箱）"
-      },
-      {
-        "type": "github_repo",
-        "repo": "chen08209/FlClash",
-        "section": "all",
-        "parse": "全平台 mihomo 客户端 FlClash"
-      },
-      {
-        "type": "github_repo",
-        "repo": "KaringX/karing",
-        "section": "all",
-        "parse": "全平台 sing-box 客户端 Karing"
-      },
-      {
-        "type": "github_repo",
-        "repo": "hiddify/hiddify-app",
-        "section": "all",
-        "parse": "全平台 sing-box 客户端 Hiddify"
-      },
-      {
-        "type": "github_repo",
-        "repo": "clash-verge-rev/clash-verge-rev",
-        "section": "all",
-        "parse": "桌面 mihomo 客户端 Clash Verge Rev"
-      },
-      {
-        "type": "github_repo",
-        "repo": "2dust/v2rayN",
-        "section": "all",
-        "parse": "桌面 Xray/sing-box 客户端 v2rayN"
-      },
-      {
-        "type": "github_repo",
-        "repo": "throneproj/Throne",
-        "section": "all",
-        "parse": "桌面 sing-box 客户端 Throne（NekoRay 接班人）"
-      },
-      {
-        "type": "github_repo",
-        "repo": "mihomo-party-org/clash-party",
-        "section": "all",
-        "parse": "桌面 mihomo 客户端 Clash Party（内置 Sub-Store）"
-      },
-      {
-        "type": "github_repo",
-        "repo": "HyNetworks/hysteria",
-        "section": "all",
-        "parse": "QUIC 协议内核 Hysteria2"
-      },
-      {
-        "type": "github_repo",
-        "repo": "EAimTY/tuic",
-        "section": "all",
-        "parse": "QUIC 协议内核 TUIC"
-      },
-      {
-        "type": "github_repo",
-        "repo": "v2fly/v2ray-core",
-        "section": "all",
-        "parse": "V2Ray 原版内核"
-      },
-      {
-        "type": "direct",
-        "section": "ios",
-        "parse": "iOS 闭源代理客户端（App Store/官网直链）",
-        "items": [
-          {
-            "name": "Shadowrocket",
-            "url": "https://apps.apple.com/us/app/shadowrocket/id932747118"
-          },
-          {
-            "name": "Surge",
-            "url": "https://nssurge.com/"
-          },
-          {
-            "name": "Loon",
-            "url": "https://apps.apple.com/us/app/loon/id1373567447"
-          },
-          {
-            "name": "Quantumult X",
-            "url": "https://apps.apple.com/us/app/quantumult-x/id1443988620"
-          },
-          {
-            "name": "Stash",
-            "url": "https://apps.apple.com/us/app/stash-rule-based-proxy/id1596063349"
-          },
-          {
-            "name": "Egern",
-            "url": "https://apps.apple.com/us/app/egern/id1616105820"
-          },
-          {
-            "name": "Streisand",
-            "url": "https://apps.apple.com/us/app/streisand/id6450534064"
-          },
-          {
-            "name": "V2Box",
-            "url": "https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
-          },
-          {
-            "name": "Happ",
-            "url": "https://happ.su/",
-            "section": "all"
-          }
-        ]
-      }
+ "_说明": "雷达站发现源清单。每栏至少 2 个互相独立的源，单个源失败只跳过并记日志。type 四类：github_search=GitHub 搜索 API（query 是搜索式，按最近更新排序）；repo_json=聚合仓库/公开接口的 JSON 清单（parse 说明解析方式）；rss=官方榜单 feed；page_links=聚合导航页，抓页面外链作候选。选源标准：公开、免令牌、结构稳定。苹果栏说明（FIX17 二期）：RSS 榜单和 TestFlight 来源不在此处——RSS 由 collect.py 里的价格通道直接拉（带价格台账比对，见 APPLE_RSS_FEEDS），TestFlight 由 pluwen/1xtest/releaf 三源直拉（见 apple_tf_channel）；此处苹果只留 ipasign 的 GitHub 搜索源。",
+ "categories": {
+  "adult": [
+   {
+    "parse": "成人 TVBox 配置，取 sites 数组的 name+api 作候选",
+    "type": "repo_json",
+    "url": "https://raw.githubusercontent.com/2hacc/TVBox/main/h/h.json"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "tvbox h",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "TVBox 成人",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "hong tvbox",
+    "type": "github_search"
+   }
+  ],
+  "ai": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free llm api",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:llm free api",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "openai free api",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free ai api key",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "gemini free api",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "免费 ai api",
+    "type": "github_search"
+   }
+  ],
+  "app": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:android topic:open-source",
+    "type": "github_search",
+    "section": "android-free"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:fdroid",
+    "type": "github_search",
+    "section": "android-free"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "open source android app",
+    "type": "github_search",
+    "section": "android-free"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "f-droid apps",
+    "type": "github_search",
+    "section": "android-free"
+   },
+   {
+    "type": "fdroid",
+    "url": "https://f-droid.org/en/packages/",
+    "section": "android-free",
+    "parse": "F-Droid 应用列表页（同站包链接）"
+   },
+   {
+    "parse": "F-Droid 商店目录页，抓包页外链作候选",
+    "type": "page_links",
+    "url": "https://f-droid.org/en/packages/",
+    "section": "android-free"
+   },
+   {
+    "type": "github_search",
+    "query": "windows free software open source",
+    "section": "pc-free",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "open source alternative windows",
+    "section": "pc-free",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "pc freeware list",
+    "section": "pc-free",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "安卓 破解 软件 清单",
+    "section": "android-cracked",
+    "parse": "维护破解软件清单的公开仓库，取仓库名+主页+简介作候选（条目强制带风险警告）"
+   },
+   {
+    "type": "github_search",
+    "query": "android mod apps list",
+    "section": "android-cracked",
+    "parse": "取仓库名+主页+简介作候选（条目强制带风险警告）"
+   },
+   {
+    "type": "github_search",
+    "query": "windows cracked software list",
+    "section": "pc-cracked",
+    "parse": "维护破解软件清单的公开仓库，取仓库名+主页+简介作候选（条目强制带风险警告）"
+   },
+   {
+    "type": "github_search",
+    "query": "电脑 破解软件 合集",
+    "section": "pc-cracked",
+    "parse": "取仓库名+主页+简介作候选（条目强制带风险警告）"
+   }
+  ],
+  "apple": [
+   {
+    "type": "github_search",
+    "query": "ios ipa library",
+    "section": "ipasign",
+    "parse": "维护 IPA 包清单的仓库，取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   },
+   {
+    "type": "github_search",
+    "query": "ipa 资源库 ios",
+    "section": "ipasign",
+    "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   },
+   {
+    "type": "github_search",
+    "query": "esign ipa repo",
+    "section": "ipasign",
+    "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   },
+   {
+    "type": "github_search",
+    "query": "苹果 ipa 包 自签",
+    "section": "ipasign",
+    "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   },
+   {
+    "type": "github_search",
+    "query": "altstore apps ipa",
+    "section": "ipasign",
+    "parse": "取仓库名+主页+简介作候选；卖卡密/激活码的来源不收"
+   }
+  ],
+  "book": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "legado 书源",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:legado",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "阅读 书源 合集",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "legado sources",
+    "type": "github_search"
+   },
+   {
+    "parse": "aoaostar 书源站，抓页面外链作候选",
+    "type": "page_links",
+    "url": "https://legado.aoaostar.com/"
+   }
+  ],
+  "cfip": [],
+  "domain": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free domain",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:free-domain",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free domains list",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free domain name provider",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "免费域名",
+    "type": "github_search"
+   },
+   {
+    "type": "github_search",
+    "query": "free domain aggregator list",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "免费域名 合集",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "free domain providers",
+    "parse": "取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "freenom alternative free domains",
+    "parse": "取仓库名+主页+简介作候选"
+   }
+  ],
+  "live": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "iptv m3u",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:iptv",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "iptv playlist",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "直播源 m3u",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "free iptv",
+    "type": "github_search"
+   }
+  ],
+  "music": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "MusicFree",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:musicfree",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "lx-music 音源",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "洛雪 音源",
+    "type": "github_search"
+   },
+   {
+    "parse": "MusicFree 插件聚合清单，取插件 name+url 作候选",
+    "type": "repo_json",
+    "url": "https://gitee.com/maotoumao/MusicFreePlugins/raw/master/plugins.json"
+   },
+   {
+    "parse": "MusicFree 插件中心清单，取插件 name+url 作候选",
+    "type": "repo_json",
+    "url": "https://musicfreepluginshub.2020818.xyz/plugins.json"
+   }
+  ],
+  "node": [],
+  "service": [
+   {
+    "type": "github_search",
+    "query": "free for developers",
+    "parse": "free-for-dev 类免费服务大全仓库（主聚合源），取仓库名+主页+简介作候选"
+   },
+   {
+    "type": "github_search",
+    "query": "free for dev list",
+    "parse": "免费服务大全类仓库（主聚合源）"
+   },
+   {
+    "type": "github_search",
+    "query": "free domain name service",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费域名"
+   },
+   {
+    "type": "github_search",
+    "query": "free subdomain provider",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费域名"
+   },
+   {
+    "type": "github_search",
+    "query": "free hosting tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费主机/托管"
+   },
+   {
+    "type": "github_search",
+    "query": "free vps tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费主机/托管"
+   },
+   {
+    "type": "github_search",
+    "query": "free tier cloud hosting",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费主机/托管"
+   },
+   {
+    "type": "github_search",
+    "query": "free email hosting",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费邮箱"
+   },
+   {
+    "type": "github_search",
+    "query": "free custom domain email",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费邮箱"
+   },
+   {
+    "type": "github_search",
+    "query": "free database hosting",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费数据库"
+   },
+   {
+    "type": "github_search",
+    "query": "free postgres mysql tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费数据库"
+   },
+   {
+    "type": "github_search",
+    "query": "free ssl certificate",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费证书"
+   },
+   {
+    "type": "github_search",
+    "query": "free https certificate acme",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费证书"
+   },
+   {
+    "type": "github_search",
+    "query": "free object storage tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费存储/图床"
+   },
+   {
+    "type": "github_search",
+    "query": "free image hosting",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费存储/图床"
+   },
+   {
+    "type": "github_search",
+    "query": "public apis free list",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费 API"
+   },
+   {
+    "type": "github_search",
+    "query": "free api tier",
+    "parse": "取仓库名+主页+简介作候选",
+    "subcat": "免费 API"
+   }
+  ],
+  "video": [
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "tvbox",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "topic:tvbox",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "tvbox 配置",
+    "type": "github_search"
+   },
+   {
+    "parse": "取仓库名+主页+简介作候选",
+    "query": "影视仓 配置",
+    "type": "github_search"
+   },
+   {
+    "parse": "TVBox 大配置，取 sites 数组的 name+api 作单个接口候选",
+    "type": "repo_json",
+    "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/0821.json"
+   },
+   {
+    "parse": "TVBox 配置，取 sites 数组的 name+api 作单个接口候选",
+    "type": "repo_json",
+    "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/js.json"
+   }
+  ],
+  "proxy": [
+   {
+    "type": "github_repo",
+    "repo": "MetaCubeX/mihomo",
+    "section": "all",
+    "parse": "代理内核 mihomo 官方仓库"
+   },
+   {
+    "type": "github_repo",
+    "repo": "SagerNet/sing-box",
+    "section": "all",
+    "parse": "代理内核 sing-box 官方仓库"
+   },
+   {
+    "type": "github_repo",
+    "repo": "XTLS/Xray-core",
+    "section": "all",
+    "parse": "代理内核 Xray 官方仓库"
+   },
+   {
+    "type": "github_repo",
+    "repo": "2dust/v2rayNG",
+    "section": "android",
+    "parse": "安卓 v2rayNG 客户端"
+   },
+   {
+    "type": "github_repo",
+    "repo": "tindy2013/subconverter",
+    "section": "all",
+    "parse": "订阅转换工具 subconverter"
+   },
+   {
+    "type": "github_repo",
+    "repo": "sub-store-org/Sub-Store",
+    "section": "all",
+    "parse": "订阅管理工具 Sub-Store"
+   },
+   {
+    "type": "github_repo",
+    "repo": "MatsuriDayo/NekoBoxForAndroid",
+    "section": "android",
+    "parse": "安卓 sing-box 客户端 NekoBox（猫箱）"
+   },
+   {
+    "type": "github_repo",
+    "repo": "chen08209/FlClash",
+    "section": "all",
+    "parse": "全平台 mihomo 客户端 FlClash"
+   },
+   {
+    "type": "github_repo",
+    "repo": "KaringX/karing",
+    "section": "all",
+    "parse": "全平台 sing-box 客户端 Karing"
+   },
+   {
+    "type": "github_repo",
+    "repo": "hiddify/hiddify-app",
+    "section": "all",
+    "parse": "全平台 sing-box 客户端 Hiddify"
+   },
+   {
+    "type": "github_repo",
+    "repo": "clash-verge-rev/clash-verge-rev",
+    "section": "all",
+    "parse": "桌面 mihomo 客户端 Clash Verge Rev"
+   },
+   {
+    "type": "github_repo",
+    "repo": "2dust/v2rayN",
+    "section": "all",
+    "parse": "桌面 Xray/sing-box 客户端 v2rayN"
+   },
+   {
+    "type": "github_repo",
+    "repo": "throneproj/Throne",
+    "section": "all",
+    "parse": "桌面 sing-box 客户端 Throne（NekoRay 接班人）"
+   },
+   {
+    "type": "github_repo",
+    "repo": "mihomo-party-org/clash-party",
+    "section": "all",
+    "parse": "桌面 mihomo 客户端 Clash Party（内置 Sub-Store）"
+   },
+   {
+    "type": "github_repo",
+    "repo": "HyNetworks/hysteria",
+    "section": "all",
+    "parse": "QUIC 协议内核 Hysteria2"
+   },
+   {
+    "type": "github_repo",
+    "repo": "EAimTY/tuic",
+    "section": "all",
+    "parse": "QUIC 协议内核 TUIC"
+   },
+   {
+    "type": "github_repo",
+    "repo": "v2fly/v2ray-core",
+    "section": "all",
+    "parse": "V2Ray 原版内核"
+   },
+   {
+    "type": "direct",
+    "section": "ios",
+    "parse": "iOS 闭源代理客户端（App Store/官网直链）",
+    "items": [
+     {
+      "name": "Shadowrocket",
+      "url": "https://apps.apple.com/us/app/shadowrocket/id932747118"
+     },
+     {
+      "name": "Surge",
+      "url": "https://nssurge.com/"
+     },
+     {
+      "name": "Loon",
+      "url": "https://apps.apple.com/us/app/loon/id1373567447"
+     },
+     {
+      "name": "Quantumult X",
+      "url": "https://apps.apple.com/us/app/quantumult-x/id1443988620"
+     },
+     {
+      "name": "Stash",
+      "url": "https://apps.apple.com/us/app/stash-rule-based-proxy/id1596063349"
+     },
+     {
+      "name": "Egern",
+      "url": "https://apps.apple.com/us/app/egern/id1616105820"
+     },
+     {
+      "name": "Streisand",
+      "url": "https://apps.apple.com/us/app/streisand/id6450534064"
+     },
+     {
+      "name": "V2Box",
+      "url": "https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
+     },
+     {
+      "name": "Happ",
+      "url": "https://happ.su/",
+      "section": "all"
+     }
     ]
-  }
+   }
+  ]
+ }
 }
