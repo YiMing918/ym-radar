@@ -5858,7 +5858,7 @@ def main():
             if isinstance(item.get("id"), int):
                 max_id[0] = max(max_id[0], item["id"])
 
-    def _try_add_one(slug, items, cand, tried_urls=None):
+    def _try_add_one(slug, items, cand, tried_urls=None, cap_state=None):
         """深挖并收一条候选；经它（含合集展开）收进 ≥1 条返回 True。
         FIX14：service/domain 合集仓库先拆成单条服务再收（合集本身不收，
         拆不出来也不收）；收进来的条目带 _pending_reason 的进待补清单。
@@ -5867,30 +5867,51 @@ def main():
         983 层后 RecursionError 拖垮整轮。现同一轮新增里每个候选（按
         规范化 URL 记进 tried_urls）最多深挖一次，必然终止；展开顺序
         仍是深度优先、条目原序，与递归版一致。单个候选深挖抛错只跳过
-        它（与 _process_item_safe 同款隔离），不拖垮整轮。"""
+        它（与 _process_item_safe 同款隔离），不拖垮整轮。
+        FIX15c：单栏上限写进加法路径——顶层候选之间的 cap 检查拦不
+        住合集展开：一次 _try_add_one 调用可把一个合集展开成几百上
+        千条（运行 #20 service 被一次展开冲到 2430 条，门禁拦下整
+        轮）。现 cap_state 随调用一路带进 _add_one_here：循环顶满
+        500 即停（栈内剩余候选直接丢弃，不再深挖），写入前再按
+        len(items) − 本轮已移除数核一次上限，两种算法等价。"""
         if tried_urls is None:
             tried_urls = set()
         added_any = False
         stack = [cand]
         while stack:
+            # FIX15c：满栏即停——上限只在顶层候选之间检查时，一个合集
+            # 展开可一次加几百条（运行 #20 service 冲到 2430）。栈内
+            # 剩余候选直接丢弃，不再深挖（省掉无用的网络请求）。
+            if cap_state is not None and \
+                    cap_state["used"] >= cap_state["limit"]:
+                if not cap_state.get("logged"):
+                    log(f"{slug} 栏已满 {MAX_PER_CAT} 条，本轮剩余"
+                        f"{len(stack)} 个展开候选不再深挖")
+                    cap_state["logged"] = True
+                break
             cur = stack.pop()
             _nu = norm_url(cur.get("url") or "")
             if _nu in tried_urls:
                 continue
             tried_urls.add(_nu)
             try:
-                if _add_one_here(slug, items, cur, stack):
+                if _add_one_here(slug, items, cur, stack, cap_state):
                     added_any = True
+                    if cap_state is not None:
+                        cap_state["used"] += 1
             except Exception as e:
                 log(f"新增跳过一条异常候选（{slug}）："
                     f"{cur.get('name') or ''}（{e}）")
                 bump("add_error")
         return added_any
 
-    def _add_one_here(slug, items, cand, stack):
+    def _add_one_here(slug, items, cand, stack, cap_state=None):
         """处理单个候选（_try_add_one 的迭代展开体）：合集仓库把拆出的
         条目压栈待办、自己返回 False；普通候选深挖收录，收进返回 True。
-        全部判断与放弃文案与原递归版逐字一致。"""
+        全部判断与放弃文案与原递归版逐字一致。
+        FIX15c：写入前按本栏当前存活数（len(items) − 本轮已移除数）
+        再核一次上限——这里是最后一道，任何加法路径想绕过上限都得
+        过这一关。"""
         # FIX14b：黑名单第二道（合集拆出来的条目没走 pull_candidates，在这拦）。
         if is_blocked(cand.get("url") or "", cand.get("name") or ""):
             bump("blocked")
@@ -5952,6 +5973,12 @@ def main():
                 ABANDONED.append((new_item["name"], new_item["url"],
                                   f"限免已过期，现价 {rec.get('formattedPrice')}"))
                 return False
+        # FIX15c：写入前再核一次上限（本栏当前存活数 = len(items) −
+        # 本轮已移除数；与 _try_add_one 的计数器算法等价）。满栏时
+        # 不收这条——调用方的循环顶检查会随后停掉整个展开。
+        if cap_state is not None and \
+                len(items) - cap_state["removed_here"] >= MAX_PER_CAT:
+            return False
         items.append(new_item)
         existing_names.append(new_item["name"])
         ADDED.append((slug, new_item["name"], new_item["url"]))
@@ -5968,6 +5995,13 @@ def main():
         cap = max(0, min(MAX_ADD_PER_CAT, room))
         if cap == 0:
             return
+        # FIX15c：上限状态随 _try_add_one 一路带进写入点——顶层候选
+        # 之间的 cap 检查拦不住合集展开（运行 #20 service 冲到 2430），
+        # 展开中途也得按条检查。limit 是本轮本栏还能收的条数（已扣
+        # 本轮待删条目）；used 是本轮已收数；removed_here 供写入点
+        # 按 len(items) − 已移除数复核。
+        cap_state = {"limit": cap, "used": 0,
+                     "removed_here": removed_here, "logged": False}
         added_here = 0
         tried = 0
         tried_urls = set()
@@ -5977,7 +6011,7 @@ def main():
             tried += 1
             before = len(items)
             try:
-                ok = _try_add_one(slug, items, cand, tried_urls)
+                ok = _try_add_one(slug, items, cand, tried_urls, cap_state)
             except Exception as e:
                 # FIX15b：调用点再兜一层（_try_add_one 内部已逐条隔离），
                 # 单个候选抛任何异常都只跳过它，不拖垮整轮。
