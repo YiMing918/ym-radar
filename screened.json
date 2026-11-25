@@ -1,9 +1,15 @@
 {
- "date": "2026-11-25",
+ "date": "2026-11-26",
  "removed": [
   {
    "name": "Feedly",
    "url": "https://testflight.apple.com/join/03ER1aUo",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Home Assistant",
+   "url": "https://testflight.apple.com/join/1AlPbnLZ",
    "slug": "apple",
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
@@ -254,12 +260,6 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "腾讯视频HD",
-   "url": "https://testflight.apple.com/join/9JaSzwSN",
-   "slug": "apple",
-   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
-  },
-  {
    "name": "Slips - Quick Notes",
    "url": "https://testflight.apple.com/join/9QGyahYr",
    "slug": "apple",
@@ -386,550 +386,286 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "Shadowrocket",
-   "url": "https://apps.apple.com/us/app/shadowrocket/id932747118",
+   "name": "Documents by Readdle",
+   "url": "https://testflight.apple.com/join/EOPEVoDA",
    "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "HotSchedules",
-   "url": "https://apps.apple.com/us/app/hotschedules/id294934058",
+   "name": "StarPlayrX",
+   "url": "https://testflight.apple.com/join/Ecz0xXvf",
    "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "Procreate Pocket",
-   "url": "https://apps.apple.com/us/app/procreate-pocket/id916366645",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "2AM CAM",
-   "url": "https://apps.apple.com/us/app/2am-cam/id6793744610",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "AnkiMobile Flashcards",
-   "url": "https://apps.apple.com/us/app/ankimobile-flashcards/id373493387",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Tiny Computers",
-   "url": "https://apps.apple.com/us/app/tiny-computers/id6816896250",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Satisfy: ASMR Fidget Toys",
-   "url": "https://apps.apple.com/us/app/satisfy-asmr-fidget-toys/id6821710782",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Chromagraph Camera",
-   "url": "https://apps.apple.com/us/app/chromagraph-camera/id6803329435",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "TonalEnergy Tuner & Metronome",
-   "url": "https://apps.apple.com/us/app/tonalenergy-tuner-metronome/id497716362",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "TypeDraw",
-   "url": "https://apps.apple.com/us/app/typedraw/id6822194774",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Deck-Man: Cassette Player",
-   "url": "https://apps.apple.com/us/app/deck-man-cassette-player/id6817070335",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Face Witness",
-   "url": "https://apps.apple.com/us/app/face-witness/id6822738484",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "FL Studio Mobile",
-   "url": "https://apps.apple.com/us/app/fl-studio-mobile/id432850619",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "play_music_theory",
-   "url": "https://apps.apple.com/us/app/play-music-theory/id6800616114",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "ROLLIE'S: 35mm Film Camera",
-   "url": "https://apps.apple.com/us/app/rollies-35mm-film-camera/id6805318319",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Things 3",
-   "url": "https://apps.apple.com/us/app/things-3/id904237743",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Duo Aquarium",
-   "url": "https://apps.apple.com/us/app/duo-aquarium/id6819150080",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Jump Desktop (RDP, VNC, Fluid)",
-   "url": "https://apps.apple.com/us/app/jump-desktop-rdp-vnc-fluid/id364876095",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "SkyView®",
-   "url": "https://apps.apple.com/us/app/skyview/id404990064",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "imo video calls and chat HD",
-   "url": "https://apps.apple.com/us/app/imo-video-calls-and-chat-hd/id1400579543",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Ripple Player",
-   "url": "https://apps.apple.com/us/app/ripple-player/id6828347986",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "LiveATC Air Radio",
-   "url": "https://apps.apple.com/us/app/liveatc-air-radio/id317809458",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Spirit Talker ®",
-   "url": "https://apps.apple.com/us/app/spirit-talker/id1536762482",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Streaks",
-   "url": "https://apps.apple.com/us/app/streaks/id963034692",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Goblin Tools",
-   "url": "https://apps.apple.com/us/app/goblin-tools/id6449003064",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "PewPewPew - Fingergun",
-   "url": "https://apps.apple.com/cn/app/biubiubiu-%E7%A9%BA%E6%B0%94%E6%9E%AA/id6448477521",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "花皮 - 同城约会，无面具社交，解压释放正念素颜",
-   "url": "https://apps.apple.com/cn/app/%E8%8A%B1%E7%9A%AE-%E5%90%8C%E5%9F%8E%E7%BA%A6%E4%BC%9A-%E6%97%A0%E9%9D%A2%E5%85%B7%E7%A4%BE%E4%BA%A4-%E8%A7%A3%E5%8E%8B%E9%87%8A%E6%94%BE%E6%AD%A3%E5%BF%B5%E7%B4%A0%E9%A2%9C/id6740246950",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "CamScanner + | OCR Scanner",
-   "url": "https://apps.apple.com/cn/app/%E6%89%AB%E6%8F%8F%E5%85%A8%E8%83%BD%E7%8E%8B-%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%811%E5%85%83%E7%95%85%E7%94%A8%E7%89%88-%E6%89%AB%E6%8F%8Fpdf%E6%96%87%E4%BB%B6-%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB/id388624839",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Gunshot sound simulator pro",
-   "url": "https://apps.apple.com/cn/app/%E7%A9%BA%E6%B0%94piupiu%E6%9E%AA-iwatch%E8%A7%A3%E5%8E%8B%E6%9E%AA%E6%A2%B0%E5%90%8D%E6%9E%AA%E5%A3%B0%E7%8B%99%E5%87%BB%E6%89%8B%E6%9E%AA%E6%A8%A1%E6%8B%9F%E5%99%A8/id6742782416",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Fingertip Instruments",
-   "url": "https://apps.apple.com/cn/app/%E6%8C%87%E5%B0%96%E4%B9%90%E5%99%A8-%E8%85%95%E4%B8%8A%E6%BC%94%E5%A5%8F/id6832405958",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "AirBasket",
-   "url": "https://apps.apple.com/cn/app/%E7%A9%BA%E6%B0%94%E6%8A%95%E7%AF%AE/id1625289361",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "航旅纵横PRO-民航官方直销平台",
-   "url": "https://apps.apple.com/cn/app/%E8%88%AA%E6%97%85%E7%BA%B5%E6%A8%AApro-%E6%B0%91%E8%88%AA%E5%AE%98%E6%96%B9%E7%9B%B4%E9%94%80%E5%B9%B3%E5%8F%B0/id768160271",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Alook Browser - 8x Speed",
-   "url": "https://apps.apple.com/cn/app/alook%E6%B5%8F%E8%A7%88%E5%99%A8-8%E5%80%8D%E9%80%9F/id1261944766",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "同花顺至尊版-股票软件",
-   "url": "https://apps.apple.com/cn/app/%E5%90%8C%E8%8A%B1%E9%A1%BA%E8%87%B3%E5%B0%8A%E7%89%88-%E8%82%A1%E7%A5%A8%E8%BD%AF%E4%BB%B6/id954724812",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "BerryFilm - Korean Style Cam",
-   "url": "https://apps.apple.com/cn/app/berry%E8%83%B6%E7%89%87%E7%9B%B8%E6%9C%BA-%E9%9F%A9%E7%B3%BB%E8%87%AA%E6%8B%8D%E7%A5%9E%E5%99%A8/id6741474933",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "DuoFridge",
-   "url": "https://apps.apple.com/cn/app/duofridge/id6828383349",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Countdown! Reminders and Timer",
-   "url": "https://apps.apple.com/cn/app/%E6%97%B6%E9%97%B4%E8%A7%84%E5%88%92%E5%B1%80-%E5%80%92%E8%AE%A1%E6%97%B6%E4%B8%8E%E6%8F%90%E9%86%92%E4%BA%8B%E9%A1%B9/id1439723850",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Peggy Cat - A Virtual Pet",
-   "url": "https://apps.apple.com/cn/app/%E7%94%B5%E5%AD%90%E5%AE%A0%E7%89%A9%E6%9C%BA/id1578203914",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "AutoSleep: Watch Sleep Tracker",
-   "url": "https://apps.apple.com/cn/app/autosleep-%E8%8B%B9%E6%9E%9C%E6%89%8B%E8%A1%A8%E7%9D%A1%E7%9C%A0%E7%9B%91%E6%B5%8B-%E7%9D%A1%E8%A7%89%E8%AE%B0%E5%BD%95%E5%8F%8A%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F/id1164801111",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Auday - All-Day Watch Recorder",
-   "url": "https://apps.apple.com/cn/app/auday-watch%E5%85%A8%E5%A4%A9ai%E5%BD%95%E9%9F%B3/id6814210373",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Console Remote",
-   "url": "https://apps.apple.com/cn/app/console-remote/id6738534883",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "atvTools",
-   "url": "https://apps.apple.com/cn/app/atvtools/id1661419573",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Monster Sip",
-   "url": "https://apps.apple.com/cn/app/monster-sip/id6834526294",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Minesweeper: Classic Puzzles",
-   "url": "https://apps.apple.com/cn/app/%E6%89%AB%E9%9B%B7%E6%97%A0%E5%B9%BF%E5%91%8A-2048-%E6%95%B0%E7%8B%AC-%E5%8D%8E%E5%AE%B9%E9%81%93-%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97-%E6%95%B0%E5%92%8C%E7%BB%8F%E5%85%B8/id6756371706",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "甜蛙 - 甜甜约会！！！",
-   "url": "https://apps.apple.com/cn/app/%E5%88%B0%E4%BA%86%E5%90%97-%E7%BA%BF%E4%B8%8B%E7%BA%A6%E4%BC%9A-%E7%94%9C%E8%9B%99-%E7%BA%A6k%E6%AD%8C-%E7%9C%8B%E7%94%B5%E5%BD%B1-%E5%AF%86%E5%AE%A4%E9%80%83%E8%84%B1/id1095903651",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Tap Piano: Wrist Instruments",
-   "url": "https://apps.apple.com/cn/app/%E6%8C%87%E5%B0%96%E7%90%B4-%E6%89%8B%E8%A1%A8%E9%92%A2%E7%90%B4%E6%95%B2%E6%A1%8C%E5%BC%B9%E7%90%B4/id6834148108",
-   "slug": "apple",
-   "reason": "苹果栏：降价结束（价格回到原价）"
-  },
-  {
-   "name": "Provenance App",
-   "url": "https://testflight.apple.com/join/NWfUUmKf",
-   "slug": "apple",
-   "reason": "苹果栏：TestFlight 招募结束（连续 2 轮不在来源里）"
-  },
-  {
-   "name": "Pokeet",
-   "url": "https://testflight.apple.com/join/VZcpybTc",
-   "slug": "apple",
-   "reason": "苹果栏：TestFlight 招募结束（连续 2 轮不在来源里）"
-  },
-  {
-   "name": "dinhdev666/free-opencode-api",
-   "url": "https://github.com/dinhdev666/free-opencode-api",
-   "slug": "ai",
-   "reason": "连续 6 次验活不通"
-  },
-  {
-   "name": "neverpaytwice/ai-token-cost-scripts",
-   "url": "https://github.com/neverpaytwice/ai-token-cost-scripts",
-   "slug": "ai",
-   "reason": "连续 6 次验活不通"
-  },
-  {
-   "name": "jwqsir2-lang/newbox",
-   "url": "https://github.com/jwqsir2-lang/newbox",
+   "name": "88┃看球",
+   "url": "https://notabug.org/fantaiying/ext/raw/main/drpy2.min.js",
    "slug": "video",
    "reason": "连续 6 次验活不通"
   },
   {
-   "name": "xyzjhe/tvbox-silicon_bigtaoge_v7",
-   "url": "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v7",
+   "name": "虎牙┃直播",
+   "url": "https://notabug.org/fantaiying/ext/raw/main/drpy2.js",
    "slug": "video",
    "reason": "连续 6 次验活不通"
   },
   {
-   "name": "MythorWonder/Respocket-Changer",
-   "url": "https://github.com/MythorWonder/Respocket-Changer",
+   "name": "dandelions/home-iptv",
+   "url": "https://github.com/dandelions/home-iptv",
    "slug": "live",
    "reason": "连续 6 次验活不通"
   },
   {
-   "name": "Akshay7273/ProxyMan-free-proxy-list",
-   "url": "https://github.com/Akshay7273/ProxyMan-free-proxy-list",
-   "slug": "service",
+   "name": "🥇010爱",
+   "url": "http://www.010aizy.com/API/macs.php",
+   "slug": "adult",
    "reason": "连续 6 次验活不通"
   },
   {
-   "name": "felipetruman/free-llm-hub",
-   "url": "https://aistudio.google.com",
-   "slug": "ai",
+   "name": "gricatan/devhub-domaines",
+   "url": "https://nodejs.org",
+   "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "fernandoastrada/astrada-codes-ai-agents",
-   "url": "https://aistudio.google.com",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "ki2pixel/free-gemini-api",
-   "url": "https://gemini.google.com",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "velo4705/awesome-free-byok-models",
-   "url": "https://awesome.re",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "mnfst/awesome-free-llm-apis",
-   "url": "https://awesome.re",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "bioogo/free-api-radar",
-   "url": "https://aistudio.google.com/apikey",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "mohamedboukari/bunmail",
-   "url": "https://bun.sh",
+   "name": "powroom/powview",
+   "url": "https://nodejs.org",
    "slug": "service",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "OddlyLabs/FreeBuff2API",
-   "url": "https://nodejs.org/",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "Staks-sor/ai-free",
+   "name": "smith8ca/Glint",
    "url": "https://nodejs.org",
-   "slug": "ai",
+   "slug": "service",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "mohamedelsayed16399-bit/ai-image-bot",
-   "url": "https://nodejs.org",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "zeroegress**",
+   "name": "skygreen2001/report",
    "url": "https://ollama.com",
-   "slug": "service",
+   "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "hansdoebel/CLIProxyAPI",
+   "name": "nekopara-ai/CLIProxyAPI",
    "url": "https://www.kimi.com/code/?aff=cliproxyapi",
    "slug": "ai",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "deep-research-engine**",
-   "url": "https://www.python.org/downloads/",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "dragonkin/aiworkhard-free-resources",
-   "url": "https://www.aiworkhard.com",
+   "name": "NaturalSelect/CLIProxyAPI",
+   "url": "https://www.kimi.com/code/?aff=cliproxyapi",
    "slug": "ai",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "abuhanif254/Calculator-Hub",
-   "url": "https://nextjs.org/",
+   "name": "paladini/i-love-open-converter",
+   "url": "https://docs.astral.sh/uv/",
    "slug": "service",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "mcp-router**",
-   "url": "https://python.org",
-   "slug": "service",
+   "name": "tfwcn/ai-model-gateway",
+   "url": "https://www.python.org/downloads/",
+   "slug": "ai",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "akv-cache-engine**",
-   "url": "https://python.org",
-   "slug": "service",
+   "name": "cxy2730/CLIProxyAPI-freetier2api-plugin",
+   "url": "https://go.dev/",
+   "slug": "ai",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "diskopt**",
-   "url": "https://python.org",
-   "slug": "service",
+   "name": "Likhixang/cpa-freetier2api-plugin",
+   "url": "https://go.dev/",
+   "slug": "ai",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "zdh2021/MusicFree-ios-beta4",
+   "name": "collabray/domain-generator",
+   "url": "https://www.rust-lang.org",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "apimartop9jtsd/ai-api-gateway-free-tier",
+   "url": "https://go.apimart.ai/k-505b78",
+   "slug": "ai",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "thqPrivateRepo/tvbox-dc",
+   "url": "https://9280.kstore.vip/newwex.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "youhunwl/TVAPP",
+   "url": "https://9280.kstore.vip/newwex.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "58285474/tvbox",
+   "url": "https://6296.kstore.vip/facat.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "Lightconer/tvbox-ysc-config",
+   "url": "https://6296.kstore.vip/facat.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "qist/tvbox",
+   "url": "http://home.jundie.top:81/top98.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "lubin776/tvbox-api-backup",
+   "url": "http://bd.qiqiv.cn/666.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "aa3151036158/tvbox-config",
+   "url": "http://xhztv.top/4k.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "wzxxcz/dyr1980musicfree-plugins20261121",
+   "url": "https://gh.padao.fun/https://raw.githubusercontent.com/hebijunge/musicfree-plugins/master/sub/padao/main.json",
+   "slug": "music",
+   "reason": "跨栏重复，保留在「music」栏"
+  },
+  {
+   "name": "ytzb/MusicFree-ios-beta4",
    "url": "https://raw.githubusercontent.com/zhuguibiao/m-plugins/refs/heads/main/bilibili.js",
    "slug": "music",
    "reason": "跨栏重复，保留在「music」栏"
   },
   {
-   "name": "hasanabbassorathiya/lumio_iptv",
-   "url": "https://iptv-org.github.io/iptv/index.m3u",
+   "name": "tsukiyo-zero/MusicFree-ios-ipa",
+   "url": "https://raw.githubusercontent.com/zhuguibiao/m-plugins/refs/heads/main/bilibili.js",
+   "slug": "music",
+   "reason": "跨栏重复，保留在「music」栏"
+  },
+  {
+   "name": "aoaostar/legado",
+   "url": "https://legado.aoaostar.com/sources/b778fe6b.json",
+   "slug": "book",
+   "reason": "跨栏重复，保留在「book」栏"
+  },
+  {
+   "name": "MajoSissi/legado-source",
+   "url": "https://raw.githubusercontent.com/MajoSissi/legado-source/main/source/light-novel.json",
+   "slug": "book",
+   "reason": "跨栏重复，保留在「book」栏"
+  },
+  {
+   "name": "4yt1k/m3u-autoupdate",
+   "url": "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.m3u",
    "slug": "live",
    "reason": "跨栏重复，保留在「live」栏"
   },
   {
-   "name": "realdarkbytex-hub/telegram-video-downloader-bot",
-   "url": "https://www.oracle.com/cloud/free",
+   "name": "ZenithStellar/mytv-playlist",
+   "url": "https://raw.githubusercontent.com/ZenithStellar/astro-playlist/main/astro.m3u",
+   "slug": "live",
+   "reason": "跨栏重复，保留在「live」栏"
+  },
+  {
+   "name": "gdameneses/financas",
+   "url": "https://hono.dev",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
   },
   {
-   "name": "robhunterclaude/free-llm-api-index",
-   "url": "https://agentdeals.dev",
+   "name": "fastapi/fastapi",
+   "url": "https://fastapi.tiangolo.com/",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
   },
   {
-   "name": "Filesystem",
-   "url": "https://modelcontextprotocol.io",
+   "name": "Aamir Zameer (@Amz34): akv-cache-engine corpus | XERJ Hub",
+   "url": "https://xerj.org",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
   },
   {
-   "name": "Git",
-   "url": "https://modelcontextprotocol.io",
+   "name": "AZ Consultants | Saudi Arabia",
+   "url": "https://wa.me/966574268856?text=Hello%2C%20I%20would%20like%20to%20discuss%20advisory%20support%20in%20Saudi%20Arabia.",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
   },
   {
-   "name": "Real-Time IP Geolocation API for Developers & Businesses | IPstack",
-   "url": "https://apilayer.com/",
+   "name": "Aamir Zameer — Principal AI Systems Architect & Tech Recruiter | Autonomous Agen",
+   "url": "https://amz34.github.io/ai-can-run/",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
   },
   {
-   "name": "Live News API for Global Headlines & Blogs | Mediastack",
-   "url": "https://apilayer.com/",
+   "name": "Redirecting to LangGraph Documentation",
+   "url": "https://docs.langchain.com/oss/python/langgraph/overview",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
   },
   {
-   "name": "Real-Time Flight Tracker & Aviation Data API | Aviationstack",
-   "url": "https://apilayer.com/",
+   "name": "OpenAlex: The open catalog to the global research system",
+   "url": "https://help.openalex.org/",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
   },
   {
-   "name": "Real-Time Address to Coordinate Data | Positionstack API",
-   "url": "https://apilayer.com/",
+   "name": "Google News",
+   "url": "https://news.google.com/?hl=en-US&gl=US&ceid=US%3Aen",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
   },
   {
-   "name": "Email Validation & Verification API | Mailboxlayer",
-   "url": "https://apilayer.com/",
+   "name": "ZoniBoy00 · GitHub",
+   "url": "https://docs.github.com/en",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "Real-Time Global Country Data REST API | Countrylayer",
-   "url": "https://apilayer.com/",
+   "name": "sn-lui · GitHub",
+   "url": "https://docs.github.com/en",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "Real-Time Google SERP Data API for Developers - Serpstack",
-   "url": "https://apilayer.com/",
+   "name": "connerlambden",
+   "url": "https://docs.github.com/en",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "Scalable Web Scraping & HTML Extraction – Scrapestack API",
-   "url": "https://apilayer.com/",
+   "name": "bensynapse (Ben Abulafia) · GitHub",
+   "url": "https://docs.github.com/en",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "clarkwt54w/geekflare-adfree-search",
-   "url": "https://geekflare.com/pricing/",
+   "name": "farhannk17 (Farhan Kotwal) · GitHub",
+   "url": "https://docs.github.com/en",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "levia4556/city-serp-pricing",
-   "url": "https://geekflare.com/pricing/",
+   "name": "yumaheymans · GitHub",
+   "url": "https://docs.github.com/en",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "Gillst676/serp-api-pricing",
-   "url": "https://geekflare.com/pricing/",
+   "name": "sweesama · GitHub",
+   "url": "https://docs.github.com/en",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "chloe-parker64/golang-scraping-api",
-   "url": "https://geekflare.com/pricing/",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "mdarman-codes/Free-Fire-Old-version-access",
-   "url": "https://aistudio.google.com/apps",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
    "name": "Amz34 (Aamir Zameer) · GitHub",
@@ -938,142 +674,88 @@
    "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "micgy68/scraper-api-credit-costs",
-   "url": "https://www.scraperapi.com/pricing?fp_ref=coupons",
+   "name": "jntegz/shorthop",
+   "url": "https://workers.cloudflare.com/",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "bqdbkl3/scraperapi-credit-costs",
-   "url": "https://www.scraperapi.com/pricing/?fp_ref=coupons",
+   "name": "clawdiapai/OWRadio",
+   "url": "https://www.duckdns.org",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "gjg071/scraperapi-credit-costs",
-   "url": "https://www.scraperapi.com/pricing?fp_ref=coupons",
+   "name": "CanuteTheGreat/cert-transparency-watcher",
+   "url": "https://errant.solutions",
    "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "pch503/scraperapi-pricing-credit-multipliers",
-   "url": "https://www.scraperapi.com/pricing/?fp_ref=coupons",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "is-a-dev/register",
+   "url": "https://is-a.dev",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "lpknw8/scraping-api-free-tiers",
-   "url": "https://www.scraperapi.com/?fp_ref=coupons",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "4ngel2769/freedns.afraid.org-domain-scraper",
+   "url": "https://freedns.afraid.org/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "ozo075/scraperapi-pricing-credit-multipliers",
-   "url": "https://www.scraperapi.com/?fp_ref=coupons",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "neihyud/cloudflare_temp_email",
+   "url": "https://mail.awsl.uk",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "Jodre11/cloud-searxng",
-   "url": "https://docs.searxng.org/",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "oekhf486/rainyun-domain-ssl",
+   "url": "https://bit.ly/RaiNyun",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "freebase-cloud/sqlite-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "intentfreedomain/FreeDomain",
+   "url": "https://int.yt/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "freebase-cloud/redis-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "solcreek/terraform-provider-gandi",
+   "url": "https://terraform.io",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "freebase-cloud/prometheus-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "salaros/is-biz-mail-php",
+   "url": "https://codecave.pro/#projects",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "freebase-cloud/postgres-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "salaros/is-biz-mail-dotnet",
+   "url": "https://codecave.pro#projects",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "freebase-cloud/neo4j-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "DigitalPlatDev/FreeDomain",
+   "url": "https://dev.to/edwardhsing/i-bought-a-domain-at-15-now-it-powers-400000-users-7ol",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "freebase-cloud/mysql-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "vempvhs/tencent-ssl-pricing",
+   "url": "https://bit.ly/yunhuodong",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
-   "name": "freebase-cloud/mongodb-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "freebase-cloud/mariadb-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "freebase-cloud/influxdb-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "freebase-cloud/elasticsearch-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "freebase-cloud/dynamodb-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "freebase-cloud/cockroachdb-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "freebase-cloud/clickhouse-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "freebase-cloud/cassandra-mcp-vscode",
-   "url": "https://freebase.cloud/vscode",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "job-board-starter",
-   "url": "https://apify.com/mistlike_potato/career-site-jobs-scraper",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
-  },
-  {
-   "name": "Sign Up for the Filestack Free File Upload Plan",
-   "url": "https://calendly.com/vinay-ramachandra-filestack/30min",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「service」栏"
+   "name": "wicuw1/hexo-cloud-server-blog",
+   "url": "https://bit.ly/yunhuodong",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
    "name": "is-a.bot - Free subdomains for developers",
@@ -1108,6 +790,12 @@
   {
    "name": "pp.ua - free domain for people!",
    "url": "https://pp.ua/eng/index.html",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "tashfeenahmed/AgentDomains-web",
+   "url": "https://agentdomains.co",
    "slug": "domain",
    "reason": "跨栏重复，保留在「domain」栏"
   },
@@ -1160,6 +848,24 @@
    "reason": "跨栏重复，保留在「domain」栏"
   },
   {
+   "name": "List of most popular email domains (by number of live emails)",
+   "url": "https://email-verify.my-addr.com/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "Free Email Domains List | WhoisXML API",
+   "url": "https://whois.whoisxmlapi.com",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "Top 1,000 Domains by Open Page Rank",
+   "url": "https://keywordseverywhere.com/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
    "name": "BestCF · CFYes IPV4 优选 IP 清单",
    "url": "https://bestcf.pages.dev/cfyes/ipv4.txt",
    "slug": "cfip",
@@ -1170,7 +876,13 @@
    "url": "https://bestcf.pages.dev/vps789/top20.txt",
    "slug": "cfip",
    "reason": "跨栏重复，保留在「cfip」栏"
+  },
+  {
+   "name": "Clash Verge Rev 桌面客户端",
+   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
+   "slug": "proxy",
+   "reason": "跨栏重复，保留在「cfip」栏"
   }
  ],
- "updatedAt": "2026-11-25T14:02:10.997Z"
+ "updatedAt": "2026-11-25T16:59:24.860Z"
 }
