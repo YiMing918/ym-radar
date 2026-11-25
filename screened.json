@@ -2,77 +2,989 @@
  "date": "2026-11-25",
  "removed": [
   {
-   "name": "cirosantilli/china-dictatorship",
-   "url": "https://github.com/cirosantilli/china-dictatorship",
-   "slug": "book",
-   "reason": "黑名单（内容安全），不再收录"
+   "name": "Gost-co/ModelAtlas",
+   "url": "https://github.com/Gost-co/ModelAtlas",
+   "slug": "ai",
+   "reason": "连续 6 次验活不通"
   },
   {
-   "name": "mRFWq7LwNPZjaVv5v6eo/cihna-dictattorshrip-8",
-   "url": "https://github.com/mRFWq7LwNPZjaVv5v6eo/cihna-dictattorshrip-8",
-   "slug": "book",
-   "reason": "黑名单（内容安全），不再收录"
+   "name": "xyzjhe/tvbox-silicon_bigtaoge_v6",
+   "url": "https://github.com/xyzjhe/tvbox-silicon_bigtaoge_v6",
+   "slug": "video",
+   "reason": "连续 6 次验活不通"
   },
   {
-   "name": "cirosantilli/china-dictatroship-7",
-   "url": "https://github.com/cirosantilli/china-dictatroship-7",
-   "slug": "book",
-   "reason": "黑名单（内容安全），不再收录"
-  },
-  {
-   "name": "zpc1314521/PCL2",
-   "url": "https://github.com/zpc1314521/PCL2",
-   "slug": "book",
-   "reason": "黑名单（内容安全），不再收录"
-  },
-  {
-   "name": "panbinibn/OpenPacketFix_",
-   "url": "https://github.com/panbinibn/OpenPacketFix_",
-   "slug": "book",
-   "reason": "黑名单（内容安全），不再收录"
-  },
-  {
-   "name": "phishdestroy/destroylist",
-   "url": "https://github.com/phishdestroy/destroylist",
+   "name": "rtynbirf/free-man",
+   "url": "https://github.com/rtynbirf/free-man",
    "slug": "domain",
-   "reason": "黑名单（内容安全），不再收录"
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
   },
   {
-   "name": "cirosantilli/cirosantilli",
-   "url": "https://github.com/cirosantilli/cirosantilli",
+   "name": "zuujiscom/free-game-assets",
+   "url": "https://github.com/zuujiscom/free-game-assets",
    "slug": "domain",
-   "reason": "黑名单（内容安全），不再收录"
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
   },
   {
-   "name": "felipetruman/free-llm-hub",
-   "url": "https://aistudio.google.com",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
+   "name": "calin-m/Bookarium",
+   "url": "https://github.com/calin-m/Bookarium",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
   },
   {
-   "name": "woniuzfb/voice-edge",
-   "url": "https://aistudio.google.com/",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
+   "name": "select/movies-deluxe",
+   "url": "https://github.com/select/movies-deluxe",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
   },
   {
-   "name": "velo4705/awesome-free-byok-models",
-   "url": "https://awesome.re",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
+   "name": "bhwilkoff/Archive-Watch",
+   "url": "https://github.com/bhwilkoff/Archive-Watch",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
   },
   {
-   "name": "bioogo/free-api-radar",
-   "url": "https://aistudio.google.com/apikey",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
+   "name": "clayjartranslation/clayjartranslation.github.io",
+   "url": "https://github.com/clayjartranslation/clayjartranslation.github.io",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
   },
   {
-   "name": "OddlyLabs/FreeBuff2API",
-   "url": "https://nodejs.org/",
-   "slug": "ai",
-   "reason": "跨栏重复，保留在「ai」栏"
+   "name": "afaroo01/FROND",
+   "url": "https://github.com/afaroo01/FROND",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "yukido0205/android-agentic-sdlc",
+   "url": "https://github.com/yukido0205/android-agentic-sdlc",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "pasnya/vpn-panel-5x-uev",
+   "url": "https://github.com/pasnya/vpn-panel-5x-uev",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "dormatthew/windrose-pressure",
+   "url": "https://github.com/dormatthew/windrose-pressure",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "gadziunet/stackmoor",
+   "url": "https://github.com/gadziunet/stackmoor",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "shokki-engineering/freebusy",
+   "url": "https://github.com/shokki-engineering/freebusy",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "justakhi/hotspot-monitor",
+   "url": "https://github.com/justakhi/hotspot-monitor",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "myon-bioinformatics/PySaiyanWeBoo",
+   "url": "https://github.com/myon-bioinformatics/PySaiyanWeBoo",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "neodata-io/neokit",
+   "url": "https://github.com/neodata-io/neokit",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "long060106/incipit",
+   "url": "https://github.com/long060106/incipit",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "AgileDataGuides/business-event-matrix",
+   "url": "https://github.com/AgileDataGuides/business-event-matrix",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "mjansson/rpmalloc",
+   "url": "https://github.com/mjansson/rpmalloc",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "beast-clone/goocampus-domain-hub",
+   "url": "https://github.com/beast-clone/goocampus-domain-hub",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "drsamonline/corpus-extendum",
+   "url": "https://github.com/drsamonline/corpus-extendum",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "bmeshary-crypto/abofarwla",
+   "url": "https://github.com/bmeshary-crypto/abofarwla",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "dev-shiki/apify-mcp-suite",
+   "url": "https://github.com/dev-shiki/apify-mcp-suite",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "themellowhost/full-roblox-domain",
+   "url": "https://github.com/themellowhost/full-roblox-domain",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "danzuep/UsfmBible",
+   "url": "https://github.com/danzuep/UsfmBible",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "stand-out-of-my-sun/diogenes-micro-gateway",
+   "url": "https://github.com/stand-out-of-my-sun/diogenes-micro-gateway",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "OksigeniaSL/oga-veve",
+   "url": "https://github.com/OksigeniaSL/oga-veve",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Shivam-das-191a/shivam-das-news",
+   "url": "https://github.com/Shivam-das-191a/shivam-das-news",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "lazy-mantou/HistorySentry",
+   "url": "https://github.com/lazy-mantou/HistorySentry",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "codeboy2012/DerList",
+   "url": "https://github.com/codeboy2012/DerList",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "guagua-666/S008TrainingRegistration",
+   "url": "https://github.com/guagua-666/S008TrainingRegistration",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "RTrentJones/Greenlight",
+   "url": "https://github.com/RTrentJones/Greenlight",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "wbauer-dev/freezer-manager",
+   "url": "https://github.com/wbauer-dev/freezer-manager",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Rcsafter/V50-F50-Carplay-box-mu300",
+   "url": "https://github.com/Rcsafter/V50-F50-Carplay-box-mu300",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "lanrenbao/emby-cloudflare-tunnel-deploy",
+   "url": "https://github.com/lanrenbao/emby-cloudflare-tunnel-deploy",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "joek306090/vps-node-skill",
+   "url": "https://github.com/joek306090/vps-node-skill",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "mjzd7/FreeLLM-Api-with-Proxy",
+   "url": "https://github.com/mjzd7/FreeLLM-Api-with-Proxy",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "LimeFinance-org/rustdesk-for-cloudflare-worker",
+   "url": "https://github.com/LimeFinance-org/rustdesk-for-cloudflare-worker",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "krsnasgr/awesome-saas-startup-listing",
+   "url": "https://github.com/krsnasgr/awesome-saas-startup-listing",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "roni5604/hebrew-words-db",
+   "url": "https://github.com/roni5604/hebrew-words-db",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "SanthoshSivan-Dev/strapi-plugin-azure-sso",
+   "url": "https://github.com/SanthoshSivan-Dev/strapi-plugin-azure-sso",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "vetrihiori23-debug/internship-board",
+   "url": "https://github.com/vetrihiori23-debug/internship-board",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "yindudegugezhanghao-lgtm/hk-brokers-rules",
+   "url": "https://github.com/yindudegugezhanghao-lgtm/hk-brokers-rules",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Florisheedless915/grok-register",
+   "url": "https://github.com/Florisheedless915/grok-register",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "qwsedrtgh/qw-register-helper",
+   "url": "https://github.com/qwsedrtgh/qw-register-helper",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "tracyliving606/RegPwn",
+   "url": "https://github.com/tracyliving606/RegPwn",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "yeayraww24/public-apis",
+   "url": "https://github.com/yeayraww24/public-apis",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "submitaitools/Free-AI-Directories",
+   "url": "https://github.com/submitaitools/Free-AI-Directories",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Cashcoin123/Cashcoin123",
+   "url": "https://github.com/Cashcoin123/Cashcoin123",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "goldenoakmarketing/pinspector",
+   "url": "https://github.com/goldenoakmarketing/pinspector",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "correia95/word-unscrambler",
+   "url": "https://github.com/correia95/word-unscrambler",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "rty753/indonesiapayments",
+   "url": "https://github.com/rty753/indonesiapayments",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "woshichenghaibo/creditcards",
+   "url": "https://github.com/woshichenghaibo/creditcards",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "camircode/twofree-packages",
+   "url": "https://github.com/camircode/twofree-packages",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "farhadhsn8/search-engine",
+   "url": "https://github.com/farhadhsn8/search-engine",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "key-Solana-finder-private-wallet/key-Solana-finder-private-wallet",
+   "url": "https://github.com/key-Solana-finder-private-wallet/key-Solana-finder-private-wallet",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "VAIXLNS/VAIXLNS",
+   "url": "https://github.com/VAIXLNS/VAIXLNS",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "awais-2005/oracle-instance-creation-automation",
+   "url": "https://github.com/awais-2005/oracle-instance-creation-automation",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "space-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
+   "url": "https://github.com/space-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "one-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
+   "url": "https://github.com/one-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "olk453/wallet-balance-Solana-API-tool",
+   "url": "https://github.com/olk453/wallet-balance-Solana-API-tool",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "verified-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
+   "url": "https://github.com/verified-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "me-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
+   "url": "https://github.com/me-wallet-balance-Solana-API-tool/wallet-balance-Solana-API-tool",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "RyanAoh/TabRack",
+   "url": "https://github.com/RyanAoh/TabRack",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "n-13thehat/morgana",
+   "url": "https://github.com/n-13thehat/morgana",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Dhanya-S-14/Course_Hub-",
+   "url": "https://github.com/Dhanya-S-14/Course_Hub-",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "wpmoo-org/core",
+   "url": "https://github.com/wpmoo-org/core",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "mezmer90/saas-directories",
+   "url": "https://github.com/mezmer90/saas-directories",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "lunnar211/ResumeLab",
+   "url": "https://github.com/lunnar211/ResumeLab",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "VamsiKrishna-04/IT-and-Non-IT---course-resource-sheet",
+   "url": "https://github.com/VamsiKrishna-04/IT-and-Non-IT---course-resource-sheet",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "wild0oose43/how-to-buy-mdma",
+   "url": "https://github.com/wild0oose43/how-to-buy-mdma",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "uraeva-nataqhya/how-to-browse-darknet",
+   "url": "https://github.com/uraeva-nataqhya/how-to-browse-darknet",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "wgoerlkt/darkmatter-link-darkmatterurl",
+   "url": "https://github.com/wgoerlkt/darkmatter-link-darkmatterurl",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "wxissmel01/buy-us-paypal-account",
+   "url": "https://github.com/wxissmel01/buy-us-paypal-account",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "payroad/payroad-core",
+   "url": "https://github.com/payroad/payroad-core",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "PiyushRanakoti/personal-website",
+   "url": "https://github.com/PiyushRanakoti/personal-website",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Aryia-Behroziuan/neurons",
+   "url": "https://github.com/Aryia-Behroziuan/neurons",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "zszszszsz/.config",
+   "url": "https://github.com/zszszszsz/.config",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "ajay04323/cpanel_CPSP",
+   "url": "https://github.com/ajay04323/cpanel_CPSP",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "rramatchandran/big-o-performance-java",
+   "url": "https://github.com/rramatchandran/big-o-performance-java",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Mr033/-1123",
+   "url": "https://github.com/Mr033/-1123",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "BoysGmNg/EksvancRawGithubLicense",
+   "url": "https://github.com/BoysGmNg/EksvancRawGithubLicense",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Nate0634034090/bug-free-memory",
+   "url": "https://github.com/Nate0634034090/bug-free-memory",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "frankmalcolmkembery/GNU-GENERAL-PUBLIC-LICENSE-Version-3-29-June-2007-Copy",
+   "url": "https://github.com/frankmalcolmkembery/GNU-GENERAL-PUBLIC-LICENSE-Version-3-29-June-2007-Copy",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Ning-utdgss/GEGVL",
+   "url": "https://github.com/Ning-utdgss/GEGVL",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "abhay0406/Capstone-Project---Customer-Churn",
+   "url": "https://github.com/abhay0406/Capstone-Project---Customer-Churn",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Gmiresearch1/Blockchain-as-a-Service-Market-Size-Industry-Forecast-Report-2020-2",
+   "url": "https://github.com/Gmiresearch1/Blockchain-as-a-Service-Market-Size-Industry-Forecast-Report-2020-2027",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Prosefashion/Advantages-Of-Group-Buys",
+   "url": "https://github.com/Prosefashion/Advantages-Of-Group-Buys",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Rastaman4e/-1",
+   "url": "https://github.com/Rastaman4e/-1",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "dulanaDias/login-screen",
+   "url": "https://github.com/dulanaDias/login-screen",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Mehrdad-shahizad/DamFeed",
+   "url": "https://github.com/Mehrdad-shahizad/DamFeed",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Noykarde/NoykardeRepository",
+   "url": "https://github.com/Noykarde/NoykardeRepository",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "jdegreef/ochorus",
+   "url": "https://github.com/jdegreef/ochorus",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "solardev-xyz/freedom-browser",
+   "url": "https://github.com/solardev-xyz/freedom-browser",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "issamjwd/ginfowell-bot",
+   "url": "https://github.com/issamjwd/ginfowell-bot",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "misty-step/scry",
+   "url": "https://github.com/misty-step/scry",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "ronelyehouenou-sketch/best-brawl-stars-domain",
+   "url": "https://github.com/ronelyehouenou-sketch/best-brawl-stars-domain",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "michalik-maciej/projektownia-calculator",
+   "url": "https://github.com/michalik-maciej/projektownia-calculator",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "matharrismma/concordance-2",
+   "url": "https://github.com/matharrismma/concordance-2",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Shubham-Safaya/us-consumer-pulse",
+   "url": "https://github.com/Shubham-Safaya/us-consumer-pulse",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "impydy/ADmiral",
+   "url": "https://github.com/impydy/ADmiral",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "manoinc/mano-mobile",
+   "url": "https://github.com/manoinc/mano-mobile",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "miniuid/Pickads",
+   "url": "https://github.com/miniuid/Pickads",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "talktorana/agent-harness",
+   "url": "https://github.com/talktorana/agent-harness",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "seeken/selecto-api-console",
+   "url": "https://github.com/seeken/selecto-api-console",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "nomandhoni-cs/nomandhoni-cs",
+   "url": "https://skillicons.dev",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "xinbetween/flowlight",
+   "url": "http://flowlight.xinbetween.com/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "TAO-2026-beep/iptv-hub",
+   "url": "https://github.com/TAO-2026-beep/iptv-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "evenbsies/tvbox-harvest",
+   "url": "https://github.com/evenbsies/tvbox-harvest",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "jycao2/hongguoTV",
+   "url": "https://github.com/jycao2/hongguoTV",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "ljz704/iptv-hub",
+   "url": "https://github.com/ljz704/iptv-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "slothsheepking/iptv-api-home",
+   "url": "https://github.com/slothsheepking/iptv-api-home",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "fe-spark/EcoHub",
+   "url": "https://github.com/fe-spark/EcoHub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "guxia66898/tvbox-hub",
+   "url": "https://github.com/guxia66898/tvbox-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "sylvan97/tvbox-hub",
+   "url": "https://github.com/sylvan97/tvbox-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "muedsa/ha-plugin",
+   "url": "https://github.com/muedsa/ha-plugin",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "davisWeee/vod-hub",
+   "url": "https://github.com/davisWeee/vod-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "xiangfeng681-lang/h618-tvbox-linux",
+   "url": "https://github.com/xiangfeng681-lang/h618-tvbox-linux",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "smallniangao/TVBoxHome",
+   "url": "https://github.com/smallniangao/TVBoxHome",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "zlu1123/tvbox-hub",
+   "url": "https://github.com/zlu1123/tvbox-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "Web-Developer-DB/t95-tvbox-to-armbian-home-server",
+   "url": "https://github.com/Web-Developer-DB/t95-tvbox-to-armbian-home-server",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "MatheusPiassiC/tvbox-hpc-cluster",
+   "url": "https://github.com/MatheusPiassiC/tvbox-hpc-cluster",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "LastSurvivalOn/ozone-hd-deb-firmware",
+   "url": "https://github.com/LastSurvivalOn/ozone-hd-deb-firmware",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "louisYKL/TVBOX-DolbyVision-HDR10-Edition",
+   "url": "https://github.com/louisYKL/TVBOX-DolbyVision-HDR10-Edition",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "ballad0324/HoopoeTV",
+   "url": "https://github.com/ballad0324/HoopoeTV",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "tvbox342078879/probe-hub",
+   "url": "https://github.com/tvbox342078879/probe-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "HTWMedia/HTV",
+   "url": "https://github.com/HTWMedia/HTV",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "haonanren118/hd-source",
+   "url": "https://github.com/haonanren118/hd-source",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "Gabrick75/tvbox-h3-otimizacao",
+   "url": "https://github.com/Gabrick75/tvbox-h3-otimizacao",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "cc-lab7/tvbox-host",
+   "url": "https://github.com/cc-lab7/tvbox-host",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "kittymoona/happytv",
+   "url": "https://github.com/kittymoona/happytv",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "Mryang2023/video-hub",
+   "url": "https://github.com/Mryang2023/video-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "liucz000/tvbox-hub",
+   "url": "https://github.com/liucz000/tvbox-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "cony8888/tvbox-ipv4-live",
+   "url": "https://github.com/cony8888/tvbox-ipv4-live",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "OpenHWLabcom/hg680r-desktop-pc",
+   "url": "https://github.com/OpenHWLabcom/hg680r-desktop-pc",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "HaileHu/Hubox",
+   "url": "https://github.com/HaileHu/Hubox",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "wtc1069/hanime1-tvbox-source",
+   "url": "https://github.com/wtc1069/hanime1-tvbox-source",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "gasiepgodoy/Hackathon-TV-Box-E10",
+   "url": "https://github.com/gasiepgodoy/Hackathon-TV-Box-E10",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "shandianchengzi/listen-book-src-hzkjdx-chineseall",
+   "url": "https://github.com/shandianchengzi/listen-book-src-hzkjdx-chineseall",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "yuppiesnotzhuhao/TvBoxHarmony",
+   "url": "https://github.com/yuppiesnotzhuhao/TvBoxHarmony",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "spencerlishaobing/TvBoxHelper",
+   "url": "https://github.com/spencerlishaobing/TvBoxHelper",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "ttu571/MediaHub-API",
+   "url": "https://github.com/ttu571/MediaHub-API",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "starsoul666/tvbox-harmonyos",
+   "url": "https://github.com/starsoul666/tvbox-harmonyos",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "Xuehai888/iptv-platform",
+   "url": "https://github.com/Xuehai888/iptv-platform",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "bywilliams/homehub_tvbox",
+   "url": "https://github.com/bywilliams/homehub_tvbox",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "leohmoraes/hackathon-tech-floripa-incubitech-tvbox-2-hotspot-captivate",
+   "url": "https://github.com/leohmoraes/hackathon-tech-floripa-incubitech-tvbox-2-hotspot-captivate",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "smallmarker/tvbox-spider-hub",
+   "url": "https://github.com/smallmarker/tvbox-spider-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "thiagoNoGIT/pihole-tvbox-homelab",
+   "url": "https://github.com/thiagoNoGIT/pihole-tvbox-homelab",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "day253/TVBoxOSC-TCL-HWDecode",
+   "url": "https://github.com/day253/TVBoxOSC-TCL-HWDecode",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "longben314/tvbox-hub",
+   "url": "https://github.com/longben314/tvbox-hub",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "suyizhang/harmony-tvbox-client",
+   "url": "https://github.com/suyizhang/harmony-tvbox-client",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "Gabrick75/TVBox-Allwinner-H3-with-Linux",
+   "url": "https://github.com/Gabrick75/TVBox-Allwinner-H3-with-Linux",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "wj-ui/KatelyaTV2",
+   "url": "https://github.com/wj-ui/KatelyaTV2",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "guke1991/SafeTVBox",
+   "url": "https://github.com/guke1991/SafeTVBox",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "haogege8888/KatelyaTV",
+   "url": "https://github.com/haogege8888/KatelyaTV",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "marschen1984/KatelyaTV",
+   "url": "https://github.com/marschen1984/KatelyaTV",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "Attention Required! | Cloudflare",
+   "url": "https://www.mgav1.cc/api.php/provide/vod/at/xml/",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "Online Browser & Browser Sandbox – Browserling",
+   "url": "https://apihjzy.com/api.php/provide/vod/at/xml/",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "系统发生错误",
+   "url": "http://bttcj.com/inc/sapi.php",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "grumpyspud/ha80-armbian-fd628-front-panel",
+   "url": "https://github.com/grumpyspud/ha80-armbian-fd628-front-panel",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "zseagate/iptv-tvbox-highend-android",
+   "url": "https://github.com/zseagate/iptv-tvbox-highend-android",
+   "slug": "adult",
+   "reason": "成人栏误收录清理（FIX17 深审：非成人内容）"
+  },
+  {
+   "name": "mlzbest/tvbox-api-backup",
+   "url": "http://bd.qiqiv.cn/666.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "zdh2021/MusicFree-ios-beta4",
+   "url": "https://raw.githubusercontent.com/zhuguibiao/m-plugins/refs/heads/main/bilibili.js",
+   "slug": "music",
+   "reason": "跨栏重复，保留在「music」栏"
   }
  ],
- "updatedAt": "2026-11-25T02:04:18.129Z"
+ "updatedAt": "2026-11-25T05:06:19.033Z"
 }
