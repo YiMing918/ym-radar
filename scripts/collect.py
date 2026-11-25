@@ -5554,6 +5554,828 @@ def apple_migrate(categories, removed_keys):
 
 
 
+# ================= FIX17 二期第二步：优选IP/节点换源 + 免费VPN 分区 + 事实门 =================
+# 依据：fix17-audit/sourcemap-c.md（优选IP/节点来源）、vpn_报告.md +
+# vpn_candidates.json（免费 VPN 34 候选）、optimization-2026-11-25/报告.md
+# 第 2 条（入库事实门）。设计与既有通道（苹果 TF / FIX16 福利）同构：
+# 解析器是纯函数、抓取在通道里逐源故障隔离、条目靠 feed 标记认领、
+# 连续 2 轮不在来源里才删（抓失败不计数）。
+
+# ---------------- 第二步·事实门（对标优化第 2 条） ----------------
+# 规矩：新自动条目同时满足两条才拦——① summary 命中模板特征；
+# ② details 里没有任何真实事实字段（额度/价格/条数/条件类，值不是
+# 「未公布」这类占位）。拦下的不丢：进待补清单（pending）等复核，
+# 不直接上架。种子/人工条目（auto 非真）不走这道门；福利/苹果通道
+# 有各自的门禁自检，不在这里重复拦。
+# 2026-11-25 用线上 3638 条实测过口径：模板特征条目 181 条里，
+# 无事实的 113 条会被拦，带真实条数/价格/额度的 0 条误杀。
+
+FACT_LABELS = {
+    # 数出来的条数（内容实测）
+    "节点数", "条数", "频道数", "书源数", "站点数", "节点数量", "IP 数",
+    # 价格
+    "现价", "原价",
+    # AI 额度 7 项 + 福利字段
+    "首次注册送", "每天额度", "其他途径", "总额度", "额度有效期",
+    "是否要绑卡", "领取门槛", "免费额度", "领取条件", "使用条件",
+    # 免费服务/域名四问
+    "免费时长", "能否续费", "续费价格", "能否进 CF", "机器配置",
+    "申请要求", "能干什么", "容量与发信量", "额度",
+    # 节点/直播等栏目的内容字段
+    "协议类型", "地区分布", "招募状态", "截止加入",
+}
+_FACT_PLACEHOLDERS = {"", "未公布", "暂无配套", "未知", "无"}
+
+
+def _summary_template_like(summary):
+    """summary 是不是模板/兜底句式：FIX14 的 12 句英文模板、build_item
+    的英文兜底（简介待补）、中文兜底（{种类}。主要用来{用途}，适合…）。"""
+    s = (summary or "").strip()
+    if not s:
+        return False
+    if _is_template_summary(s):
+        return True
+    if "简介待补" in s:
+        return True
+    if re.match(r"^.+。主要用来", s):
+        return True
+    return False
+
+
+def _fact_labels_of(item):
+    """条目身上带真实值的事实字段 label 列表（占位值不算）。"""
+    out = []
+    for dd in item.get("details") or []:
+        if not isinstance(dd, dict):
+            continue
+        lb = dd.get("label") or ""
+        v = str(dd.get("value") or "").strip()
+        if lb in FACT_LABELS and v not in _FACT_PLACEHOLDERS:
+            out.append(lb)
+    return out
+
+
+def fact_gate_reason(item):
+    """命中事实门返回原因字符串，不命中返回 ""。"""
+    if not item.get("auto"):
+        return ""
+    if not _summary_template_like(item.get("summary") or ""):
+        return ""
+    if _fact_labels_of(item):
+        return ""
+    return ("事实门：摘要是模板句式，且没有任何真实事实字段"
+            "（额度/价格/条数/条件），先进待复核不上架")
+
+
+# ---------------- 第二步·优选 IP 换源（CFYes / BestCF / WeTest） ----------------
+CFYES_API_URL = "https://addressesapi.090227.xyz/CloudFlareYes"
+BESTCF_HOME_URL = "https://bestcf.pages.dev/"
+WETEST_V4_URL = "https://www.wetest.vip/page/cloudflare/address_v4.html"
+_CFIP_BESTCF_MAX = 6          # BestCF 镜像清单每轮最多收几份
+_NET_CN = {"CM": "移动", "CU": "联通", "CT": "电信"}
+
+
+def parse_cfyes(text):
+    """CFYes 纯文本接口解析：一行一个 `IP#CM-Default`（分网备注）。
+    返回 {"ips": [去重保序], "by_net": {"CM": [ip...], ...}}。"""
+    ips, seen, by_net = [], set(), {}
+    for line in (text or "").splitlines():
+        line = line.strip()
+        if not line or "#" not in line:
+            continue
+        ip, _, note = line.partition("#")
+        ip, note = ip.strip(), note.strip()
+        if not re.fullmatch(r"\d{1,3}(?:\.\d{1,3}){3}", ip):
+            continue
+        if ip not in seen:
+            seen.add(ip)
+            ips.append(ip)
+        m = re.match(r"(CM|CU|CT)\b", note)
+        if m:
+            by_net.setdefault(m.group(1), []).append(ip)
+    return {"ips": ips, "by_net": by_net}
+
+
+def parse_bestcf_txt(text):
+    """BestCF 镜像 txt 清单解析：一行一个 `地址:端口#备注`。"""
+    rows = []
+    for line in (text or "").splitlines():
+        line = line.strip()
+        if not line or "#" not in line:
+            continue
+        addr, _, note = line.partition("#")
+        addr, note = addr.strip(), note.strip()
+        host, _, port = addr.rpartition(":")
+        if not host:
+            continue
+        rows.append({"addr": addr, "host": host, "port": port,
+                     "note": note})
+    return rows
+
+
+def bestcf_txt_links(html, base=BESTCF_HOME_URL):
+    """从 BestCF 导航页提取优选源 txt 直链（相对地址转绝对）：
+    只认文件名/路径带源标识（vps789/cfyes/wetest/uouin/090227）的
+    .txt，去重，最多 _CFIP_BESTCF_MAX 份。
+
+    实测教训（2026-11-25 首页全文样本 385KB）：vps789 的清单链接
+    只出现在页面 JS 字符串里（fetch('vps789/top10.txt')），不在
+    href 里；href 里带源标识的 .txt 一个都没有——只扫 href 会
+    漏光。所以扫全文 URL（href + 裸文本），按子源优先级排序：
+    vps789 自家清单在前，其次 cfyes/wetest/uouin/090227。"""
+    raw = set()
+    for m in re.finditer(r"(?:https?://[^\s\"'<>]+|[\w][\w./-]*)\.txt",
+                         html or ""):
+        raw.add(urllib.parse.urljoin(base, m.group(0)))
+    keys = ("vps789", "cfyes", "wetest", "uouin", "090227")
+
+    def _rank(u):
+        path = urllib.parse.urlparse(u).path.lower()
+        for i, k in enumerate(keys):
+            if k in path:
+                return i
+        return 99
+    links = [u for u in raw if _rank(u) < 99]
+    links.sort(key=lambda u: (_rank(u),
+                              0 if "/vps789/" in
+                              urllib.parse.urlparse(u).path.lower() else 1,
+                              u))
+    return links[:_CFIP_BESTCF_MAX]
+
+
+def parse_wetest_table(html):
+    """WeTest 优选地址表解析：服务端渲染的表格，单元格带 data-label。
+    返回 [{line, addr, bandwidth, speed, latency_ms, dc, updated}]，
+    延迟只认页面给的数字（毫秒），解析不出就不收这一行。"""
+    rows = []
+    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", html or "", re.S):
+        cells = {}
+        for lb, raw in re.findall(
+                r'data-label="([^"]+)"[^>]*>(.*?)</td>', tr, re.S):
+            cells[lb] = re.sub(r"<[^>]+>", "", raw).strip()
+        addr = cells.get("优选地址") or ""
+        if not re.fullmatch(r"\d{1,3}(?:\.\d{1,3}){3}", addr):
+            continue
+        m = re.search(r"(\d+)", cells.get("往返延迟") or "")
+        rows.append({
+            "line": cells.get("线路名称") or "",
+            "addr": addr,
+            "bandwidth": cells.get("网络带宽") or "",
+            "speed": cells.get("峰值速度") or "",
+            "latency_ms": int(m.group(1)) if m else None,
+            "dc": cells.get("数据中心") or "",
+            "updated": cells.get("更新时间") or "",
+        })
+    return rows
+
+
+def _cfip_base_item(new_id, name, url, feed):
+    item = {
+        "access": "direct", "builtinConfigName": "", "builtinConfigUrl": "",
+        "description": "", "descriptionOriginal": "", "details": [],
+        "id": new_id, "imageUrl": "", "name": name, "rank": 999,
+        "region": "国内", "score": 0, "screenshots": [], "section": "main",
+        "sourceUrl": "", "summary": "", "tags": ["自动收录", "优选IP"],
+        "url": url, "usageKind": "", "usageNote": "",
+        "verifiedAt": today_cst(), "warning": "", "auto": True,
+        "publishedAt": "", "feed": feed, "miss": 0,
+    }
+    return item
+
+
+def _build_cfip_item(kind, payload, new_id):
+    """按来源拼优选 IP 条目。数字全部来自本轮抓取的原文，来源没给的
+    字段就不写。过不了门禁（描述 <40 字或缺「适合」）返回 None。"""
+    if kind == "cfyes":
+        ips, by_net = payload["ips"], payload["by_net"]
+        item = _cfip_base_item(new_id, "CFYes 优选 IP 接口（090227）",
+                               CFYES_API_URL, "cfyes")
+        nets = "、".join(f"{_NET_CN[k]} {len(v)} 个"
+                         for k, v in by_net.items() if k in _NET_CN)
+        item["summary"] = (f"纯文本优选 IP 接口：当前 {len(ips)} 个 IP，"
+                           "按移动/联通/电信分网标注，打开复制就能用。")
+        item["description"] = (
+            "CFYes 是 090227 维护的 Cloudflare 优选 IP 纯文本接口，一行"
+            "一个 IP 并标注适用网络（CM 移动、CU 联通、CT 电信），约 30 "
+            f"分钟更新一次，本轮抓到 {len(ips)} 个 IP。用法：打开链接按"
+            "自己的运营商挑 IP，填进 edgetunnel 或 CF 自建节点的优选 IP "
+            "设置里。适合用 Cloudflare 自建节点、想挑国内快 IP 的人。")
+        set_detail(item, "数据形式", "纯文本接口（一行一个 IP#分网备注）")
+        set_detail(item, "IP 数", str(len(ips)))
+        if nets:
+            set_detail(item, "覆盖网络", nets)
+        if ips:
+            set_detail(item, "优选样本", "、".join(ips[:5]))
+        set_detail(item, "更新频率", "约 30 分钟（来源标注）")
+        set_detail(item, "信息来源", "CFYes · 090227")
+        item["sourceUrl"] = "https://cf.090227.xyz/"
+    elif kind == "bestcf":
+        url, rows = payload["url"], payload["rows"]
+        low = url.lower()
+        src = ("VPS789" if "vps789" in low else
+               "CFYes" if "cfyes" in low else
+               "WeTest" if "wetest" in low else
+               "UOUIN" if "uouin" in low else "镜像")
+        stem = urllib.parse.urlparse(url).path.rsplit("/", 1)[-1]
+        stem = re.sub(r"\.txt$", "", stem)
+        item = _cfip_base_item(
+            new_id, f"BestCF · {src} {stem.upper()} 优选 IP 清单",
+            url, "bestcf")
+        item["summary"] = (f"{src} 的优选 IP 纯文本清单（{stem}）："
+                           f"本轮 {len(rows)} 条，打开整份复制就能用。")
+        item["description"] = (
+            f"这是 BestCF 导航镜像的 {src} 优选 IP 清单（{stem}），纯文本，"
+            "一行一个「地址:端口#备注」，本轮共 "
+            f"{len(rows)} 条。打开就能整份复制，粘进 edgetunnel 的优选 "
+            "IP 列表或客户端的优选地址里，不用再去仓库里翻。适合用 "
+            "Cloudflare 自建节点的人。")
+        set_detail(item, "数据形式", "纯文本清单（一行一个 地址:端口#备注）")
+        set_detail(item, "条数", str(len(rows)))
+        if rows:
+            set_detail(item, "优选样本",
+                       "、".join(r["addr"] for r in rows[:5]))
+            m = re.search(r"(\d{2}-\d{2}\s+\d{2}:\d{2})", rows[0]["note"])
+            if m:
+                set_detail(item, "清单时间", m.group(1))
+        set_detail(item, "信息来源", "BestCF 导航（bestcf.pages.dev）")
+        item["sourceUrl"] = BESTCF_HOME_URL
+    elif kind == "wetest":
+        rows = payload["rows"]
+        item = _cfip_base_item(
+            new_id, "WeTest 微测网 · Cloudflare 优选地址表（IPv4）",
+            WETEST_V4_URL, "wetest")
+        item["summary"] = (f"每 15 分钟实测的优选地址表：分移动/联通/电信"
+                           f"给地址、延迟和峰值速度，本轮 {len(rows)} 条。")
+        item["description"] = (
+            "WeTest 微测网每 15 分钟实测一轮 Cloudflare 优选地址，表格按"
+            "线路（移动/联通/电信）给优选地址、往返延迟、峰值速度和数据"
+            f"中心，本轮共 {len(rows)} 条。挑自己运营商延迟最低的那条，"
+            "填进 edgetunnel 或 CF 自建节点的优选 IP 里。适合用 "
+            "Cloudflare 自建节点、想按运营商挑最快 IP 的人。")
+        set_detail(item, "数据形式", "网页测速表（服务端渲染）")
+        set_detail(item, "测速条数", str(len(rows)))
+        by_line = {}
+        for r in rows:
+            if r["latency_ms"] is None:
+                continue
+            cur = by_line.get(r["line"])
+            if cur is None or r["latency_ms"] < cur["latency_ms"]:
+                by_line[r["line"]] = r
+        for line, r in by_line.items():
+            val = f"{r['addr']}（{r['dc']}，延迟 {r['latency_ms']} 毫秒"
+            if r["speed"]:
+                val += f"，峰值 {r['speed']}"
+            val += "）"
+            set_detail(item, f"{line}优选", val)
+        upd = max((r["updated"] for r in rows if r["updated"]), default="")
+        if upd:
+            set_detail(item, "更新时间", upd)
+        set_detail(item, "更新频率", "约 15 分钟（来源标注）")
+        set_detail(item, "信息来源", "WeTest 微测网")
+        item["sourceUrl"] = "https://www.wetest.vip/"
+    else:
+        return None
+    if len(item["description"]) < 40 or "适合" not in item["description"]:
+        return None
+    if not item["summary"]:
+        return None
+    return item
+
+
+def cfip_channel(categories, removed_keys, next_id):
+    """优选 IP 换源通道：CFYes 文本接口 + BestCF 镜像清单 + WeTest
+    测速表。逐源故障隔离；通道条目（feed 标记）连续 2 轮不在来源里
+    才删，抓失败不计数。返回 (next_id, stats)。"""
+    stats = {"added": 0, "updated": 0, "removed": 0, "sources_ok": 0}
+    cat = categories.get("cfip") or {}
+    items = cat.setdefault("items", [])
+    live = {}   # url -> (kind, payload)：本轮成功抓到的来源
+    # --- CFYes ---
+    try:
+        status, _ct, body = fetch(CFYES_API_URL, max_bytes=256 * 1024)
+        if status != 200:
+            raise RuntimeError(f"HTTP {status}")
+        parsed = parse_cfyes(body.decode("utf-8", "replace"))
+        if parsed["ips"]:
+            live[CFYES_API_URL] = ("cfyes", parsed)
+            stats["sources_ok"] += 1
+    except Exception as e:
+        log(f"优选IP 来源 CFYes 拉取失败（跳过）：{e}")
+    # --- BestCF（先导航页拿 txt 直链，再逐份拉） ---
+    bestcf_home_ok = False
+    try:
+        status, _ct, body = fetch(BESTCF_HOME_URL, max_bytes=1024 * 1024)
+        if status != 200:
+            raise RuntimeError(f"HTTP {status}")
+        bestcf_home_ok = True
+        for u in bestcf_txt_links(body.decode("utf-8", "replace")):
+            try:
+                st2, _c2, b2 = fetch(u, max_bytes=256 * 1024)
+                if st2 != 200:
+                    continue
+                rows = parse_bestcf_txt(b2.decode("utf-8", "replace"))
+                if rows:
+                    live[u] = ("bestcf", {"url": u, "rows": rows})
+            except Exception:
+                continue
+        if any(k == "bestcf" for k, _p in live.values()):
+            stats["sources_ok"] += 1
+    except Exception as e:
+        log(f"优选IP 来源 BestCF 拉取失败（跳过）：{e}")
+    # --- WeTest ---
+    wetest_ok = False
+    try:
+        status, _ct, body = fetch(WETEST_V4_URL, max_bytes=512 * 1024)
+        if status != 200:
+            raise RuntimeError(f"HTTP {status}")
+        rows = parse_wetest_table(body.decode("utf-8", "replace"))
+        if rows:
+            live[WETEST_V4_URL] = ("wetest", {"rows": rows})
+            wetest_ok = True
+            stats["sources_ok"] += 1
+    except Exception as e:
+        log(f"优选IP 来源 WeTest 拉取失败（跳过）：{e}")
+    # --- 更新已有通道条目 + 过期计数 ---
+    have = {}
+    for it in items:
+        if (it.get("feed") or "") in ("cfyes", "bestcf", "wetest"):
+            have[(it.get("url") or "").strip()] = it
+    for url, it in have.items():
+        feed = it.get("feed")
+        src_ok = (feed == "cfyes" and CFYES_API_URL in live) or \
+                 (feed == "bestcf" and bestcf_home_ok) or \
+                 (feed == "wetest" and wetest_ok)
+        if url in live:
+            kind, payload = live[url]
+            fresh = _build_cfip_item(kind, payload, it.get("id") or next_id)
+            if fresh:
+                it["details"] = fresh["details"]
+                it["summary"] = fresh["summary"]
+                it["description"] = fresh["description"]
+            it["miss"] = 0
+            it["verifiedAt"] = today_cst()
+            stats["updated"] += 1
+        elif src_ok:
+            miss = int(it.get("miss") or 0) + 1
+            it["miss"] = miss
+            if miss >= 2:
+                removed_keys.add(_item_key(it))
+                REMOVED.append(("cfip", it.get("name") or "",
+                                it.get("url") or "",
+                                "优选IP 通道：连续 2 轮不在来源清单里"))
+                stats["removed"] += 1
+    # --- 加新条目 ---
+    total = len(items) - sum(1 for it in items
+                             if _item_key(it) in removed_keys)
+    for url, (kind, payload) in live.items():
+        if url in have:
+            continue
+        if total >= MAX_PER_CAT:
+            break
+        new_item = _build_cfip_item(kind, payload, next_id)
+        if new_item is None:
+            continue
+        items.append(new_item)
+        next_id += 1
+        total += 1
+        ADDED.append(("cfip", new_item["name"], new_item["url"]))
+        bump("cfip_added")
+        stats["added"] += 1
+    return next_id, stats
+
+
+# ---------------- 第二步·节点换源（NodeHub 直订 + NodesRadar 验活层） ----------------
+NODEHUB_HOME_URL = "https://crazygeeky.com/"
+NODEHUB_FILES = [
+    ("mihomo.yaml", "Mihomo 全量", "Clash/Mihomo 系客户端（Clash Verge、FlClash 等）"),
+    ("all.yaml", "通用全量", "sing-box、Clash/Mihomo 系客户端"),
+    ("base64.txt", "Base64 通用", "v2rayN、v2rayNG、Shadowrocket 等通用客户端"),
+    ("us.yaml", "美国地区", "Clash/Mihomo 系客户端"),
+    ("sg.yaml", "新加坡地区", "Clash/Mihomo 系客户端"),
+    ("hk.yaml", "香港地区", "Clash/Mihomo 系客户端"),
+    ("tw.yaml", "台湾地区", "Clash/Mihomo 系客户端"),
+    ("other.yaml", "其他地区", "Clash/Mihomo 系客户端"),
+]
+NODESRADAR_URL = "https://nodesradar.com/"
+_NODE_SCHEMES = ("vmess", "vless", "trojan", "ss", "ssr",
+                 "hysteria2", "hy2", "tuic", "anytls")
+
+
+def _node_name_region(name):
+    """从节点名里认地区：旗帜 emoji（区域指示符对）优先，
+    退回 `XX_数字` 形式的国家码。认不出返回 ""。"""
+    m = re.search(r"[\U0001F1E6-\U0001F1FF]{2}", name or "")
+    if m:
+        pair = m.group(0)
+        return "".join(chr(ord(c) - 0x1F1E6 + 65) for c in pair)
+    m = re.search(r"\b([A-Z]{2})_\d", name or "")
+    return m.group(1) if m else ""
+
+
+def parse_nodehub_yaml(text):
+    """NodeHub 的 mihomo/all/地区 yaml 解析：只数 proxies 段。
+    条数按段内 `- ` 条目计；协议按 type 行计；地区按节点名认。
+    （不引 yaml 库：格式由站方生成、结构稳定，数错了也只是详情数字。）"""
+    m = re.search(r"(?ms)^proxies:\s*\n(.*?)(?=^[A-Za-z][\w-]*:|\Z)",
+                  text or "")
+    sec = m.group(1) if m else ""
+    types, regions = {}, {}
+    for t in re.findall(r"(?m)^\s+type:\s*([A-Za-z0-9_-]+)", sec):
+        types[t] = types.get(t, 0) + 1
+    for nm in re.findall(r"(?m)^\s+name:\s*(.+)$", sec):
+        cc = _node_name_region(nm.strip().strip("'\""))
+        if cc:
+            regions[cc] = regions.get(cc, 0) + 1
+    return {"count": len(re.findall(r"(?m)^- ", sec)),
+            "types": types, "regions": regions}
+
+
+def parse_node_sub_text(text):
+    """通用订阅（base64 或明文）解析：按协议数节点条数。"""
+    raw = (text or "").strip()
+    plain = raw
+    if "://" not in raw:
+        try:
+            plain = base64.b64decode(
+                re.sub(r"\s+", "", raw)).decode("utf-8", "replace")
+        except Exception:
+            plain = ""
+    types = {}
+    for sc in re.findall(r"(?m)^\s*([a-z0-9]+)://", plain):
+        if sc in _NODE_SCHEMES:
+            types[sc] = types.get(sc, 0) + 1
+    return {"count": sum(types.values()), "types": types, "regions": {}}
+
+
+def parse_nodesradar_sources(html):
+    """Free Nodes Radar 首页里嵌的上游清单：raw.githubusercontent
+    直链对应的 owner/repo 集合（它每 6 小时对这些上游全量测活）。"""
+    repos = set()
+    for owner, repo in re.findall(
+            r"raw\.githubusercontent\.com/([^/\s\"']+)/([^/\s\"']+)/",
+            html or ""):
+        repos.add(f"{owner}/{repo}")
+    return repos
+
+
+def _build_nodehub_item(fname, label, clients, parsed, new_id):
+    url = urllib.parse.urljoin(NODEHUB_HOME_URL, f"sub/{fname}")
+    item = {
+        "access": "direct", "builtinConfigName": "", "builtinConfigUrl": "",
+        "description": "", "descriptionOriginal": "", "details": [],
+        "id": new_id, "imageUrl": "", "name": f"NodeHub 订阅 · {label}",
+        "rank": 999, "region": "全球多地区", "score": 0, "screenshots": [],
+        "section": "main", "sourceUrl": NODEHUB_HOME_URL, "summary": "",
+        "tags": ["自动收录", "每日更新"], "url": url, "usageKind": "config",
+        "usageNote": "", "verifiedAt": today_cst(), "warning": "",
+        "auto": True, "publishedAt": "", "feed": "nodehub", "miss": 0,
+    }
+    n = parsed["count"]
+    item["summary"] = (f"NodeHub 自测订阅（{label}）：本轮 {n} 个节点，"
+                       "链接固定，导入客户端后在客户端里更新即可。")
+    item["description"] = (
+        "NodeHub 是多源聚合加自有测活的节点中心，这个文件是它的"
+        f"{label}订阅，站方测活后发布（测试点在海外，给的速度只作"
+        f"参考），约 2 小时一轮，本轮数到 {n} 个节点。把链接导入"
+        f"{clients}就能用，之后在客户端里点更新订阅拿新节点，不用"
+        "反复换链接。适合需要免费节点临时应急的人。")
+    if len(item["description"]) < 40 or "适合" not in item["description"]:
+        return None
+    set_detail(item, "节点数", str(n))
+    if parsed["types"]:
+        set_detail(item, "协议分布", " · ".join(
+            f"{k.upper()} {v}" for k, v in
+            sorted(parsed["types"].items(), key=lambda kv: -kv[1])[:6]))
+    if parsed["regions"]:
+        set_detail(item, "地区分布", " · ".join(
+            f"{k} {v}" for k, v in
+            sorted(parsed["regions"].items(), key=lambda kv: -kv[1])[:6]))
+    set_detail(item, "适合客户端", clients)
+    set_detail(item, "更新频率", "约 2 小时（来源标注）")
+    set_detail(item, "信息来源", "NodeHub（crazygeeky.com）")
+    return item
+
+
+def _build_nodesradar_item(n_sources, new_id):
+    item = {
+        "access": "direct", "builtinConfigName": "", "builtinConfigUrl": "",
+        "description": "", "descriptionOriginal": "", "details": [],
+        "id": new_id, "imageUrl": "", "name": "Free Nodes Radar（免费节点雷达）",
+        "rank": 999, "region": "全球多地区", "score": 0, "screenshots": [],
+        "section": "main", "sourceUrl": "", "summary": "",
+        "tags": ["自动收录", "测活"], "url": NODESRADAR_URL,
+        "usageKind": "", "usageNote": "", "verifiedAt": today_cst(),
+        "warning": "", "auto": True, "publishedAt": "",
+        "feed": "nodesradar", "miss": 0,
+    }
+    item["summary"] = ("第三方全量测活聚合站：汇总几十个上游订阅去重测活，"
+                       "按国家/协议出订阅，本站用它作验活旁证。")
+    item["description"] = (
+        "Free Nodes Radar 是英文的免费节点聚合测活站，汇总上游订阅、"
+        "去重后逐节点测活，每 6 小时一轮，给稳定性、速度和延迟，并按"
+        "国家/协议出订阅（测活点在海外，是海外视角）。雷达用它作验活"
+        "层：节点条目的上游被它收录时，详情里会标「验活旁证」。适合"
+        "想横向比较免费节点来源的人。")
+    if len(item["description"]) < 40 or "适合" not in item["description"]:
+        return None
+    if n_sources:
+        set_detail(item, "收录上游", f"{n_sources} 个 GitHub 上游（解析其首页）")
+    set_detail(item, "更新频率", "每 6 小时一轮（来源标注）")
+    set_detail(item, "信息来源", "nodesradar.com")
+    return item
+
+
+def node_channel(categories, removed_keys, next_id):
+    """节点换源通道：直订 NodeHub 订阅文件（地址就是订阅本身），
+    Free Nodes Radar 只作验活层（它的上游清单命中本站条目时给条目
+    标「验活旁证」）。NodeHub 文件 404 连续 2 轮才删；网络失败不计数。
+    返回 (next_id, stats)。"""
+    stats = {"added": 0, "updated": 0, "removed": 0, "verified_marks": 0}
+    cat = categories.get("node") or {}
+    items = cat.setdefault("items", [])
+    # --- 拉 NodeHub 首页确认文件清单（失败则用固定清单，且不计 miss）---
+    listed = None
+    try:
+        status, _ct, body = fetch(NODEHUB_HOME_URL, max_bytes=512 * 1024)
+        if status == 200:
+            found = set(re.findall(r"/sub/([A-Za-z0-9._-]+\.(?:yaml|txt))",
+                                   body.decode("utf-8", "replace")))
+            listed = {fn for fn, _l, _c in NODEHUB_FILES if fn in found}
+    except Exception as e:
+        log(f"节点来源 NodeHub 首页拉取失败（用固定清单）：{e}")
+    # --- 逐文件拉取解析 ---
+    live = {}   # fname -> parsed
+    gone = set()  # 明确 404 的文件
+    for fname, _label, _clients in NODEHUB_FILES:
+        if listed is not None and fname not in listed:
+            gone.add(fname)
+            continue
+        url = urllib.parse.urljoin(NODEHUB_HOME_URL, f"sub/{fname}")
+        try:
+            status, _ct, body = fetch(url, max_bytes=4 * 1024 * 1024)
+            if status == 404:
+                gone.add(fname)
+                continue
+            if status != 200:
+                continue
+            text = body.decode("utf-8", "replace")
+            parsed = parse_nodehub_yaml(text) if fname.endswith(".yaml") \
+                else parse_node_sub_text(text)
+            if parsed["count"] > 0:
+                live[fname] = parsed
+        except Exception:
+            continue
+    # --- NodesRadar 验活层（失败就整层跳过，不影响订阅条目） ---
+    radar_repos = set()
+    try:
+        status, _ct, body = fetch(NODESRADAR_URL, max_bytes=2 * 1024 * 1024)
+        if status == 200:
+            radar_repos = parse_nodesradar_sources(
+                body.decode("utf-8", "replace"))
+    except Exception as e:
+        log(f"节点验活层 NodesRadar 拉取失败（跳过）：{e}")
+    # --- 更新/过期 NodeHub 条目 ---
+    have = {}
+    for it in items:
+        if (it.get("feed") or "") == "nodehub":
+            have[(it.get("url") or "").strip()] = it
+    fname_by_url = {urllib.parse.urljoin(NODEHUB_HOME_URL, f"sub/{fn}"): fn
+                    for fn, _l, _c in NODEHUB_FILES}
+    meta_by_fname = {fn: (l, c) for fn, l, c in NODEHUB_FILES}
+    for url, it in have.items():
+        fn = fname_by_url.get(url)
+        if fn and fn in live:
+            _label, _clients = meta_by_fname[fn]
+            fresh = _build_nodehub_item(fn, _label, _clients, live[fn],
+                                        it.get("id") or next_id)
+            if fresh:
+                it["details"] = fresh["details"]
+                it["summary"] = fresh["summary"]
+                it["description"] = fresh["description"]
+            it["miss"] = 0
+            it["verifiedAt"] = today_cst()
+            stats["updated"] += 1
+        elif fn and fn in gone:
+            miss = int(it.get("miss") or 0) + 1
+            it["miss"] = miss
+            if miss >= 2:
+                removed_keys.add(_item_key(it))
+                REMOVED.append(("node", it.get("name") or "",
+                                it.get("url") or "",
+                                "节点通道：NodeHub 文件连续 2 轮不存在"))
+                stats["removed"] += 1
+    # --- 加新 NodeHub 条目 ---
+    total = len(items) - sum(1 for it in items
+                             if _item_key(it) in removed_keys)
+    for fname, label, clients in NODEHUB_FILES:
+        if fname not in live:
+            continue
+        url = urllib.parse.urljoin(NODEHUB_HOME_URL, f"sub/{fname}")
+        if url in have:
+            continue
+        if total >= MAX_PER_CAT:
+            break
+        new_item = _build_nodehub_item(fname, label, clients,
+                                       live[fname], next_id)
+        if new_item is None:
+            continue
+        items.append(new_item)
+        next_id += 1
+        total += 1
+        ADDED.append(("node", new_item["name"], new_item["url"]))
+        bump("nodehub_added")
+        stats["added"] += 1
+    # --- NodesRadar 条目（有上游清单才建/更新） ---
+    if radar_repos:
+        radar_item = next((it for it in items
+                           if (it.get("feed") or "") == "nodesradar"), None)
+        if radar_item is not None:
+            set_detail(radar_item, "收录上游",
+                       f"{len(radar_repos)} 个 GitHub 上游（解析其首页）")
+            radar_item["miss"] = 0
+            stats["updated"] += 1
+        elif total < MAX_PER_CAT:
+            new_item = _build_nodesradar_item(len(radar_repos), next_id)
+            if new_item is not None:
+                items.append(new_item)
+                next_id += 1
+                total += 1
+                ADDED.append(("node", new_item["name"], new_item["url"]))
+                stats["added"] += 1
+        # --- 验活旁证：条目上游被 NodesRadar 收录就标注 ---
+        for it in items:
+            repo = github_repo_of(it.get("url") or "") or \
+                github_repo_of(it.get("sourceUrl") or "")
+            if repo and repo in radar_repos:
+                if get_detail(it, "验活旁证") != \
+                        "Free Nodes Radar 收录其上游（每 6 小时全量测活）":
+                    set_detail(it, "验活旁证",
+                               "Free Nodes Radar 收录其上游（每 6 小时全量测活）")
+                    stats["verified_marks"] += 1
+    return next_id, stats
+
+
+# ---------------- 第二步·免费 VPN 分区（proxy 栏 section=vpn） ----------------
+_VPN_KB = {"loaded": False, "entries": []}
+_vpn_kb_lock = threading.Lock()
+
+
+def _vpn_kb_path():
+    """免费 VPN 知识表路径：collect.py 所在目录的 vpn_kb.json
+    （仓库里对应 scripts/vpn_kb.json，与 ai_kb.json 同规矩）。"""
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        "vpn_kb.json")
+
+
+def load_vpn_kb():
+    """加载免费 VPN 知识表（只读一次，线程安全）。文件缺失/损坏时
+    返回 []，通道优雅降级（本轮不建 VPN 分区），不报错、不中断。"""
+    with _vpn_kb_lock:
+        if _VPN_KB["loaded"]:
+            return _VPN_KB["entries"]
+        _VPN_KB["loaded"] = True
+        try:
+            with open(_vpn_kb_path(), encoding="utf-8") as f:
+                data = json.load(f)
+            entries = data.get("items") if isinstance(data, dict) else data
+            if isinstance(entries, list):
+                _VPN_KB["entries"] = [e for e in entries
+                                      if isinstance(e, dict)
+                                      and e.get("name") and e.get("url")]
+        except Exception:
+            _VPN_KB["entries"] = []
+        return _VPN_KB["entries"]
+
+
+def _vpn_account_label(registration):
+    """从调研的注册说明里判「是否要账号」：原文明确不用账号的才写
+    不用账号；提到注册/账号的写要注册；都没提到的写未公布，不猜。"""
+    r = registration or ""
+    if any(k in r for k in ("无需注册", "不用注册", "不需要注册", "不需注册",
+                            "不要账号", "无需账号", "不需要账号",
+                            "免注册", "不用建号", "无需建号")):
+        return "不用账号"
+    if "注册" in r or "账号" in r:
+        return "要注册"
+    return "未公布"
+
+
+def build_vpn_item(e, new_id):
+    """把一条已核实候选拼成 proxy 栏 section=vpn 的种子条目。
+    字段全部来自调研原文（官网/商店页核实），报告没给的一律不写；
+    过不了门禁（种子口径：描述 >=30 字）返回 (None, 原因)。"""
+    name = (e.get("name") or "").strip()
+    url = (e.get("url") or "").strip()
+    if not name or not url:
+        return None, "缺名称或官网地址"
+    quota = _truncate_at_sentence((e.get("free_quota") or "").strip(), 200)
+    reg = _truncate_at_sentence((e.get("registration") or "").strip(), 200)
+    desc = (f"{name} 是一款免费 VPN 服务。免费额度：{quota}。"
+            f"注册方面：{reg}。"
+            "适合想不花钱临时应急上网、又不想折腾自建节点的人。")
+    if e.get("note"):
+        desc += e["note"]
+    if len(desc) < 30:
+        return None, "描述过不了门禁（<30 字）"
+    summary = _truncate_at_sentence(
+        f"{name}：{e.get('free_quota') or ''}", 70) or name
+    tags = ["免费VPN"]
+    if int(e.get("batch") or 0) == 1:
+        tags.append("首批推荐")
+    if e.get("community"):
+        tags.append("社区款")
+    if int(e.get("batch") or 0) == 3:
+        tags.append("商店榜单")
+    item = {
+        "access": "direct", "builtinConfigName": "", "builtinConfigUrl": "",
+        "description": desc, "descriptionOriginal": "", "details": [],
+        "id": new_id, "imageUrl": "", "name": name, "rank": 999,
+        "region": "", "score": 0, "screenshots": [], "section": "vpn",
+        "sourceUrl": (e.get("source") or "").strip(), "summary": summary,
+        "tags": tags, "url": url, "usageKind": "", "usageNote": "",
+        "verifiedAt": (e.get("verified_at") or ""), "warning":
+        (e.get("warning") or ""), "auto": False, "publishedAt": "",
+    }
+    if quota:
+        set_detail(item, "免费额度", quota)
+    set_detail(item, "是否要账号", _vpn_account_label(e.get("registration")))
+    if reg:
+        set_detail(item, "注册说明", reg)
+    if (e.get("server_regions") or "").strip():
+        set_detail(item, "服务器地区",
+                   _truncate_at_sentence(e["server_regions"].strip(), 200))
+    if (e.get("speed_limit") or "").strip():
+        set_detail(item, "限速",
+                   _truncate_at_sentence(e["speed_limit"].strip(), 160))
+    if (e.get("platforms") or "").strip():
+        set_detail(item, "平台",
+                   _truncate_at_sentence(e["platforms"].strip(), 200))
+    # vpn_报告口径：这一批条目的国内可达性统一「未实测」，有实测再逐个改
+    set_detail(item, "国内可达", "未实测")
+    if e.get("verified_at"):
+        set_detail(item, "核实日期", e["verified_at"])
+    set_detail(item, "信息来源", "官网/商店页核实（免费 VPN 调研）")
+    # 门禁硬规矩（proxy 栏）：版本两项查不到填未公布，绝不编；
+    # 工具五项走 ensure_tool_fields 的兜底口径（独立 VPN 服务不是
+    # 代理工具，KB 命中也只认兜底值，防把工具字段写到 VPN 头上）。
+    set_detail(item, "最新版本", "未公布")
+    set_detail(item, "版本日期", "未公布")
+    for lb, v in (("规则格式", "未公布"), ("模块支持", "未公布"),
+                  ("分流方式", "未公布"), ("配套规则", "暂无配套"),
+                  ("可加的东西", "未公布")):
+        set_detail(item, lb, v)
+    return item, ""
+
+
+def vpn_channel(categories, next_id):
+    """免费 VPN 分区：把 vpn_kb.json 的已核实候选 upsert 进 proxy 栏
+    section=vpn。知识表是唯一事实来源：已有条目按官网地址对上后
+    刷新字段，新候选补进来；表里删掉的条目不在这里删（人工名单，
+    删改走知识表评审）。返回 (next_id, stats)。"""
+    stats = {"added": 0, "updated": 0, "skipped": 0}
+    entries = load_vpn_kb()
+    if not entries:
+        return next_id, stats
+    cat = categories.get("proxy") or {}
+    items = cat.setdefault("items", [])
+    by_url = {}
+    for it in items:
+        nu = norm_url(it.get("url") or "")
+        if nu and nu not in by_url:
+            by_url[nu] = it
+    total = len(items)
+    for e in entries:
+        nu = norm_url(e.get("url") or "")
+        tgt = by_url.get(nu)
+        if tgt is not None and (tgt.get("section") or "") != "vpn" \
+                and "免费VPN" not in (tgt.get("tags") or []):
+            # 同址但已是别的定位的条目（理论上不该出现）：不抢，记一笔
+            log(f"免费VPN 跳过同址异类条目：{e.get('name')}（{e.get('url')}）")
+            stats["skipped"] += 1
+            continue
+        fresh, _reason = build_vpn_item(e, tgt.get("id") if tgt else next_id)
+        if fresh is None:
+            stats["skipped"] += 1
+            continue
+        if tgt is not None:
+            for k in ("details", "summary", "description", "warning",
+                      "tags", "section", "sourceUrl", "verifiedAt"):
+                tgt[k] = fresh[k]
+            stats["updated"] += 1
+        else:
+            if total >= MAX_PER_CAT:
+                stats["skipped"] += 1
+                continue
+            items.append(fresh)
+            by_url[nu] = fresh
+            next_id += 1
+            total += 1
+            ADDED.append(("proxy", fresh["name"], fresh["url"]))
+            bump("vpn_added")
+            stats["added"] += 1
+    return next_id, stats
+
+
 # ---------------- state.json ----------------
 
 def load_state(script_dir):
@@ -5758,6 +6580,30 @@ def main():
             f"{_tf_stats['added']} 条，移除 {_tf_stats['removed']} 条")
     except Exception as e:
         log(f"TestFlight 通道失败（跳过）：{e}")
+
+    # ---- FIX17 二期第二步：优选IP/节点换源 + 免费VPN 分区 ----
+    # 与苹果通道同规矩：各自故障隔离，移除走 removed_keys/REMOVED，
+    # 受下面两个安全阀约束。
+    try:
+        next_id, _cfip_stats = cfip_channel(categories, removed_keys, next_id)
+        log(f"优选IP 通道：来源成功 {_cfip_stats['sources_ok']} 个，"
+            f"更新 {_cfip_stats['updated']} 条，新增 "
+            f"{_cfip_stats['added']} 条，移除 {_cfip_stats['removed']} 条")
+    except Exception as e:
+        log(f"优选IP 通道失败（跳过）：{e}")
+    try:
+        next_id, _node_stats = node_channel(categories, removed_keys, next_id)
+        log(f"节点通道：更新 {_node_stats['updated']} 条，新增 "
+            f"{_node_stats['added']} 条，移除 {_node_stats['removed']} 条，"
+            f"验活旁证 {_node_stats['verified_marks']} 条")
+    except Exception as e:
+        log(f"节点通道失败（跳过）：{e}")
+    try:
+        next_id, _vpn_stats = vpn_channel(categories, next_id)
+        log(f"免费VPN 分区：新增 {_vpn_stats['added']} 条，"
+            f"刷新 {_vpn_stats['updated']} 条，跳过 {_vpn_stats['skipped']} 条")
+    except Exception as e:
+        log(f"免费VPN 分区失败（跳过）：{e}")
 
     # ---- 移除：连续不通（苹果 3 次、其他栏目 6 次） ----
     for slug, cat in categories.items():
@@ -5973,6 +6819,15 @@ def main():
                 ABANDONED.append((new_item["name"], new_item["url"],
                                   f"限免已过期，现价 {rec.get('formattedPrice')}"))
                 return False
+        # FIX17 二期第二步·事实门：模板摘要 + 零事实字段的新条目不
+        # 直接上架，进待补清单等复核（详见 fact_gate_reason）。
+        _fg = fact_gate_reason(new_item)
+        if _fg:
+            pending_add(new_item["url"], new_item["name"], slug, _fg)
+            ABANDONED.append((new_item["name"], new_item["url"],
+                              f"事实门拦下（进待复核）：{_fg}"))
+            bump("fact_gated")
+            return False
         # FIX15c：写入前再核一次上限（本栏当前存活数 = len(items) −
         # 本轮已移除数；与 _try_add_one 的计数器算法等价）。满栏时
         # 不收这条——调用方的循环顶检查会随后停掉整个展开。
@@ -6114,6 +6969,10 @@ def main():
         f"简介重建成真实内容 {STATS['summary_fixed']} 条；"
         f"合集仓库拆分 {STATS['split']} 个；待补清单 {len(PENDING)} 条")
     log(f"FIX14b：黑名单拦下 {STATS['blocked']} 条（候选 + 已有条目）")
+    log(f"二期第二步：事实门拦下 {STATS.get('fact_gated', 0)} 条（进待复核）；"
+        f"优选IP 通道新增 {STATS.get('cfip_added', 0)} 条；"
+        f"节点通道新增 {STATS.get('nodehub_added', 0)} 条；"
+        f"免费VPN 新增 {STATS.get('vpn_added', 0)} 条")
     log(f"FIX17：发布时间回填 {STATS['published']} 条；"
         f"补图命中 {STATS['shots']} / 发起 {STATS['shots_tried']} 次")
     for name, url, reason in ABANDONED:
