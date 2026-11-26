@@ -2578,6 +2578,23 @@ def _looks_like_video_config_endpoint(u, link):
     return False
 
 
+def _repo_raw_form(url):
+    """github.com 的 /blob/、/raw/ 网页链接转 raw.githubusercontent 直链；
+    不是这种形态返回空串。分支名取路径第一段（分支名带斜杠的极少数仓库
+    会转错——验活不过自然回退，不会落盘错地址）。"""
+    try:
+        p = urllib.parse.urlparse(url or "")
+    except Exception:
+        return ""
+    if p.netloc.lower() != "github.com":
+        return ""
+    parts = [x for x in p.path.split("/") if x]
+    if len(parts) < 5 or parts[2] not in ("blob", "raw"):
+        return ""
+    rest = "/".join(parts[4:])
+    return f"https://raw.githubusercontent.com/{parts[0]}/{parts[1]}/{parts[3]}/{rest}"
+
+
 def resolve_usable_url(slug, cand, material, verify=True):
     """按栏目优先级找可用地址。返回 {"url","source_url","config_url",
     "client_links","found","pending_reason"}。
@@ -2630,6 +2647,14 @@ def resolve_usable_url(slug, cand, material, verify=True):
             continue
         if slug in ("ai", "service", "domain", "adult"):
             continue  # 这四栏走 homepage / 外链，不走配置文件
+        if slug in ("cfip", "node"):
+            # 第四步：README 里指向仓库内文件的多是 /blob/ 网页链接，它的
+            # 路径同样以 .txt/.yaml 结尾会骗过下面的扩展名匹配，但真去验活
+            # 抓到的是 HTML 网页、数不出条数必然被拒，白白浪费候选。先把
+            # 这类链接统一转成 raw 直链再认。
+            raw_u = _repo_raw_form(u)
+            if raw_u:
+                u = raw_u
         kind = _match_config_link(u, slug)
         if kind:
             cands.append((u, kind, link))
@@ -2648,6 +2673,31 @@ def resolve_usable_url(slug, cand, material, verify=True):
             if _looks_like_video_config_endpoint(u, link):
                 cands.append((u, "file", link))
                 _n_maybe += 1
+    # 第四步（cfip/node）：README 里挂的项目站点（pages.dev / github.io /
+    # workers.dev）也当候选——不少优选/订阅项目把数据文件挂在站点路径下
+    # （如 /api/all.json）。是不是真数据由 _verify_one 当场数条数把关，
+    # 纯落地页/工具页数不出条数进不来。带查询串的一律不要：那种多半是
+    # 别人贴出的个人订阅地址（带 uuid），不能当公开地址用。每条最多 3 个。
+    if slug in ("cfip", "node"):
+        _n_hosted = 0
+        for link in links:
+            if _n_hosted >= 3:
+                break
+            u = (link.get("url") or "").strip()
+            if not u or norm_url(u) == norm_url(cand_url):
+                continue
+            if any(norm_url(u) == norm_url(c[0]) for c in cands):
+                continue
+            try:
+                _pu = urllib.parse.urlparse(u)
+            except Exception:
+                continue
+            if _pu.query:
+                continue
+            if _pu.netloc.lower().endswith((".pages.dev", ".github.io",
+                                            ".workers.dev")):
+                cands.append((u, "file", link))
+                _n_hosted += 1
     if cands:
         # 被“订阅/下载”标注的优先，其余按 README 里出现的顺序
         cands.sort(key=lambda t: (0 if _is_labelled(t[2]) else 1))
