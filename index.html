@@ -290,18 +290,23 @@
       '<br>数据由自动采集每 6 小时更新一轮</div>';
   }
   function gsearchHtml(value) {
-    return '<div class="gsearch-row"><input class="gsearch" type="search" placeholder="全站搜索：名称 / 简介 / 说明 / 标签…" value="' + esc(value || '') + '">' +
-      '<button class="gsearch-btn" type="button">搜索</button></div>';
+    var h = '<div class="gsearch-row"><input class="gsearch" type="search" placeholder="全站搜索：名称 / 简介 / 说明 / 标签…" value="' + esc(value || '') + '">' +
+      '<button class="gsearch-btn" type="button">搜索</button>';
+    if (value) h += '<button class="gsearch-btn gsearch-clear" type="button">清空</button>';
+    return h + '</div>';
   }
   function goSearch(input) {
     var q = (input.value || '').trim();
     if (q) location.hash = '#/search/' + encodeURIComponent(q);
+    else location.hash = '#/';
   }
   function bindGsearch() {
     var row = app.querySelector('.gsearch-row');
     if (!row) return;
     var input = row.querySelector('.gsearch');
     row.querySelector('.gsearch-btn').addEventListener('click', function () { goSearch(input); });
+    var clear = row.querySelector('.gsearch-clear');
+    if (clear) clear.addEventListener('click', function () { input.value = ''; location.hash = '#/'; });
     input.addEventListener('keydown', function (e) { if (e.key === 'Enter') goSearch(input); });
   }
   /* node 栏按客户端分行给订阅表。某 key 缺失回落到 item.url；无 clientLinks 不渲染 */
