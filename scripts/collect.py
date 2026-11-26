@@ -6868,6 +6868,43 @@ def load_state(script_dir):
 _FACT_GATE_KEEP_DAYS = 14
 
 
+def _dedup_same_url(categories):
+    """写盘前兜底：同一栏里归一化网址相同的条目只留一条。
+    入库去重管的是新条目，但地址解析发生在去重之后（两个来源解析到
+    同一个文件就会撞车），老条目也可能从不同路径各存一份——2026-11-26
+    实测 domain 栏有同名同址存了 3 份、video/music 有两个来源解析到
+    同一个文件。保留顺序：分数高 → 详情多 → 最近验活 → 先出现；
+    被舍的那份有来源链接、保留的没有时补过去。返回合并掉的条数。"""
+    dropped = 0
+    for cat in categories.values():
+        items = cat.get("items") or []
+        if len(items) < 2:
+            continue
+        best = {}
+        for it in items:
+            u = norm_url(it.get("url") or "")
+            if not u:
+                continue
+            rank = (it.get("score") or 0, len(it.get("details") or []),
+                    it.get("verifiedAt") or "")
+            if u not in best or rank > best[u][0]:
+                best[u] = (rank, it)
+        keep = {id(v[1]) for v in best.values()}
+        new_items = []
+        for it in items:
+            u = norm_url(it.get("url") or "")
+            if u and id(it) not in keep:
+                keeper = best[u][1]
+                if not (keeper.get("sourceUrl") or "").strip() \
+                        and (it.get("sourceUrl") or "").strip():
+                    keeper["sourceUrl"] = it["sourceUrl"]
+                dropped += 1
+                continue
+            new_items.append(it)
+        cat["items"] = new_items
+    return dropped
+
+
 def save_state(path, fails, keep_urls, pending=None, full_refresh_done=False):
     """写 state.json：fails 只留还在站上的、次数 >0 的；pending（待补清单）
     只留还在站上的条目（已解析掉 / 已删掉的自然掉出），最多 1000 条；
@@ -7402,6 +7439,11 @@ def main():
     for cat in categories.values():
         if cat.get("items"):
             cat["items"] = [it for it in cat["items"] if _item_key(it) not in removed_keys]
+
+    # 写盘前兜底去重：同栏同址只留一条（见 _dedup_same_url）
+    _dup_n = _dedup_same_url(categories)
+    if _dup_n:
+        log(f"写盘前去重：同栏同址合并 {_dup_n} 条")
 
     # （安全阀二已在收集阶段按 25% 封顶，这里不再中止；新增永不拦，
     # 搜到多少不重复的新条目就加多少。）
