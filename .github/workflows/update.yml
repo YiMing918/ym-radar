@@ -42,11 +42,11 @@ jobs:
       - name: 提交前 diff（没变化就跳过）
         id: diff
         run: |
-          if [ -z "$(git status --porcelain -- data.json scripts/state.json data/apple_prices.json)" ]; then
+          if [ -z "$(git status --porcelain -- data.json scripts/state.json screened.json data/apple_prices.json)" ]; then
             echo "数据没有变化：跳过提交，不触发 Pages 构建（省构建次数）。"
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git diff --stat -- data.json scripts/state.json data/apple_prices.json | tail -5
+            git diff --stat -- data.json scripts/state.json screened.json data/apple_prices.json | tail -5
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
