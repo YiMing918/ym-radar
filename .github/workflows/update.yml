@@ -64,7 +64,13 @@ jobs:
             if [ -s changes.txt ]; then cat changes.txt; fi
           } > commit_msg.txt
           git commit -F commit_msg.txt
-          git push
+          pushed=0
+          for i in 1 2 3; do
+            if git pull --rebase origin main && git push; then pushed=1; break; fi
+            git rebase --abort 2>/dev/null || true
+            if [ "$i" -lt 3 ]; then echo "push 失败，10 秒后重试（第 $i 次）"; sleep 10; fi
+          done
+          if [ "$pushed" != "1" ]; then echo "::error::push 重试 3 次仍失败"; exit 1; fi
 
       # 提交后复查线上站：首页 + 线上 data.json 随机抽 3 个栏目，
       # 确认新数据真的上线可读；不过只在日志里标红，不回滚数据
