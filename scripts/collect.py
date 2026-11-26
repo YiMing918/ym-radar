@@ -1717,6 +1717,29 @@ def label_item(slug, item, page=None, html_text=""):
 
 # ---------------- 现有条目刷新（v1 + 标注） ----------------
 
+def _is_soft_fetch_error(exc):
+    """超时 / 连接被重置类错误判「软失败」（FIX17 A11）。
+
+    采集跑在海外机房：国内站点屏蔽海外 IP、链路抖动、对方临时限流，
+    都会长成超时或连接重置——这只能证明「这次没探到」，不证明东西
+    没了。只有对方明确应答（404/410）、域名解析失败、内容解开为 0
+    这类「硬信号」才配记连续失败、攒够次数删条目。异常链里任一层
+    命中超时/重置家族即判软（urllib 常把真因裹在 reason/__cause__ 里）。"""
+    e = exc
+    for _ in range(5):
+        if e is None:
+            return False
+        if isinstance(e, (TimeoutError, ConnectionResetError,
+                          ConnectionAbortedError)):
+            return True
+        reason = getattr(e, "reason", None)
+        if isinstance(reason, (TimeoutError, ConnectionResetError,
+                               ConnectionAbortedError)):
+            return True
+        e = getattr(e, "__cause__", None) or getattr(e, "__context__", None)
+    return False
+
+
 def process_item(slug, item, state_fails):
     """刷新一条现有条目，返回是否验活通。state_fails 在这里更新计数。"""
     url = (item.get("url") or "").strip()
@@ -1743,8 +1766,14 @@ def process_item(slug, item, state_fails):
         status, ct, body = fetch(url)
         # 404/410 是资源明确没了，算不通；403 可能是防爬，不算
         alive = status < 500 and status not in (404, 410)
-    except Exception:
+    except Exception as e:
         alive = False
+        if _is_soft_fetch_error(e):
+            # 软失败（A11）：本轮不下结论——不计连续失败、不清零、
+            # 不改「最近检查」与核实日期，返回值按未判定（不算死，
+            # 不喂 30% 验活阀）。本轮的刷新/解析顺延下一轮再做。
+            bump("soft_fail")
+            return True
     set_detail(item, "最近检查", f"{today} {'通' if alive else '不通'}")
     if alive:
         bump("checked_ok")
