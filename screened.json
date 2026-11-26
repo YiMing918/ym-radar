@@ -398,22 +398,478 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "The Thorn Crown: Tower Defense",
-   "url": "https://testflight.apple.com/join/EddzMBp6",
+   "name": "scs0209/app-anatomy",
+   "url": "https://github.com/scs0209/app-anatomy/releases",
    "slug": "apple",
-   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   },
   {
-   "name": "Warrant —> Now WorkOS FGA",
-   "url": "https://warrant.dev/\"",
+   "name": "skka3134/TrollStore",
+   "url": "https://github.com/skka3134/TrollStore/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "reefbarman/iPlay5",
+   "url": "https://github.com/reefbarman/iPlay5/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "cwchon310/ios-ipa-library",
+   "url": "https://github.com/cwchon310/ios-ipa-library/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "momsbisburi/maldivescinema-ios",
+   "url": "https://github.com/momsbisburi/maldivescinema-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "lan741/horizon-ios",
+   "url": "https://github.com/lan741/horizon-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "illixion/Apparition",
+   "url": "https://github.com/illixion/Apparition/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "smartmaster35rus-dev/Apple-Apps",
+   "url": "https://github.com/smartmaster35rus-dev/Apple-Apps/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "nicolasjweber/mensa-ka-ios",
+   "url": "https://github.com/nicolasjweber/mensa-ka-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "muchkurisrivardhan/MusicSearch",
+   "url": "https://github.com/muchkurisrivardhan/MusicSearch/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "drew-codes-things/MediaSwipe",
+   "url": "https://github.com/drew-codes-things/MediaSwipe/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "Sami-Wali/ryP0",
+   "url": "https://github.com/Sami-Wali/ryP0/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "maclub-net/IPAToolKit",
+   "url": "https://github.com/maclub-net/IPAToolKit/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "bpawnzZ/yatse-ios",
+   "url": "https://github.com/bpawnzZ/yatse-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "Iuricorreia/jarvis-mobile-ios-releases",
+   "url": "https://github.com/Iuricorreia/jarvis-mobile-ios-releases/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "ismaeltechwastaken/KickUnblock",
+   "url": "https://github.com/ismaeltechwastaken/KickUnblock/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "ossypder/NoiseRepViewer-iOS",
+   "url": "https://github.com/ossypder/NoiseRepViewer-iOS/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "aepikgamer-art/planeder",
+   "url": "https://github.com/aepikgamer-art/planeder/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "gablilli/chocomilkyX",
+   "url": "https://github.com/gablilli/chocomilkyX/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "CuteTenshii/iOS-Runner",
+   "url": "https://github.com/CuteTenshii/iOS-Runner/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "dv7vdbjs8q-spec/cortex-anime",
+   "url": "https://github.com/dv7vdbjs8q-spec/cortex-anime/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "aepikgamer-art/flightdeck-ofp",
+   "url": "https://github.com/aepikgamer-art/flightdeck-ofp/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "lgg/awesome-ios-sideloading",
+   "url": "https://github.com/lgg/awesome-ios-sideloading/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "kemi579/PurpleKitApp",
+   "url": "https://github.com/kemi579/PurpleKitApp/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "psydemekum/house-capture-ipad",
+   "url": "https://github.com/psydemekum/house-capture-ipad/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "rnetis/resonance",
+   "url": "https://github.com/rnetis/resonance/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "RipeStore/ripestore.github.io",
+   "url": "https://github.com/RipeStore/ripestore.github.io/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "HARSHBHINDER/Angra-iOS-Streaming",
+   "url": "https://github.com/HARSHBHINDER/Angra-iOS-Streaming/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "ShrubHub-iOS/ShrubLibrary",
+   "url": "https://github.com/ShrubHub-iOS/ShrubLibrary/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "iPALibrarynet/iPA-Library",
+   "url": "https://github.com/iPALibrarynet/iPA-Library/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "moul/pkgman",
+   "url": "https://github.com/moul/pkgman/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "sadsadsadsadadsa936-tech/candy-call-ios",
+   "url": "https://github.com/sadsadsadsadadsa936-tech/candy-call-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "galzarachovitz-cyber/clearflow-dist",
+   "url": "https://github.com/galzarachovitz-cyber/clearflow-dist/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "Zad9119/Zad9119-s-Source",
+   "url": "https://github.com/Zad9119/Zad9119-s-Source/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：未核实的普通应用（无签名信号）（FIX18）"
+  },
+  {
+   "name": "NightVibes33/puter-image-studio-ios",
+   "url": "https://github.com/NightVibes33/puter-image-studio-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "tsoysuhninki/ccterminal-dist",
+   "url": "https://github.com/tsoysuhninki/ccterminal-dist/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "ycj3/Sideload-Apps",
+   "url": "https://github.com/ycj3/Sideload-Apps/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "unixb0y/AltStore-Apps",
+   "url": "https://github.com/unixb0y/AltStore-Apps/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "TempAccountNull/altstore_ipas",
+   "url": "https://github.com/TempAccountNull/altstore_ipas/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "atharvmpatil/Native_books_app_ios-ipados_windows",
+   "url": "https://github.com/atharvmpatil/Native_books_app_ios-ipados_windows/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "VRamses/rebobina-ios",
+   "url": "https://github.com/VRamses/rebobina-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "Remotive | `",
+   "url": "https://remotive.com/join",
+   "slug": "service",
+   "reason": "坏数据清理：简介是报错页文本（FIX18）"
+  },
+  {
+   "name": "Validemailchecker/disposable-email-domains",
+   "url": "https://www.validemailchecker.com/disposable-email-domains",
+   "slug": "domain",
+   "reason": "域名栏清理：防一次性邮箱家族，与免费域名主题相反（FIX18）"
+  },
+  {
+   "name": "sajjadh47/disposable-email-blocker-wpforms",
+   "url": "https://wordpress.org/plugins/disposable-email-blocker-wpforms/",
+   "slug": "domain",
+   "reason": "域名栏清理：防一次性邮箱家族，与免费域名主题相反（FIX18）"
+  },
+  {
+   "name": "sajjadh47/disposable-email-blocker-gravityforms",
+   "url": "https://wordpress.org/plugins/disposable-email-blocker-gravityforms/",
+   "slug": "domain",
+   "reason": "域名栏清理：防一次性邮箱家族，与免费域名主题相反（FIX18）"
+  },
+  {
+   "name": "glitchr-omnisense/omnishield-disposable",
+   "url": "https://github.com/glitchr-omnisense/omnishield-disposable",
+   "slug": "domain",
+   "reason": "域名栏清理：防一次性邮箱家族，与免费域名主题相反（FIX18）"
+  },
+  {
+   "name": "wodzy/disposable-email",
+   "url": "https://packagist.org/packages/wodzy/disposable-email",
+   "slug": "domain",
+   "reason": "域名栏清理：防一次性邮箱家族，与免费域名主题相反（FIX18）"
+  },
+  {
+   "name": "https://github.com/disposable/disposable",
+   "url": "http://10minutemail.com",
+   "slug": "domain",
+   "reason": "域名栏清理：防一次性邮箱家族，与免费域名主题相反（FIX18）"
+  },
+  {
+   "name": "mahdibland/V2RayAggregator",
+   "url": "https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity.txt",
+   "slug": "node",
+   "reason": "上游已公告暂停使用/停止维护（FIX18）"
+  },
+  {
+   "name": "putdotio/putio-sdk-kotlin",
+   "url": "https://github.com/putdotio/putio-sdk-kotlin/releases",
+   "slug": "app",
+   "reason": "APP 栏清理：开发者平台/框架/SDK，不是用户应用（FIX18）"
+  },
+  {
+   "name": "unoplatform/uno",
+   "url": "https://github.com/unoplatform/uno/releases",
+   "slug": "app",
+   "reason": "APP 栏清理：开发者平台/框架/SDK，不是用户应用（FIX18）"
+  },
+  {
+   "name": "appwrite/appwrite",
+   "url": "https://github.com/appwrite/appwrite/releases",
+   "slug": "app",
+   "reason": "APP 栏清理：开发者平台/框架/SDK，不是用户应用（FIX18）"
+  },
+  {
+   "name": "expo/expo",
+   "url": "https://github.com/expo/expo/releases",
+   "slug": "app",
+   "reason": "APP 栏清理：开发者平台/框架/SDK，不是用户应用（FIX18）"
+  },
+  {
+   "name": "codenameone/CodenameOne",
+   "url": "https://github.com/codenameone/CodenameOne/releases",
+   "slug": "app",
+   "reason": "APP 栏清理：开发者平台/框架/SDK，不是用户应用（FIX18）"
+  },
+  {
+   "name": "f-droid/fdroid-website",
+   "url": "https://github.com/f-droid/fdroid-website/releases",
+   "slug": "app",
+   "reason": "APP 栏清理：开发者平台/框架/SDK，不是用户应用（FIX18）"
+  },
+  {
+   "name": "divkit/divkit",
+   "url": "https://github.com/divkit/divkit/releases",
+   "slug": "app",
+   "reason": "APP 栏清理：开发者平台/框架/SDK，不是用户应用（FIX18）"
+  },
+  {
+   "name": "shellsec/lx-music-source",
+   "url": "https://ghfast.top/https://raw.githubusercontent.com/shellsec/lx-music-source/master/sources/appx64/Appx64%20Clear%20Music.js",
+   "slug": "music",
+   "reason": "连续 6 次验活不通"
+  },
+  {
+   "name": "shellsec/lx-music-mobile-auto-source",
+   "url": "https://github.com/shellsec/lx-music-mobile-auto-source",
+   "slug": "music",
+   "reason": "连续 6 次验活不通"
+  },
+  {
+   "name": "shellsec/boleserver",
+   "url": "https://github.com/shellsec/boleserver",
+   "slug": "music",
+   "reason": "连续 6 次验活不通"
+  },
+  {
+   "name": "shellsec/bolemusic-ios",
+   "url": "https://github.com/shellsec/bolemusic-ios",
+   "slug": "music",
+   "reason": "连续 6 次验活不通"
+  },
+  {
+   "name": "shellsec/lx-music-mobile-car-auto-source",
+   "url": "https://github.com/shellsec/lx-music-mobile-car-auto-source",
+   "slug": "music",
+   "reason": "连续 6 次验活不通"
+  },
+  {
+   "name": "Tommyface/lanread",
+   "url": "https://github.com/Tommyface/lanread",
+   "slug": "book",
+   "reason": "连续 6 次验活不通"
+  },
+  {
+   "name": "alexyamada1994/italy-2027-hotel-monitor",
+   "url": "https://github.com/alexyamada1994/italy-2027-hotel-monitor",
    "slug": "service",
    "reason": "连续 6 次验活不通"
   },
   {
-   "name": "a href=\"",
-   "url": "https://superset.apache.org/docs/api\"",
-   "slug": "service",
+   "name": "rtwo2/FastNodes",
+   "url": "https://raw.githubusercontent.com/rtwo2/FastNodes/main/sub/top.txt",
+   "slug": "node",
    "reason": "连续 6 次验活不通"
+  },
+  {
+   "name": "NSL-SH/mesh-router-root",
+   "url": "https://nsl.sh",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "waybackpress/wayback-html-export",
+   "url": "https://waybackpress.com",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "stefanzeljkic/Resenje-Site-Mover",
+   "url": "https://www.gnu.org/licenses/gpl-2.0.html",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "faidodaisen/sitessaver",
+   "url": "https://sitessaver.com/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Bert-JanP/Open-Source-Threat-Intel-Feeds",
+   "url": "https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/externaldata-operator",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "wancongLab/liauto-lark-push",
+   "url": "https://developers.cloudflare.com/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "kenryu42/openvmap",
+   "url": "https://openvmap.com",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Sujon-Ahmed/free-developer-resources",
+   "url": "https://sujon-ahmed.github.io/free-developer-resources",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Agenty/shortener",
+   "url": "https://shortener.dev/",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "Panelica/pnlcs",
+   "url": "https://pnlcs.com",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "preporato/claude-certification-guide",
+   "url": "https://preporato.com/certificates/claude-certified-associate-foundations",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "ThreatFox | User threatcluster",
+   "url": "https://community.abuse.ch",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "gricatan/devhub-domaines",
+   "url": "https://nodejs.org",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "skygreen2001/report",
+   "url": "https://ollama.com",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "collabray/domain-generator",
+   "url": "https://www.rust-lang.org",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
   },
   {
    "name": "BestCF · CFYes IPV4 优选 IP 清单",
@@ -426,7 +882,13 @@
    "url": "https://bestcf.pages.dev/vps789/top20.txt",
    "slug": "cfip",
    "reason": "跨栏重复，保留在「cfip」栏"
+  },
+  {
+   "name": "Clash Verge Rev 桌面客户端",
+   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
+   "slug": "proxy",
+   "reason": "跨栏重复，保留在「cfip」栏"
   }
  ],
- "updatedAt": "2026-11-26T07:12:45.353Z"
+ "updatedAt": "2026-11-26T14:00:53.494Z"
 }
