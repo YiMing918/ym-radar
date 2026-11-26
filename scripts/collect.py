@@ -4858,6 +4858,25 @@ DOMAIN_DROP_REPOS |= frozenset((
     "whx57/paper-radar",
     "yoloboydelis/yoloboydelis.github.io",
 ))
+
+DOMAIN_DROP_REPOS |= frozenset((
+    # FIX18（2026-11-26，站长截图复核后全栏清理）：第二批与域名注册无关的
+    # 误收录——考试指南、短链工具、主机计费软件、建站备份/迁移、威胁情报、
+    # 车机推送、站点分析、开发者资源合集；以及「防一次性邮箱」家族（一次
+    # 性邮箱域名清单/拦截插件，主题与免费域名相反，沾边词误收）。
+    "preporato/claude-certification-guide", "agenty/shortener",
+    "panelica/pnlcs", "disposable/disposable",
+    "waybackpress/wayback-html-export",
+    "validemailchecker/disposable-email-domains",
+    "sajjadh47/disposable-email-blocker-wpforms",
+    "sajjadh47/disposable-email-blocker-gravityforms",
+    "glitchr-omnisense/omnishield-disposable", "wodzy/disposable-email",
+    "nsl-sh/mesh-router-root", "stefanzeljkic/resenje-site-mover",
+    "faidodaisen/sitessaver", "bert-janp/open-source-threat-intel-feeds",
+    "wanconglab/liauto-lark-push", "kenryu42/openvmap",
+    "sujon-ahmed/free-developer-resources",
+))
+
 DOMAIN_PROVIDER_URLS = frozenset(( 
     "https://awesomeprojects.tech/",
     "https://cli.rs/",
@@ -5240,6 +5259,19 @@ def _ai_kind_of(item):
         v = get_detail(item, lb)
         if v and v != "未公布":
             return "platform"
+    # FIX18：地址已解析到浏览器商店页、或明说是插件/扩展/脚本的，是
+    # 工具不是福利平台（Bilitato 这类 Chrome 插件此前因地址不在
+    # GitHub 被误判 platform，套了一整套空额度字段）。
+    _host = urllib.parse.urlparse(item.get("url") or "").netloc.lower()
+    if _host in ("chromewebstore.google.com", "addons.mozilla.org",
+                 "microsoftedge.microsoft.com"):
+        return "tool"
+    _probe = ((item.get("name") or "") + " "
+              + (item.get("summary") or "")).lower()
+    if any(k in _probe for k in ("浏览器插件", "浏览器扩展", "油猴脚本",
+                                 "userscript", "chrome extension",
+                                 "browser extension", "edge extension")):
+        return "tool"
     repo = github_repo_of(item.get("url") or "")
     if repo:
         return "tool"
@@ -6036,6 +6068,125 @@ def apple_tf_channel(categories, removed_keys, next_id):
         stats["added"] += 1
         bump("apple_tf_added")
     return next_id, stats
+
+
+# ================= FIX18（2026-11-26）全栏契合清理 =================
+# 站长截图复核后点名：AI 栏混插件、苹果签名分区全是杂仓库、域名栏混
+# 错类、免费服务有 404 坏数据、节点栏上游公告停用还挂主榜、APP 安卓
+# 分区混开发者平台。处理方式与既有迁移同构：名单 + 保守信号规则，
+# 每轮对存量自愈；逐条故障隔离，删条一律走 REMOVED/removed_keys 正规
+# 流程并写明原因（进 screened.json，站长可见）。
+
+IPASIGN_DROP_REPOS = frozenset((
+    # 普通 iOS 应用（影院/食堂/遥控器/音乐/直播/看书等，与签名无关）
+    "momsbisburi/maldivescinema-ios", "nicolasjweber/mensa-ka-ios",
+    "ismaeltechwastaken/kickunblock", "bpawnzz/yatse-ios",
+    "ossypder/noiserepviewer-ios", "harshbhinder/angra-ios-streaming",
+    "sadsadsadsadadsa936-tech/candy-call-ios",
+    "nightvibes33/puter-image-studio-ios",
+    "atharvmpatil/native_books_app_ios-ipados_windows",
+    "vramses/rebobina-ios", "drew-codes-things/mediaswipe",
+    "kemi579/purplekitapp", "psydemekum/house-capture-ipad",
+    "rnetis/resonance", "aepikgamer-art/planeder",
+    "aepikgamer-art/flightdeck-ofp", "dv7vdbjs8q-spec/cortex-anime",
+    "muchkurisrivardhan/musicsearch", "lan741/horizon-ios",
+    "cutetenshii/ios-runner", "ripestore/ripestore.github.io",
+    # 资源库/合集/指南（不是能直接用的签名工具或订阅源）
+    "skka3134/trollstore", "cwchon310/ios-ipa-library",
+    "lgg/awesome-ios-sideloading", "ycj3/sideload-apps",
+    "shrubhub-ios/shrublibrary", "ipalibrarynet/ipa-library",
+    "pilottredd/ipa_pilottredd", "tempaccountnull/altstore_ipas",
+    "unixb0y/altstore-apps", "smartmaster35rus-dev/apple-apps",
+    # 工具链零件/杂项（库、检查器、分发残件，不是签名工具本体）
+    "scs0209/app-anatomy", "moul/pkgman", "gablilli/chocomilkyx",
+    "iuricorreia/jarvis-mobile-ios-releases",
+    "galzarachovitz-cyber/clearflow-dist", "sami-wali/ryp0",
+    "maclub-net/ipatoolkit", "tsoysuhninki/ccterminal-dist",
+    "illixion/apparition", "reefbarman/iplay5",
+))
+
+APP_DROP_REPOS = frozenset((
+    # 开发者平台/框架/SDK（不是普通用户装来用的 APP）
+    "appwrite/appwrite", "expo/expo", "unoplatform/uno",
+    "codenameone/codenameone", "divkit/divkit",
+    "putdotio/putio-sdk-kotlin", "f-droid/fdroid-website",
+))
+
+_FIX18_ERRPAGE = re.compile(
+    r"could not be found|page not found|404 not found|"
+    r"the page you were looking for", re.I)
+_FIX18_DONOTUSE = re.compile(
+    r"don'?t use it until further announcement|do not use (it|this) until|"
+    r"暂停使用|宣布停止维护|已停止维护并建议", re.I)
+_FIX18_SIGN = re.compile(
+    r"sign|esign|sideload|altstore|sidestore|trollstore|feather|scarlet|"
+    r"签名|侧载|自签|证书|轻松签|全能签|巨魔", re.I)
+_FIX18_DEVAPP = re.compile(
+    r"developer platform|software development kit|\bsdk\b for|"
+    r"ui framework|开发者平台|开发框架|open-source cloud for", re.I)
+
+
+def fix18_cleanup(categories, removed_keys):
+    """FIX18 全栏契合清理（每轮对存量跑，规则见上方注释）。"""
+    stats = {}
+
+    def _drop(slug, item, reason):
+        removed_keys.add(_item_key(item))
+        REMOVED.append((slug, item.get("name") or "",
+                        item.get("url") or "", reason))
+        stats[slug] = stats.get(slug, 0) + 1
+        bump("fix18_drop")
+
+    for slug, cat in categories.items():
+        items = (cat or {}).get("items") or []
+        if not items:
+            continue
+        kept = []
+        for it in items:
+            try:
+                if _item_key(it) in removed_keys:
+                    kept.append(it)
+                    continue
+                name = it.get("name") or ""
+                summary = it.get("summary") or ""
+                repo = _repo_key(it)
+                # 全栏：简介是报错页文本 = 坏数据（抓了死页还入库）
+                if _FIX18_ERRPAGE.search(summary):
+                    _drop(slug, it, "坏数据清理：简介是报错页文本（FIX18）")
+                    continue
+                # 全栏：上游自己公告暂停使用/停维护，别再当正常条目挂
+                probe = summary + " " + (it.get("description") or "")[:300]
+                if _FIX18_DONOTUSE.search(probe):
+                    _drop(slug, it, "上游已公告暂停使用/停止维护（FIX18）")
+                    continue
+                if slug == "domain" and repo and "disposable" in repo:
+                    _drop(slug, it, "域名栏清理：防一次性邮箱家族，与免费域名主题相反（FIX18）")
+                    continue
+                if slug == "apple" and (it.get("section") or "") == "ipasign":
+                    if repo in IPASIGN_DROP_REPOS:
+                        _drop(slug, it, "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）")
+                        continue
+                    # 模板简介的自动条目若通篇没有签名信号，是未核实的
+                    # 普通应用误入签名分区
+                    if it.get("auto") and summary.startswith("苹果应用（") \
+                            and not _FIX18_SIGN.search(name + " " + summary):
+                        _drop(slug, it, "签名分区清理：未核实的普通应用（无签名信号）（FIX18）")
+                        continue
+                if slug == "app" and repo in APP_DROP_REPOS:
+                    _drop(slug, it, "APP 栏清理：开发者平台/框架/SDK，不是用户应用（FIX18）")
+                    continue
+                if slug == "app" and it.get("auto") and repo \
+                        and _FIX18_DEVAPP.search(summary):
+                    _drop(slug, it, "APP 栏清理：开发者平台/框架/SDK，不是用户应用（FIX18）")
+                    continue
+                kept.append(it)
+            except Exception:
+                kept.append(it)
+        cat["items"] = kept
+    if stats:
+        log("FIX18 全栏清理：" + "，".join(
+            f"{k} 栏移出 {v} 条" for k, v in sorted(stats.items())))
+    return stats
 
 
 def apple_migrate(categories, removed_keys):
@@ -7223,6 +7374,10 @@ def main():
         apple_migrate(categories, removed_keys)
     except Exception as e:
         log(f"苹果迁移失败（跳过）：{e}")
+    try:
+        fix18_cleanup(categories, removed_keys)
+    except Exception as e:
+        log(f"FIX18 全栏清理失败（跳过）：{e}")
     try:
         next_id, _apple_stats = apple_price_channel(
             categories, apple_ledger, removed_keys, next_id)
