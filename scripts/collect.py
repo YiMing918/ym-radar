@@ -6812,14 +6812,43 @@ def load_state(script_dir):
         return {}, path, [], False
 
 
+# 事实门待复核条目的保留期：按 lastTried 起算，超过这么多天没再被
+# 拦到就清掉（来源不再喂它、或它后来攒够事实字段正式上架了，都会
+# 让 lastTried 停更，保留期到点自动出清，不无限积压）。
+_FACT_GATE_KEEP_DAYS = 14
+
+
 def save_state(path, fails, keep_urls, pending=None, full_refresh_done=False):
     """写 state.json：fails 只留还在站上的、次数 >0 的；pending（待补清单）
     只留还在站上的条目（已解析掉 / 已删掉的自然掉出），最多 1000 条；
-    full_refresh_done 是 FIX17 二期全量刷新标记（跑完首轮全量刷新后打上）。"""
+    full_refresh_done 是 FIX17 二期全量刷新标记（跑完首轮全量刷新后打上）。
+
+    例外（2026-11-26 修）：事实门拦下的条目按设计就不上架，URL 永远
+    不在 keep_urls 里，旧写法把它们每轮从待补清单里过滤掉——「进待
+    复核」实际等于静默删除，tries 也永远攒不起来。这类条目改按
+    lastTried 新鲜度保留（见 _FACT_GATE_KEEP_DAYS）：还在被拦的每轮
+    都会刷新 lastTried、长期留队等复核；不再被拦的到点自动出清。"""
     pend = []
     if pending:
+        _today = None
         for e in pending:
-            if isinstance(e, dict) and norm_url(e.get("url") or "") in keep_urls:
+            if not isinstance(e, dict):
+                continue
+            _url_n = norm_url(e.get("url") or "")
+            if not _url_n:
+                continue
+            if str(e.get("reason") or "").startswith("事实门"):
+                if _today is None:
+                    _today = datetime.date.fromisoformat(today_cst())
+                _last = str(e.get("lastTried") or e.get("firstSeen") or "")
+                try:
+                    _age = (_today - datetime.date.fromisoformat(_last)).days
+                except Exception:
+                    _age = 0  # 日期读不出来时保守保留，别把待复核的弄丢
+                if _age <= _FACT_GATE_KEEP_DAYS:
+                    pend.append(e)
+                continue
+            if _url_n in keep_urls:
                 pend.append(e)
     data = {"fails": {u: n for u, n in fails.items() if u in keep_urls and n > 0},
             "pending": pend[:1000],
