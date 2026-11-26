@@ -1824,6 +1824,11 @@ def process_item(slug, item, state_fails):
             if label != "书源数" or slug == "book":
                 set_detail(item, label, str(n))
                 bump("counted")
+                if slug == "book" and label == "书源数" and n >= 1:
+                    # FIX17 A5：单源/聚合标出来——文件里数出 1 条是
+                    # 单个书源，多条装在一个导入文件里就是聚合书源。
+                    set_detail(item, "书源类型",
+                               "单个书源" if n == 1 else "聚合书源")
             if n == 0:
                 # 内容级验活：解得开但条数为 0 = 假活，按失败对待
                 item["_content_fail"] = True
