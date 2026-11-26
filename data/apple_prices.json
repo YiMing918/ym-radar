@@ -303,6 +303,14 @@
   "misses": 0,
   "name": "Dead Cells"
  },
+ "1392608717": {
+  "first_free_seen": null,
+  "last_price": 1.99,
+  "last_seen": "2026-11-26",
+  "max_price": 1.99,
+  "misses": 0,
+  "name": "Papa's Scooperia To Go!"
+ },
  "1395696823": {
   "first_free_seen": null,
   "last_price": 0.0,
@@ -1006,6 +1014,14 @@
   "max_price": 0.0,
   "misses": 0,
   "name": "百度-AI智能搜索"
+ },
+ "382497397": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-26",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "Sam's Club Shopping & Delivery"
  },
  "382952264": {
   "first_free_seen": null,
@@ -1783,6 +1799,14 @@
   "misses": 0,
   "name": "Google Gemini"
  },
+ "6477835115": {
+  "first_free_seen": null,
+  "last_price": 1.99,
+  "last_seen": "2026-11-26",
+  "max_price": 1.99,
+  "misses": 0,
+  "name": "Papa's Paleteria To Go!"
+ },
  "6480136315": {
   "first_free_seen": null,
   "last_price": 0.0,
@@ -1966,6 +1990,14 @@
   "max_price": 9.99,
   "misses": 0,
   "name": "How Many Dudes?"
+ },
+ "6753807741": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-26",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "frenzy - friends only"
  },
  "6754134922": {
   "first_free_seen": "2026-11-25",
@@ -2294,6 +2326,14 @@
   "max_price": 1.99,
   "misses": 0,
   "name": "Face Witness"
+ },
+ "6826478625": {
+  "first_free_seen": null,
+  "last_price": 5.99,
+  "last_seen": "2026-11-26",
+  "max_price": 5.99,
+  "misses": 0,
+  "name": "Pocket Mac Lab"
  },
  "6828296696": {
   "first_free_seen": null,
