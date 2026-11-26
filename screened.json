@@ -404,34 +404,178 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "857894085/tvbox-ios14-trollstore",
-   "url": "https://github.com/857894085/tvbox-ios14-trollstore",
-   "slug": "video",
-   "reason": "连续 6 次验活不通"
-  },
-  {
-   "name": "0xfufu/clash-subscription-fetcher-docs",
-   "url": "https://github.com/0xfufu/clash-subscription-fetcher-docs",
+   "name": "topv2raynode/topv2raynode.github.io",
+   "url": "https://topv2raynode.github.io/uploads/2026/11/20261118.json",
    "slug": "node",
    "reason": "连续 6 次验活不通"
   },
   {
-   "name": "zxsla/tvboxlaqu",
+   "name": "dakang824/Free-Hiddify-Node",
+   "url": "https://fastly.jsdelivr.net/gh/dakang824/Free-Hiddify-Node@main/out/singbox-verified.json",
+   "slug": "node",
+   "reason": "连续 6 次验活不通"
+  },
+  {
+   "name": "ThreatFox | User threatcluster",
+   "url": "https://community.abuse.ch",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "skygreen2001/report",
+   "url": "https://ollama.com",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "amanmathur27/astro-search",
+   "url": "https://www.python.org/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "collabray/domain-generator",
+   "url": "https://www.rust-lang.org",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "youhunwl/TVAPP",
+   "url": "https://9280.kstore.vip/newwex.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "thqPrivateRepo/tvbox-dc",
+   "url": "https://9280.kstore.vip/newwex.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "aa3151036158/tvbox-config",
+   "url": "https://6296.kstore.vip/facat.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "Lightconer/tvbox-ysc-config",
+   "url": "https://6296.kstore.vip/facat.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "58285474/tvbox",
+   "url": "https://6296.kstore.vip/facat.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "qist/tvbox",
+   "url": "http://home.jundie.top:81/top98.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "mlzbest/tvbox-api-backup",
    "url": "http://bd.qiqiv.cn/666.json",
    "slug": "video",
    "reason": "跨栏重复，保留在「video」栏"
   },
   {
-   "name": "zdh2021/MusicFree-ios-beta4",
+   "name": "lubin776/tvbox-api-backup",
+   "url": "http://bd.qiqiv.cn/666.json",
+   "slug": "video",
+   "reason": "跨栏重复，保留在「video」栏"
+  },
+  {
+   "name": "wzxxcz/dyr1980musicfree-plugins20261121",
+   "url": "https://gh.padao.fun/https://raw.githubusercontent.com/hebijunge/musicfree-plugins/master/sub/padao/main.json",
+   "slug": "music",
+   "reason": "跨栏重复，保留在「music」栏"
+  },
+  {
+   "name": "ytzb/MusicFree-ios-beta4",
    "url": "https://raw.githubusercontent.com/zhuguibiao/m-plugins/refs/heads/main/bilibili.js",
    "slug": "music",
    "reason": "跨栏重复，保留在「music」栏"
   },
   {
-   "name": "yowanda/loading-screen-gold-26nov",
-   "url": "https://make.fun/bounty/u-ricoxyz-loading-screen-gold-a-tip-in-200-characters-2b1df270",
+   "name": "tsukiyo-zero/MusicFree-ios-ipa",
+   "url": "https://raw.githubusercontent.com/zhuguibiao/m-plugins/refs/heads/main/bilibili.js",
+   "slug": "music",
+   "reason": "跨栏重复，保留在「music」栏"
+  },
+  {
+   "name": "MajoSissi/legado-source",
+   "url": "https://raw.githubusercontent.com/MajoSissi/legado-source/main/source/light-novel.json",
+   "slug": "book",
+   "reason": "跨栏重复，保留在「book」栏"
+  },
+  {
+   "name": "4yt1k/m3u-autoupdate",
+   "url": "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.m3u",
+   "slug": "live",
+   "reason": "跨栏重复，保留在「live」栏"
+  },
+  {
+   "name": "lightxa/makefun-u-ricoxyz-loading-screen-gold-a-tip-in-200-characters-2b1df270-v",
+   "url": "https://make.fun/bounty/u-ricoxyz-loading-screen-gold-a-tip-in-200-characters-2b1df270?utm_source=github&utm_medium=readme&utm_campaign=u-ricoxyz-loading-screen-gold-a-tip-in-200-characters-2b1df270",
    "slug": "service",
    "reason": "跨栏重复，保留在「service」栏"
+  },
+  {
+   "name": "4ngel2769/freedns.afraid.org-domain-scraper",
+   "url": "https://freedns.afraid.org/",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "oekhf486/rainyun-domain-ssl",
+   "url": "https://bit.ly/RaiNyun",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "solcreek/terraform-provider-gandi",
+   "url": "https://terraform.io",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "neihyud/cloudflare_temp_email",
+   "url": "https://temp-mail-docs.awsl.uk",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "DigitalPlatDev/FreeDomain",
+   "url": "https://dev.to/edwardhsing/i-bought-a-domain-at-15-now-it-powers-400000-users-7ol",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "vempvhs/tencent-ssl-pricing",
+   "url": "https://bit.ly/yunhuodong",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "wicuw1/hexo-cloud-server-blog",
+   "url": "https://bit.ly/yunhuodong",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "is-a-dev/register",
+   "url": "https://docs.is-a.dev",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
+  },
+  {
+   "name": "tashfeenahmed/AgentDomains-web",
+   "url": "https://agentdomains.co",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
    "name": "List of most popular email domains (by number of live emails)",
@@ -486,7 +630,13 @@
    "url": "https://bestcf.pages.dev/vps789/top20.txt",
    "slug": "cfip",
    "reason": "跨栏重复，保留在「cfip」栏"
+  },
+  {
+   "name": "Clash Verge Rev 桌面客户端",
+   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
+   "slug": "proxy",
+   "reason": "跨栏重复，保留在「cfip」栏"
   }
  ],
- "updatedAt": "2026-11-26T02:08:41.382Z"
+ "updatedAt": "2026-11-26T02:26:59.801Z"
 }
