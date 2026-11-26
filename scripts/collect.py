@@ -1717,6 +1717,31 @@ def label_item(slug, item, page=None, html_text=""):
 
 # ---------------- 现有条目刷新（v1 + 标注） ----------------
 
+# FIX17 A6：音源栏目补「适用软件」——源是给哪个播放器用的，从名字/
+# 地址/来源/简介里按生态关键词认。只认硬信号（洛雪/LX Music、
+# MusicFree、六音、澜音、波点、Spotube、酷狗概念版），认不出就不写，
+# 绝不猜。注意：description 长文尾部有模板句「适合用洛雪/MusicFree
+# 听歌的人」，会把两个生态误报到所有条目上，所以只看前四个字段，
+# 且简介先砍掉「适合用」之后的模板尾巴。
+_MUSIC_SOFTWARE_RULES = [
+    ("洛雪音乐", r"洛雪|lx[\s\-_]?music|lxmusic"),
+    ("MusicFree", r"musicfree"),
+    ("六音", r"六音|sixyin"),
+    ("澜音", r"澜音|cerumusic"),
+    ("波点音乐", r"波点"),
+    ("Spotube", r"spotube"),
+    ("酷狗概念版", r"酷狗概念"),
+]
+
+
+def _music_software(item):
+    text = " ".join([item.get("name") or "", item.get("url") or "",
+                     item.get("sourceUrl") or "", item.get("summary") or ""])
+    text = re.split(r"适合用", text)[0]
+    return "、".join(label for label, pat in _MUSIC_SOFTWARE_RULES
+                     if re.search(pat, text, re.I))
+
+
 def _is_soft_fetch_error(exc):
     """超时 / 连接被重置类错误判「软失败」（FIX17 A11）。
 
@@ -1754,6 +1779,10 @@ def process_item(slug, item, state_fails):
     _m = re.search(r"\s+-\s+([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)$", _o)
     if _m and github_repo_of(url) == _m.group(1):
         item["descriptionOriginal"] = _o[:_m.start()]
+    if slug == "music":
+        _sw = _music_software(item)
+        if _sw:
+            set_detail(item, "适用软件", _sw)
     today = today_cst()
     # 记住进来之前的连续失败次数：内容级失效要在旧账上接着记，
     # 不能被本轮的「网络通」先清零，否则永远攒不够移除次数
