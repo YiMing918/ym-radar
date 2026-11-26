@@ -6906,6 +6906,63 @@ def vpn_channel(categories, next_id):
 
 # ---------------- state.json ----------------
 
+# FIX17 A2：交付物探活台账（state.json 的 probe_fails / probe_at 两节）。
+# probe_fails：条目地址 -> 连续「明确没有交付物」次数；probe_at：上次
+# 探测日期（轮转排序用）。load_state 读入、save_state 写回。
+PROBE_FAILS = {}
+PROBE_AT = {}
+_PROBE_BUDGET = 60
+_PROBE_FAIL_LIMIT = 3
+
+
+def _probe_one_release(repo):
+    """探一个 GitHub 仓库的最新版发布里有没有可下载的文件。
+    True=有；False=明确没有（从没发过版 404 / 最新版附件为空）；
+    None=没探明白（网络异常、限速 403 等）——不下结论、不计数。"""
+    try:
+        status, _ct, body = gh_fetch(
+            f"https://api.github.com/repos/{repo}/releases/latest")
+    except Exception:
+        return None
+    if status == 404:
+        return False
+    if status != 200:
+        return None
+    try:
+        rel = json.loads(body.decode("utf-8", "ignore"))
+        return len(rel.get("assets") or []) > 0
+    except Exception:
+        return None
+
+
+def _probe_deliverables(categories):
+    """FIX17 A2（一期）：应用栏的仓库型条目探「交付物」。
+
+    页面活着不等于东西还在：仓库把发布删了、或者压根没发过版，
+    条目地址（/releases 页）照样打开，用户点进去却是空的——浅层
+    验活看不见这类失效。每轮按上次探测日期从旧到新轮转探
+    _PROBE_BUDGET 条；明确没有记一次，连续 _PROBE_FAIL_LIMIT 次
+    由主流程移除；探不明白的不计数（与 A11 软失败同口径）。"""
+    cands = []
+    for item in (categories.get("app") or {}).get("items") or []:
+        repo = github_repo_of(item.get("url") or "")
+        if repo:
+            key = norm_url(item.get("url") or "")
+            cands.append((PROBE_AT.get(key, ""), key, item, repo))
+    cands.sort(key=lambda x: x[0])
+    for _at, key, item, repo in cands[:_PROBE_BUDGET]:
+        PROBE_AT[key] = today_cst()
+        ok = _probe_one_release(repo)
+        if ok is True:
+            PROBE_FAILS.pop(key, None)
+            bump("probe_ok")
+        elif ok is False:
+            PROBE_FAILS[key] = int(PROBE_FAILS.get(key, 0)) + 1
+            bump("probe_fail")
+        else:
+            bump("probe_soft")
+
+
 def load_state(script_dir):
     """读 state.json：fails（连续验活失败次数）+ pending（待补清单）+
     full_refresh_done（FIX17 二期全量刷新标记）。返回 (fails, path,
@@ -6919,6 +6976,12 @@ def load_state(script_dir):
         pending = data.get("pending") or []
         if not isinstance(pending, list):
             pending = []
+        PROBE_FAILS.clear()
+        PROBE_FAILS.update({str(k): int(v) for k, v in
+                            (data.get("probe_fails") or {}).items()})
+        PROBE_AT.clear()
+        PROBE_AT.update({str(k): str(v) for k, v in
+                         (data.get("probe_at") or {}).items()})
         return ({str(k): int(v) for k, v in fails.items()}, path, pending,
                 bool(data.get("full_refresh_done")))
     except Exception:
@@ -7001,6 +7064,9 @@ def save_state(path, fails, keep_urls, pending=None, full_refresh_done=False):
             if _url_n in keep_urls:
                 pend.append(e)
     data = {"fails": {u: n for u, n in fails.items() if u in keep_urls and n > 0},
+            "probe_fails": {u: n for u, n in PROBE_FAILS.items()
+                            if u in keep_urls and n > 0},
+            "probe_at": {u: d for u, d in PROBE_AT.items() if u in keep_urls},
             "pending": pend[:1000],
             "full_refresh_done": bool(full_refresh_done),
             "updatedAt": now_iso_z()}
@@ -7199,6 +7265,12 @@ def main():
     except Exception as e:
         log(f"免费VPN 分区失败（跳过）：{e}")
 
+    # FIX17 A2：交付物探活（应用栏仓库型条目，轮转预算制）
+    try:
+        _probe_deliverables(categories)
+    except Exception as e:
+        log(f"交付物探活失败（跳过，不影响本轮）：{e}")
+
     # ---- 移除：连续不通（苹果 3 次、其他栏目 6 次） ----
     for slug, cat in categories.items():
         threshold = 3 if slug == "apple" else 6
@@ -7209,6 +7281,18 @@ def main():
                 removed_keys.add(_item_key(item))
                 REMOVED.append((slug, item.get("name") or "", item.get("url") or "",
                                 f"连续 {threshold} 次验活不通"))
+
+    # FIX17 A2：交付物探活连续 _PROBE_FAIL_LIMIT 次明确没有 → 移除
+    for slug, cat in categories.items():
+        for item in cat.get("items") or []:
+            if _item_key(item) in removed_keys:
+                continue
+            if int(PROBE_FAILS.get(norm_url(item.get("url") or ""), 0)) \
+                    >= _PROBE_FAIL_LIMIT:
+                removed_keys.add(_item_key(item))
+                REMOVED.append((slug, item.get("name") or "",
+                                item.get("url") or "",
+                                "交付物探活连续 3 次失败（仓库无可下载的发布）"))
 
     # FIX14b：黑名单——已有条目里命中的，本轮随既有移除流程清掉（同一批
     # REMOVED/removed_keys，同样受下面两个安全阀约束；绝不手改 data.json）。
