@@ -7747,6 +7747,15 @@ def main():
     # FIX17 C4：AI 条目形态标记（平台/工具），展示层据此区分呈现。
     mark_ai_kinds(categories)
 
+    # FIX19 收尾再扫：FIX18 的清理点之后还有福利/AI/域名等环节会新建或
+    # 改名条目（2026-11-27 实测：域名栏一条死掉的 GitHub Pages 站被后段
+    # 环节以报错页标题「Site not found」重新建回，id 都换了新的）。落盘前
+    # 用同一套规则再兜一遍，删的仍走 removed_keys、受同一批安全阀约束。
+    try:
+        fix18_cleanup(categories, removed_keys)
+    except Exception as e:
+        log(f"FIX19 收尾清理失败（跳过）：{e}")
+
     # 真正执行移除
     for cat in categories.values():
         if cat.get("items"):
