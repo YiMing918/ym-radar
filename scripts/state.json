@@ -1,9 +1,11 @@
 {
  "fails": {
-  "https://crt.sh/": 3,
-  "https://github.com/rafaeldb22/Oganesson-TakeNotes/releases": 3,
-  "https://github.com/AnikuHere/geo-iptv/blob/main/georgia_channels.m3u": 1,
-  "https://github.com/shanghui-yu/free-tier-radar": 1
+  "https://github.com/rafaeldb22/Oganesson-TakeNotes/releases": 4,
+  "https://github.com/AnikuHere/geo-iptv/blob/main/georgia_channels.m3u": 2,
+  "https://github.com/shanghui-yu/free-tier-radar": 2,
+  "https://github.com/clevebitr/legado-with-flutter": 1,
+  "https://github.com/Shadow-GR-Official/cyta.cy-epg/blob/main/data/channels.m3u": 1,
+  "https://github.com/JacobHamrac/deskguest/releases": 1
  },
  "probe_fails": {
   "https://github.com/ersin-simsek/ErsinPro-Launcher/releases": 1,
@@ -53,7 +55,19 @@
   "https://github.com/fithisux/awesome-windows-foss/releases": 1,
   "https://github.com/URUWorks/TeroSubtitler/releases": 1,
   "https://github.com/jingzhao-l/ChatToComputerMCP/releases": 1,
-  "https://github.com/klbk/aura-switcher-app/releases": 1
+  "https://github.com/klbk/aura-switcher-app/releases": 1,
+  "https://github.com/auric/arbareto/releases": 1,
+  "https://github.com/Nhan2904/tibia-nodie-companion/releases": 1,
+  "https://github.com/Crokily/pi-durable-bot/releases": 1,
+  "https://github.com/timschneeb/app-crawler/releases": 1,
+  "https://github.com/RogerioDoCarmo/morse_app-android/releases": 1,
+  "https://github.com/2113apps/verified-android-apps/releases": 1,
+  "https://github.com/aiko929/ShareScreenWeb/releases": 1,
+  "https://github.com/krishnakantnagina/pdf-editor-app/releases": 1,
+  "https://github.com/bryant-bui/OpenVault/releases": 1,
+  "https://github.com/nijatva/nijatva-suite/releases": 1,
+  "https://github.com/DiM-SoTiS/apps-catalog/releases": 1,
+  "https://github.com/springmusk026/tithimala/releases": 1
  },
  "probe_at": {
   "https://github.com/mihonapp/mihon/releases": "2026-11-26",
@@ -294,7 +308,67 @@
   "https://github.com/jingzhao-l/ChatToComputerMCP/releases": "2026-11-27",
   "https://github.com/gaurabh-pei/nogrammerly/releases": "2026-11-27",
   "https://github.com/klbk/aura-switcher-app/releases": "2026-11-27",
-  "https://github.com/Freedragonlancer/AudioLib-Explorer/releases": "2026-11-27"
+  "https://github.com/Freedragonlancer/AudioLib-Explorer/releases": "2026-11-27",
+  "https://github.com/apotenza92/butter-paper/releases": "2026-11-27",
+  "https://github.com/yuvrajangadsingh/camber/releases": "2026-11-27",
+  "https://github.com/rustdesk/rustdesk/releases": "2026-11-27",
+  "https://github.com/auric/arbareto/releases": "2026-11-27",
+  "https://github.com/CyberGems/CyberManager/releases": "2026-11-27",
+  "https://github.com/Nhan2904/tibia-nodie-companion/releases": "2026-11-27",
+  "https://github.com/catninth/gitcat/releases": "2026-11-27",
+  "https://github.com/epicabdou/tessera/releases": "2026-11-27",
+  "https://github.com/jutsuhq/kawarimi-local-character-swap/releases": "2026-11-27",
+  "https://github.com/catorendal-a11y/tessera-deck/releases": "2026-11-27",
+  "https://github.com/mariadb-RupeshBiswas/local-stt/releases": "2026-11-27",
+  "https://github.com/Crokily/pi-durable-bot/releases": "2026-11-27",
+  "https://github.com/Blackman99/deskfolk/releases": "2026-11-27",
+  "https://github.com/RimSort/RimSort/releases": "2026-11-27",
+  "https://github.com/sherlock-dev-ai/Clipify-AI-Video-Clipper-FREE/releases": "2026-11-27",
+  "https://github.com/frishberg/Neptune/releases": "2026-11-27",
+  "https://github.com/CrowKing63/Orbital/releases": "2026-11-27",
+  "https://github.com/SiteHypeInc/mumur/releases": "2026-11-27",
+  "https://github.com/m-umair-khan-dev/captionist/releases": "2026-11-27",
+  "https://github.com/skttr87/getsu/releases": "2026-11-27",
+  "https://github.com/TheRealSavi/iOpenPod/releases": "2026-11-27",
+  "https://github.com/timschneeb/app-crawler/releases": "2026-11-27",
+  "https://github.com/RogerioDoCarmo/morse_app-android/releases": "2026-11-27",
+  "https://github.com/2113apps/verified-android-apps/releases": "2026-11-27",
+  "https://github.com/techlore/Plexus-app/releases": "2026-11-27",
+  "https://github.com/technicalnihilist-lgtm/liquid-store/releases": "2026-11-27",
+  "https://github.com/edwardlthompson/DevPulse/releases": "2026-11-27",
+  "https://github.com/aiko929/ShareScreenWeb/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/ChatCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/FilesCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/FrigateCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/ImmichCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/SynapseCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/BeamCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/SeerrCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/PrintCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/PaperCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/ArrCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/MemoCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/NaviCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/CraftyCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/AdCtrl/releases": "2026-11-27",
+  "https://github.com/VoidedKN0X/JellyCtrl/releases": "2026-11-27",
+  "https://github.com/Meowt3/EchoGram/releases": "2026-11-27",
+  "https://github.com/Past-da-king/agent/releases": "2026-11-27",
+  "https://github.com/nirmaleeswar30/Inzx/releases": "2026-11-27",
+  "https://github.com/Saber-Alter-Lily/pica-library/releases": "2026-11-27",
+  "https://github.com/krishnakantnagina/pdf-editor-app/releases": "2026-11-27",
+  "https://github.com/bryant-bui/OpenVault/releases": "2026-11-27",
+  "https://github.com/bigdevwhale/lipovka/releases": "2026-11-27",
+  "https://github.com/xiaobaiba999/Skip-Ad/releases": "2026-11-27",
+  "https://github.com/aayepp/ClaudeWaves/releases": "2026-11-27",
+  "https://github.com/nijatva/nijatva-suite/releases": "2026-11-27",
+  "https://github.com/NeoLabs-Systems/NeoAgent/releases": "2026-11-27",
+  "https://github.com/DiM-SoTiS/apps-catalog/releases": "2026-11-27",
+  "https://github.com/springmusk026/tithimala/releases": "2026-11-27",
+  "https://github.com/no-vici/vnchflex/releases": "2026-11-27",
+  "https://github.com/djunekz/termux-app-store/releases": "2026-11-27",
+  "https://github.com/nekonaru/talos/releases": "2026-11-27",
+  "https://github.com/idarkalex/MALPlus/releases": "2026-11-27"
  },
  "pending": [
   {
@@ -304,7 +378,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 14
+   "tries": 15
   },
   {
    "url": "https://github.com/muntasirrmahdi/minimalrouter",
@@ -313,7 +387,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 14
+   "tries": 15
   },
   {
    "url": "https://github.com/ons96/free-llm-benchmarking",
@@ -322,7 +396,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 14
+   "tries": 15
   },
   {
    "url": "https://github.com/angvor/tvbox-live",
@@ -331,7 +405,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/jwqsir2-lang/musebox",
@@ -340,7 +414,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/LDeom/TVBox-Config",
@@ -349,7 +423,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/neo-idea/STREAM-LIB-REPO",
@@ -358,7 +432,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/rdk31/nixos-tvbox",
@@ -367,7 +441,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/hmily91/TVBoxOSC",
@@ -376,7 +450,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/longyudev/cfnb-ip",
@@ -394,7 +468,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/royalhayga/tvbox-master-aggregator",
@@ -403,7 +477,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-24",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/TigerVpnGit/TigerVpnGuid",
@@ -439,7 +513,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/VISHWA106/Freellmapi",
@@ -448,7 +522,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/Super-X9/llm-freewatch",
@@ -457,7 +531,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/c00lpeace/free-llm-tracker",
@@ -466,7 +540,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/avantika-agarwal60/Tarot-Reading-website-with-LLM-API-and-animations",
@@ -475,7 +549,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/Kame696/kame-api-rotation-for-agent-zero",
@@ -484,7 +558,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/Patrick-mufeng/workbuddy-free",
@@ -493,7 +567,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/yehorm14/volunteer_api",
@@ -502,7 +576,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/abtravels/free-model-tracker",
@@ -511,7 +585,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/theGoodB0rg/FreeTrialFinder",
@@ -520,7 +594,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/jxjhheric/freebuff2api-wokers",
@@ -529,7 +603,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 13
+   "tries": 14
   },
   {
    "url": "https://github.com/dingdadao/dnsPorxy",
@@ -556,7 +630,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/Diaszano/netrack",
@@ -574,7 +648,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/Harrywang0117/IPTV",
@@ -583,7 +657,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/sykikWithNoP/Free_AI_POS",
@@ -592,7 +666,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/Freecode100Year/WarpGameBoost",
@@ -619,7 +693,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/ctowl2018/NewTV2",
@@ -628,7 +702,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/justinguo7777/jsydiptv",
@@ -637,7 +711,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/Leingy/tvbox-config",
@@ -646,7 +720,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/tianyue111/tvboxsource",
@@ -655,7 +729,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/luolihao-aicode/tvbox-githublink",
@@ -664,7 +738,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/haha130/iptv-api",
@@ -673,7 +747,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/tao200672/API",
@@ -682,7 +756,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/TANGZHUCC/tvbox-config",
@@ -691,7 +765,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/gitbochs/tvbox_url",
@@ -700,7 +774,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/puermilk/aimimang",
@@ -709,7 +783,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://github.com/afan-fan/tvbox",
@@ -718,7 +792,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 12
+   "tries": 13
   },
   {
    "url": "https://the-dev.xyz",
@@ -781,7 +855,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Ciberlabbrasil/visao360_desktop",
@@ -790,7 +864,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/rithvikshettyy/radar",
@@ -799,7 +873,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/angga0x3/ofm-free-render",
@@ -808,7 +882,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ildus650-pixel/yosuri-agent",
@@ -817,7 +891,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/sakibwritesdailyo-byte/AI-workspace-",
@@ -826,7 +900,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/kyohong/cf-ai-support-hub",
@@ -835,7 +909,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ayanakdev/tera-clipping",
@@ -844,7 +918,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/haiggoh/free-agents",
@@ -853,7 +927,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/voidgazer009/Vic-API",
@@ -862,7 +936,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/12errh/zen-proxy",
@@ -871,7 +945,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/king-andthe-nice/dsh-plugin-opencode2api",
@@ -880,7 +954,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/shaqwest/JobMatch",
@@ -889,7 +963,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/cloudcover95/JuniorFetch",
@@ -898,7 +972,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/RemaKunG/LiveTrans-Releases",
@@ -907,7 +981,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/dongbeixiaohuo/writing-agent",
@@ -916,7 +990,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/masonchen2014/suiyi-subtitles",
@@ -925,7 +999,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/AbdoKnbGit/tau",
@@ -934,7 +1008,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/mrsibe/mira",
@@ -943,7 +1017,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jessy-phd/realtime-subtitle-translator",
@@ -952,7 +1026,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/TLR-Official/TLRphotos-UI",
@@ -961,7 +1035,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/uttn666/DSbox",
@@ -970,7 +1044,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/doge2mars/srt-ai-translator",
@@ -979,7 +1053,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/yeziqaz/wish-phone",
@@ -988,7 +1062,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/rosw/webai2api",
@@ -997,7 +1071,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/LpcPaul/super-search",
@@ -1006,7 +1080,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/1088766-sketch/freeapi-radar",
@@ -1015,7 +1089,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/life-yyyt/ai-video-pipeline",
@@ -1024,7 +1098,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Xc-Star/ssh-tool-free-sync",
@@ -1033,7 +1107,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jsLavender/trader-goblins",
@@ -1042,7 +1116,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ThaoYou30020/llm-router-free",
@@ -1051,7 +1125,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/aSimmons5907/key-pool-rotator",
@@ -1060,7 +1134,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/RedSamerai/free-models-daily",
@@ -1069,7 +1143,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Commodo163/tvbox-network-bootstrap",
@@ -1078,7 +1152,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jo32/tvbox-silicon",
@@ -1087,7 +1161,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Supprise0901/TVBox_live",
@@ -1096,7 +1170,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/eortizs/distribuidor-tvbox",
@@ -1105,7 +1179,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/cluntop/tvbox",
@@ -1114,7 +1188,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/binchen6/Liuguang-Cinema",
@@ -1123,7 +1197,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/xiaolong-nihao/IPTV-api",
@@ -1132,7 +1206,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/736368217/tvboxos-car-2880",
@@ -1141,7 +1215,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/WKC0001/tvbox-independent",
@@ -1150,7 +1224,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jwqsir2-lang/anzhuo44tvbox",
@@ -1159,7 +1233,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/JinRudy/tvbox-more",
@@ -1168,7 +1242,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/dxyc0922/Tvbox4.x_api",
@@ -1177,7 +1251,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/power721/atv-player",
@@ -1186,7 +1260,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ly194589/quying-vod",
@@ -1195,7 +1269,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/mrlym/libretv-to-tvbox",
@@ -1204,7 +1278,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ByShiNo/tvbox-watchdog",
@@ -1213,7 +1287,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Cx4x/xdd",
@@ -1222,7 +1296,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/andyzhang1214/PIG-TV",
@@ -1231,7 +1305,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ouhaibo1980/tvbox",
@@ -1240,7 +1314,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/NoviceDai/PrivateTvbox",
@@ -1249,7 +1323,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/kimwang1978/collect-txt",
@@ -1258,7 +1332,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/xiaoxiaoyunlu/my-tvboxs",
@@ -1267,7 +1341,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/muzhi621/tvbox-Worker",
@@ -1276,7 +1350,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/lhw828/tvbox-sources",
@@ -1285,7 +1359,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/gstory0404/Cinetry",
@@ -1294,7 +1368,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/silverbullet-liang/tvbox-web",
@@ -1303,7 +1377,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/outlook84/dashbox",
@@ -1312,7 +1386,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ZxxXinI/tvbox",
@@ -1321,7 +1395,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/yagami-hue/MisaTV",
@@ -1330,7 +1404,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ericvlog/tvbox",
@@ -1339,7 +1413,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Andersonkesto/tvbox-arcade-skill",
@@ -1348,7 +1422,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/azhansy/ds-tvbox",
@@ -1357,7 +1431,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jacurtwong/KimboxPC",
@@ -1366,7 +1440,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/mytv-android/mytv-android",
@@ -1375,7 +1449,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/FanchangWang/tvbox_config",
@@ -1384,7 +1458,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/SizeSStudio/SStudioTV",
@@ -1393,7 +1467,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/JimWishnone/TVBoxB",
@@ -1402,7 +1476,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/WDXwang/tvbox-data",
@@ -1411,7 +1485,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/wsycookie0652/zhuiju-kit",
@@ -1420,7 +1494,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/hubeizgd1979/tvbox-config",
@@ -1429,7 +1503,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jiji262/tvbox-sources",
@@ -1438,7 +1512,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/zhangxiansheng070422/tvbox-config",
@@ -1447,7 +1521,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/hkuc/tvbox-config",
@@ -1456,7 +1530,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jxshengjianping/tvbox-config",
@@ -1465,7 +1539,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/upchr/meow",
@@ -1474,7 +1548,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/deli6250/tvbox-config",
@@ -1483,7 +1557,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ouyushan/tvbox-cfg",
@@ -1492,7 +1566,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/huangbin850420760-sketch/tvbox-merge",
@@ -1501,7 +1575,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/hesanyue50-lang/tvbox-config",
@@ -1510,7 +1584,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/khw934/TV",
@@ -1519,7 +1593,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/othellllo/aurora-tv",
@@ -1528,7 +1602,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Sa1koro/yingzhou",
@@ -1537,7 +1611,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/hnhnhn98/tvbox-sync",
@@ -1546,7 +1620,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/yangxiaoge/tvbox_cust",
@@ -1555,7 +1629,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Kmatsk/workbuddy-lunatv-config",
@@ -1564,7 +1638,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Viciy2023/Onefilm",
@@ -1573,7 +1647,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/motao123/webtv",
@@ -1582,7 +1656,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/devmfc/debian-on-amlogic",
@@ -1591,7 +1665,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/zeyark88/box-lite",
@@ -1600,7 +1674,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/zqs1qiwan/qbox",
@@ -1609,7 +1683,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Irolumn/moying-android",
@@ -1618,7 +1692,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/hanyurn/tvbox-config",
@@ -1627,7 +1701,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/tangyou254-design/ysc-tvbox-sources",
@@ -1636,7 +1710,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/tvbox342078879/520pro",
@@ -1645,7 +1719,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/gemron/mobile-tv-screen",
@@ -1654,7 +1728,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/LanLanff/FlyTV",
@@ -1663,7 +1737,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/felixwang1987/tv-pocket",
@@ -1672,7 +1746,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/vito-xu/media-video",
@@ -1681,7 +1755,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/armbian/community",
@@ -1690,7 +1764,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/tarynwyj/yingshicang-confi-self",
@@ -1699,7 +1773,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jamyu-li/Armbian-on-B860A-S812-TVBOX",
@@ -1708,7 +1782,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/XingChenApp/xingchen",
@@ -1717,7 +1791,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/launchpad2/tv",
@@ -1726,7 +1800,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/EMCHOUIT/ChouiTV-Installer",
@@ -1735,7 +1809,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/wukongdaily/tvhelper-docker",
@@ -1744,7 +1818,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/XiaochangXu/AVBox",
@@ -1753,7 +1827,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/long5960170-glitch/tvbox-config",
@@ -1762,7 +1836,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/gongchuang1089/CatVodSpider-standalone",
@@ -1771,7 +1845,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/zhao22307-afk/yiqikan",
@@ -1780,7 +1854,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/P-bit-display/chiguo-tv",
@@ -1789,7 +1863,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/OpenHWLabcom/tvbox-ktv",
@@ -1798,7 +1872,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/harrylyx/QuickBo",
@@ -1807,7 +1881,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/melquesedque/launcher-tvbox-mxq",
@@ -1816,7 +1890,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/pojianhuaidao/PlayerArkTS",
@@ -1825,7 +1899,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/yaolin-dev/OKVideoMac",
@@ -1834,7 +1908,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jesse0713/tvbox-relay",
@@ -1843,7 +1917,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/tangyuhui2026/tang-tvbox",
@@ -1852,7 +1926,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Airmanzhou/bs-tvbox-config",
@@ -1861,7 +1935,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/muyuewang/VisiBox",
@@ -1870,7 +1944,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/niuber/niuber",
@@ -1879,7 +1953,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/wkedong/tv-live-config",
@@ -1888,7 +1962,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/skymoonzyj/lxyy-yingshicang-source",
@@ -1897,7 +1971,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/muzheya/tvbox-config",
@@ -1906,7 +1980,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Yamtt/TV",
@@ -1915,7 +1989,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Harrison-Yuan/media-free",
@@ -1924,7 +1998,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ahwhzsy/yingshi-config",
@@ -1933,7 +2007,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/sddzwf/tv",
@@ -1942,7 +2016,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/freepaperaigeneration/Film-and-television-warehouse",
@@ -1951,7 +2025,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/tv51818/My-TV",
@@ -1960,7 +2034,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/hackyjso/TVbox",
@@ -1969,7 +2043,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jinenge/tvbox",
@@ -1978,7 +2052,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/WeredRose/Webox",
@@ -1987,7 +2061,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/SakuraAnime/yingshicang",
@@ -1996,7 +2070,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/n3rddd/TVLive",
@@ -2005,7 +2079,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/forever85/TV_for_Self",
@@ -2014,7 +2088,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/thanatos369/autotvbox",
@@ -2023,7 +2097,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/davidlifestyle/TV",
@@ -2032,7 +2106,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ml86116/TV",
@@ -2041,7 +2115,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/julian007sh/TV",
@@ -2050,7 +2124,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/lengsukq/TV",
@@ -2059,7 +2133,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/mjcaetano87/tvbox-optimizer",
@@ -2068,7 +2142,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/NotYoungLang/tvbox-live-simple",
@@ -2077,7 +2151,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/yangclaw2026-png/tvbox-aggregator",
@@ -2086,7 +2160,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/huangxinyueus/tvbox-laqu",
@@ -2095,7 +2169,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/geuclide97/zjys9-py",
@@ -2104,7 +2178,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/bblboxtv-bot/bbl-tvbox-server-v4",
@@ -2113,7 +2187,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/tyxthl/iptv-api",
@@ -2122,7 +2196,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/testtff/TV",
@@ -2131,7 +2205,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/yinghuang-xie/yinghuangtv-pro",
@@ -2140,7 +2214,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/vipxb/zhibo",
@@ -2149,7 +2223,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/junchao321/JunTV",
@@ -2158,7 +2232,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/nihenhao988/iptv-api",
@@ -2167,7 +2241,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/longbin12/iptv-api",
@@ -2176,7 +2250,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/justinpek/iptv-api",
@@ -2185,7 +2259,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/zoharrpg/iptv-api",
@@ -2194,7 +2268,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ilxp/AutoIPTV",
@@ -2203,7 +2277,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/keepongoin/yinshiyuan",
@@ -2212,7 +2286,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Marilyn2022/iptv-api",
@@ -2221,7 +2295,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ch2006/iptv-api",
@@ -2230,7 +2304,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/xiaoguangliu049/TV",
@@ -2239,7 +2313,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/wangfang345799/iptv-api",
@@ -2248,7 +2322,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/RichelYu1998/iptv-api",
@@ -2257,7 +2331,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Saudihuang/Saudi-iptv-api",
@@ -2266,7 +2340,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jikels-12/iptv-api",
@@ -2275,7 +2349,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/gougou1234/iptv-api",
@@ -2284,7 +2358,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/lvxanbing-art/iptv-api",
@@ -2293,7 +2367,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/alexyanghx/TV",
@@ -2302,7 +2376,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/hyboyxo/iptv-api",
@@ -2311,7 +2385,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/guby2u/iptv-api",
@@ -2320,7 +2394,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/s260590588/iptv-api",
@@ -2329,7 +2403,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/owner2028/iptv-api",
@@ -2338,7 +2412,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/weirenhao/iptv-api",
@@ -2347,7 +2421,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/dtysp/iptv-api",
@@ -2356,7 +2430,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/xiaohuiu/TVAPP-PC",
@@ -2365,7 +2439,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/darkelf123/iptv-api",
@@ -2374,7 +2448,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Z-web747/iptv-api",
@@ -2383,7 +2457,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/wxbtt/ap",
@@ -2392,7 +2466,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/kzy77/iptv-api",
@@ -2401,7 +2475,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/swcz56/iptv-api",
@@ -2410,7 +2484,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ZQingGang/tvbox",
@@ -2419,7 +2493,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/rzhnrhjr6j-cloud/tvbox-source-monitor",
@@ -2428,7 +2502,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Kinghuchao/tvbox-live",
@@ -2437,7 +2511,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/toshaobo/tvbox-xyz",
@@ -2446,7 +2520,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/ByShiNo/tvbox-mirror",
@@ -2455,7 +2529,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/flybywind-1986/tvbox-config",
@@ -2464,7 +2538,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/linhua8/tvbox-source",
@@ -2473,7 +2547,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/lcy0330/tvbox-config",
@@ -2482,7 +2556,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/li5bo5/TVBox",
@@ -2491,7 +2565,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/lngscym/tvbox",
@@ -2500,7 +2574,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/vanilla945/tvbox-swift-macos",
@@ -2509,7 +2583,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/canvay/tvbox_coach",
@@ -2518,7 +2592,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/muedsa/novipnoad-plugin",
@@ -2527,7 +2601,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/NanGBR/TVBox-scripts",
@@ -2536,7 +2610,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/tao200672/pyonline",
@@ -2545,7 +2619,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/hjwp2026-cmd/self-tvbox",
@@ -2554,7 +2628,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/mlzbest/upstream-sync",
@@ -2563,7 +2637,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/jiangchen516/tvbox-mac",
@@ -2572,7 +2646,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/cubacupa/myTVBox",
@@ -2581,7 +2655,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/advote/sanhaotv",
@@ -2590,7 +2664,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/Creazy-youyou/tvbox_setfile",
@@ -2599,7 +2673,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/yub168/myTvbox",
@@ -2608,7 +2682,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/LengxiQwQ/playlistout",
@@ -2626,7 +2700,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 11
+   "tries": 12
   },
   {
    "url": "https://github.com/wzh15802/lxmusic",
@@ -8971,7 +9045,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 10
+   "tries": 11
   },
   {
    "url": "https://github.com/0X11Dynamic/local-ai-studio",
@@ -8980,7 +9054,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 10
+   "tries": 11
   },
   {
    "url": "https://github.com/Hemang67/PixelMitra",
@@ -8989,7 +9063,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 10
+   "tries": 11
   },
   {
    "url": "https://github.com/ilayfoxa/ai-free",
@@ -8998,7 +9072,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 10
+   "tries": 11
   },
   {
    "url": "https://github.com/y2a-git/Universal-Translation-AI-Agent",
@@ -9007,7 +9081,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 10
+   "tries": 11
   },
   {
    "url": "https://github.com/prominence-chan/provenance-core",
@@ -9016,7 +9090,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-25",
    "lastTried": "2026-11-27",
-   "tries": 10
+   "tries": 11
   },
   {
    "url": "https://github.com/ebbapanagiotou44/llm-key-rotator",
@@ -9025,7 +9099,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 9
+   "tries": 10
   },
   {
    "url": "https://github.com/francoisokada/llm-key-pool",
@@ -9034,7 +9108,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/Karimk899/free-llm-router",
@@ -9043,7 +9117,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/TheProjectsX/roundhouse",
@@ -9052,7 +9126,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/dumbzombies/freepi-plugin",
@@ -9061,7 +9135,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/yexiaoyang218-ui/ai-copilot-android",
@@ -9070,7 +9144,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/Sumansd-dev/freehandweb",
@@ -9079,7 +9153,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/babvsaysa-maker/rohit-cloud-studio",
@@ -9088,7 +9162,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/iTaoPu/Chat.Ai",
@@ -9097,7 +9171,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/tanzim934/DriveMate-AI-Powered-Driver-Hiring-Scheduling-Platform",
@@ -9106,7 +9180,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/zhoratolk/webchat-agent",
@@ -9115,7 +9189,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/Gucixdev/openapi",
@@ -9124,7 +9198,7 @@
    "reason": "没找到可用的官网/外链",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/xiaobyes/xiaobaitv",
@@ -9133,7 +9207,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/arixbit/xiaomu-desktop",
@@ -9142,7 +9216,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/282610325/tvbox-desktop-mac",
@@ -9151,7 +9225,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/byqianye/crayon-shin-chan",
@@ -9160,7 +9234,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/louisYKL/TVBOX-DolbyVision-HDR10-Edition",
@@ -9169,7 +9243,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/laowantong2077/tvbox_mac",
@@ -9178,7 +9252,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/LastSurvivalOn/ozone-hd-deb-firmware",
@@ -9187,7 +9261,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/grumpyspud/ha80-armbian-fd628-front-panel",
@@ -9196,7 +9270,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/mcp2016/TVBox",
@@ -9205,7 +9279,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 8
+   "tries": 9
   },
   {
    "url": "https://github.com/topgun508620/tvbox-config",
@@ -9214,7 +9288,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 7
+   "tries": 8
   },
   {
    "url": "https://github.com/islikai/tvbox-aggregator",
@@ -9223,7 +9297,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 7
+   "tries": 8
   },
   {
    "url": "https://github.com/wymstar/ttv",
@@ -9232,7 +9306,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 6
+   "tries": 7
   },
   {
    "url": "https://github.com/zseagate/iptv-tvbox-highend-android",
@@ -9241,7 +9315,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 3
+   "tries": 4
   },
   {
    "url": "https://github.com/power721/alist-tvbox",
@@ -9250,7 +9324,7 @@
    "reason": "README 里找到的配置文件验活都不通",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 3
+   "tries": 4
   },
   {
    "url": "https://github.com/mosoras/TVBox-Config",
@@ -9259,7 +9333,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 3
+   "tries": 4
   },
   {
    "url": "https://github.com/anji998/TVBoxLiveSoure",
@@ -9268,7 +9342,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 3
+   "tries": 4
   },
   {
    "url": "https://github.com/IgorZaharov/TVBoxControlApp",
@@ -9277,7 +9351,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 3
+   "tries": 4
   },
   {
    "url": "https://github.com/ljz704/iptv-hub",
@@ -9286,7 +9360,7 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-26",
    "lastTried": "2026-11-27",
-   "tries": 3
+   "tries": 4
   },
   {
    "url": "https://github.com/viDDiv72/McP2P-TV",
@@ -9295,9 +9369,9 @@
    "reason": "README 里没找到可用地址",
    "firstSeen": "2026-11-27",
    "lastTried": "2026-11-27",
-   "tries": 1
+   "tries": 2
   }
  ],
  "full_refresh_done": true,
- "updatedAt": "2026-11-27T01:41:12.094Z"
+ "updatedAt": "2026-11-27T07:45:25.415Z"
 }
