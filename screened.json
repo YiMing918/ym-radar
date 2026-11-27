@@ -398,33 +398,249 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "Yedu — Simple Local Ebook Reader",
-   "url": "https://testflight.apple.com/join/CnAUBj6f",
+   "name": "SweeLOL",
+   "url": "https://testflight.apple.com/join/FT9n1ncG",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "atharvmpatil/Native_books_app_ios-ipados_windows",
+   "url": "https://github.com/atharvmpatil/Native_books_app_ios-ipados_windows/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "skka3134/TrollStore",
+   "url": "https://github.com/skka3134/TrollStore/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "illixion/Apparition",
+   "url": "https://github.com/illixion/Apparition/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "VRamses/rebobina-ios",
+   "url": "https://github.com/VRamses/rebobina-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "reefbarman/iPlay5",
+   "url": "https://github.com/reefbarman/iPlay5/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "scs0209/app-anatomy",
+   "url": "https://github.com/scs0209/app-anatomy/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "cwchon310/ios-ipa-library",
+   "url": "https://github.com/cwchon310/ios-ipa-library/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "momsbisburi/maldivescinema-ios",
+   "url": "https://github.com/momsbisburi/maldivescinema-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "lan741/horizon-ios",
+   "url": "https://github.com/lan741/horizon-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "smartmaster35rus-dev/Apple-Apps",
+   "url": "https://github.com/smartmaster35rus-dev/Apple-Apps/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "nicolasjweber/mensa-ka-ios",
+   "url": "https://github.com/nicolasjweber/mensa-ka-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "muchkurisrivardhan/MusicSearch",
+   "url": "https://github.com/muchkurisrivardhan/MusicSearch/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "drew-codes-things/MediaSwipe",
+   "url": "https://github.com/drew-codes-things/MediaSwipe/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "Sami-Wali/ryP0",
+   "url": "https://github.com/Sami-Wali/ryP0/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "maclub-net/IPAToolKit",
+   "url": "https://github.com/maclub-net/IPAToolKit/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "bpawnzZ/yatse-ios",
+   "url": "https://github.com/bpawnzZ/yatse-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "Iuricorreia/jarvis-mobile-ios-releases",
+   "url": "https://github.com/Iuricorreia/jarvis-mobile-ios-releases/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "ismaeltechwastaken/KickUnblock",
+   "url": "https://github.com/ismaeltechwastaken/KickUnblock/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "ossypder/NoiseRepViewer-iOS",
+   "url": "https://github.com/ossypder/NoiseRepViewer-iOS/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "aepikgamer-art/planeder",
+   "url": "https://github.com/aepikgamer-art/planeder/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "gablilli/chocomilkyX",
+   "url": "https://github.com/gablilli/chocomilkyX/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "dv7vdbjs8q-spec/cortex-anime",
+   "url": "https://github.com/dv7vdbjs8q-spec/cortex-anime/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "aepikgamer-art/flightdeck-ofp",
+   "url": "https://github.com/aepikgamer-art/flightdeck-ofp/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "lgg/awesome-ios-sideloading",
+   "url": "https://github.com/lgg/awesome-ios-sideloading/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "kemi579/PurpleKitApp",
+   "url": "https://github.com/kemi579/PurpleKitApp/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "psydemekum/house-capture-ipad",
+   "url": "https://github.com/psydemekum/house-capture-ipad/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "rnetis/resonance",
+   "url": "https://github.com/rnetis/resonance/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "RipeStore/ripestore.github.io",
+   "url": "https://github.com/RipeStore/ripestore.github.io/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "HARSHBHINDER/Angra-iOS-Streaming",
+   "url": "https://github.com/HARSHBHINDER/Angra-iOS-Streaming/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "ShrubHub-iOS/ShrubLibrary",
+   "url": "https://github.com/ShrubHub-iOS/ShrubLibrary/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "iPALibrarynet/iPA-Library",
+   "url": "https://github.com/iPALibrarynet/iPA-Library/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "sadsadsadsadadsa936-tech/candy-call-ios",
+   "url": "https://github.com/sadsadsadsadadsa936-tech/candy-call-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "galzarachovitz-cyber/clearflow-dist",
+   "url": "https://github.com/galzarachovitz-cyber/clearflow-dist/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "NightVibes33/puter-image-studio-ios",
+   "url": "https://github.com/NightVibes33/puter-image-studio-ios/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "tsoysuhninki/ccterminal-dist",
+   "url": "https://github.com/tsoysuhninki/ccterminal-dist/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "ycj3/Sideload-Apps",
+   "url": "https://github.com/ycj3/Sideload-Apps/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "Lokey",
+   "url": "https://testflight.apple.com/join/Bx9gxXTN",
    "slug": "apple",
    "reason": "苹果栏：TestFlight 招募结束（连续 2 轮不在来源里）"
   },
   {
-   "name": "im-aadi/karmas-world",
-   "url": "https://nodejs.org/",
+   "name": "gricatan/devhub-domaines",
+   "url": "https://nodejs.org",
    "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "OmarHazem123/bizpulse-platform",
-   "url": "https://docs.astral.sh/uv/",
+   "name": "skygreen2001/report",
+   "url": "https://ollama.com",
    "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "defect-technologies/website",
-   "url": "https://nextjs.org",
+   "name": "collabray/domain-generator",
+   "url": "https://www.rust-lang.org",
    "slug": "domain",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "AlexSergey/fresher",
-   "url": "https://rustup.rs",
-   "slug": "service",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
@@ -438,7 +654,13 @@
    "url": "https://bestcf.pages.dev/vps789/top20.txt",
    "slug": "cfip",
    "reason": "跨栏重复，保留在「cfip」栏"
+  },
+  {
+   "name": "Clash Verge Rev 桌面客户端",
+   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
+   "slug": "proxy",
+   "reason": "跨栏重复，保留在「cfip」栏"
   }
  ],
- "updatedAt": "2026-11-26T16:27:14.251Z"
+ "updatedAt": "2026-11-27T01:41:12.101Z"
 }
