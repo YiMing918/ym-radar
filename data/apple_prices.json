@@ -194,7 +194,7 @@
  "1127729015": {
   "first_free_seen": null,
   "last_price": 9.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 10.0,
   "misses": 0,
   "name": "Tempest: Pirate RPG Premium"
@@ -266,7 +266,7 @@
  "1223471316": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Shop: Track, Pay, Discover"
@@ -290,7 +290,7 @@
  "1270382069": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 5.99,
   "misses": 0,
   "name": "Brightly - Fix Dark Photos"
@@ -306,7 +306,7 @@
  "1274907797": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 3.99,
   "misses": 0,
   "name": "Heroine Anthem Zero"
@@ -314,7 +314,7 @@
  "1291427111": {
   "first_free_seen": null,
   "last_price": 0.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 7.0,
   "misses": 0,
   "name": "Evoland 2"
@@ -322,10 +322,18 @@
  "1291429551": {
   "first_free_seen": null,
   "last_price": 3.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 4.0,
   "misses": 0,
   "name": "60 Parsecs!"
+ },
+ "1340060131": {
+  "first_free_seen": null,
+  "last_price": 0.99,
+  "last_seen": "2026-11-28",
+  "max_price": 0.99,
+  "misses": 0,
+  "name": "Trivia Mexicano! : Charades"
  },
  "1343524838": {
   "first_free_seen": null,
@@ -362,7 +370,7 @@
  "1373057849": {
   "first_free_seen": null,
   "last_price": 0.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 3.0,
   "misses": 0,
   "name": "ThreeKingdoms The Last Warlord"
@@ -466,7 +474,7 @@
  "1441737952": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 9.99,
   "misses": 0,
   "name": "Super Investor: SEC Filings"
@@ -522,7 +530,7 @@
  "1453808408": {
   "first_free_seen": null,
   "last_price": 1.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 3.0,
   "misses": 0,
   "name": "Juicy Realm"
@@ -554,7 +562,7 @@
  "1474716211": {
   "first_free_seen": null,
   "last_price": 3.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 4.0,
   "misses": 0,
   "name": "60 Seconds! Reatomized"
@@ -586,7 +594,7 @@
  "1488269261": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Whatnot: Shop, Sell, Connect"
@@ -618,7 +626,7 @@
  "1492041278": {
   "first_free_seen": null,
   "last_price": 9.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 10.0,
   "misses": 0,
   "name": "FINAL FANTASY"
@@ -634,7 +642,7 @@
  "1500855883": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "CapCut: Video & Photo Editor"
@@ -674,7 +682,7 @@
  "1515294700": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 4.99,
   "misses": 0,
   "name": "Mouse · Keyboard"
@@ -690,7 +698,7 @@
  "1537060891": {
   "first_free_seen": null,
   "last_price": 8.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 22.0,
   "misses": 0,
   "name": "Titan Quest: Legendary Edition"
@@ -778,7 +786,7 @@
  "1605170923": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "GoWish - Your Digital Wishlist"
@@ -794,7 +802,7 @@
  "1631584032": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "PLAYFUL REWARDS: Earn Rewards"
@@ -810,7 +818,7 @@
  "1632713844": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Kalshi: Trade Sports & Events"
@@ -826,7 +834,7 @@
  "1641486558": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Temu: Shop Like a Billionaire"
@@ -986,7 +994,7 @@
  "310633997": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "WhatsApp"
@@ -1050,7 +1058,7 @@
  "333903271": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "X"
@@ -1066,7 +1074,7 @@
  "338137227": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Walmart: Shopping & Savings"
@@ -1247,6 +1255,14 @@
   "misses": 0,
   "name": "招商银行"
  },
+ "393328150": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "Sephora US: Makeup & Skincare"
+ },
  "395096736": {
   "first_free_seen": null,
   "last_price": 0.0,
@@ -1306,7 +1322,7 @@
  "414245413": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "京东-又好又便宜"
@@ -1346,7 +1362,7 @@
  "422689480": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Gmail - Email by Google"
@@ -1450,7 +1466,7 @@
  "458318329": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "腾讯视频-蒋欣李光洁领衔《多喜一家人》"
@@ -1602,7 +1618,7 @@
  "515114051": {
   "first_free_seen": null,
   "last_price": 2.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 10.0,
   "misses": 0,
   "name": "Baldur's Gate"
@@ -1634,7 +1650,7 @@
  "527358348": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 2.99,
   "misses": 0,
   "name": "Fieldrunners 2"
@@ -1674,7 +1690,7 @@
  "535886823": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Google Chrome"
@@ -1706,7 +1722,7 @@
  "547166701": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "百度网盘"
@@ -1722,7 +1738,7 @@
  "550152297": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 14.99,
   "misses": 0,
   "name": "EARTH 3D | Ultra real planet"
@@ -1794,7 +1810,7 @@
  "583700738": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "中国移动（手机营业厅）"
@@ -1826,7 +1842,7 @@
  "598581396": {
   "first_free_seen": null,
   "last_price": 0.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 1.99,
   "misses": 0,
   "name": "Kingdom Rush Frontiers TD"
@@ -1866,7 +1882,7 @@
  "632064380": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Vinted: Pre-loved marketplace"
@@ -1882,7 +1898,7 @@
  "6446901002": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Threads"
@@ -1898,7 +1914,7 @@
  "6447582581": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Netflix Game Controller"
@@ -1930,7 +1946,7 @@
  "6449502619": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 3.99,
   "misses": 0,
   "name": "Fallen Sky RPG"
@@ -1962,7 +1978,7 @@
  "6468941332": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "电子税务局"
@@ -1970,7 +1986,7 @@
  "6472232952": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Koupon: Promo Codes & Deals"
@@ -2046,6 +2062,14 @@
   "max_price": 9.99,
   "misses": 0,
   "name": "Balatro"
+ },
+ "6504824477": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "Aeropostale: Teen Clothing"
  },
  "6547834967": {
   "first_free_seen": null,
@@ -2130,7 +2154,7 @@
  "6741796873": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "TikTok Pro - Events"
@@ -2138,7 +2162,7 @@
  "6742024490": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Reco Social"
@@ -2231,6 +2255,14 @@
   "misses": 0,
   "name": "Vampire Crawlers"
  },
+ "6751240418": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "Doka Cam"
+ },
  "6751921248": {
   "first_free_seen": null,
   "last_price": 0.0,
@@ -2290,7 +2322,7 @@
  "6754134922": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "PineDrama - Short Dramas"
@@ -2346,7 +2378,7 @@
  "6760173601": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "Muse from Meta"
@@ -2370,7 +2402,7 @@
  "6761374913": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "WorkBuddy - AI Work Agent"
@@ -2554,7 +2586,7 @@
  "6813841355": {
   "first_free_seen": null,
   "last_price": 1.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 2.99,
   "misses": 0,
   "name": "Toastie: grilled cheese game"
@@ -2626,7 +2658,7 @@
  "6822194774": {
   "first_free_seen": null,
   "last_price": 1.99,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 4.99,
   "misses": 0,
   "name": "TypeDraw"
@@ -2743,6 +2775,14 @@
   "misses": 0,
   "name": "Monster Sip"
  },
+ "6834809690": {
+  "first_free_seen": null,
+  "last_price": 0.99,
+  "last_seen": "2026-11-28",
+  "max_price": 0.99,
+  "misses": 0,
+  "name": "DeepHarness"
+ },
  "6837076125": {
   "first_free_seen": null,
   "last_price": 4.99,
@@ -2826,7 +2866,7 @@
  "776314791": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 9.99,
   "misses": 0,
   "name": "Peek Calendar – Simple Cal"
@@ -2866,7 +2906,7 @@
  "834715612": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 4.99,
   "misses": 0,
   "name": "Forgotten Memories"
@@ -2874,7 +2914,7 @@
  "835599320": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.0,
   "misses": 0,
   "name": "TikTok - Videos, Shop & LIVE"
@@ -3039,6 +3079,14 @@
   "misses": 0,
   "name": "Shadowrocket"
  },
+ "935216956": {
+  "first_free_seen": null,
+  "last_price": 4.99,
+  "last_seen": "2026-11-28",
+  "max_price": 4.99,
+  "misses": 0,
+  "name": "Papers, Please"
+ },
  "935528099": {
   "first_free_seen": null,
   "last_price": 0.99,
@@ -3130,7 +3178,7 @@
  "983143183": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
-  "last_seen": "2026-11-27",
+  "last_seen": "2026-11-28",
   "max_price": 0.99,
   "misses": 0,
   "name": "Neo Monsters"

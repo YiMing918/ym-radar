@@ -1,5 +1,5 @@
 {
- "date": "2026-11-27",
+ "date": "2026-11-28",
  "removed": [
   {
    "name": "Feedly",
@@ -410,32 +410,14 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "Site not found · GitHub Pages",
-   "url": "https://help.github.com/pages/",
-   "slug": "domain",
-   "reason": "坏数据清理：标题是报错页文本（FIX19）"
-  },
-  {
-   "name": "rafaeldb22/Oganesson-TakeNotes",
-   "url": "https://github.com/rafaeldb22/Oganesson-TakeNotes/releases",
-   "slug": "app",
-   "reason": "连续 6 次验活不通"
-  },
-  {
-   "name": "im-aadi/karmas-world",
-   "url": "https://nodejs.org/",
+   "name": "skygreen2001/report",
+   "url": "https://ollama.com",
    "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "possibly-is-gay/possibly-is-gay",
-   "url": "https://star-history.com/#possibly-is-gay/possibly-is-gay&Date",
-   "slug": "domain",
-   "reason": "跨栏重复，保留在「ai」栏"
-  },
-  {
-   "name": "defect-technologies/website",
-   "url": "https://nextjs.org",
+   "name": "collabray/domain-generator",
+   "url": "https://www.rust-lang.org",
    "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
@@ -449,6 +431,12 @@
    "name": "BestCF · VPS789 TOP20 优选 IP 清单",
    "url": "https://bestcf.pages.dev/vps789/top20.txt",
    "slug": "cfip",
+   "reason": "跨栏重复，保留在「cfip」栏"
+  },
+  {
+   "name": "Clash Verge Rev 桌面客户端",
+   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
+   "slug": "proxy",
    "reason": "跨栏重复，保留在「cfip」栏"
   },
   {
@@ -578,6 +566,12 @@
    "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   },
   {
+   "name": "dv7vdbjs8q-spec/cortex-anime",
+   "url": "https://github.com/dv7vdbjs8q-spec/cortex-anime/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
    "name": "aepikgamer-art/flightdeck-ofp",
    "url": "https://github.com/aepikgamer-art/flightdeck-ofp/releases",
    "slug": "apple",
@@ -604,6 +598,12 @@
   {
    "name": "rnetis/resonance",
    "url": "https://github.com/rnetis/resonance/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "RipeStore/ripestore.github.io",
+   "url": "https://github.com/RipeStore/ripestore.github.io/releases",
    "slug": "apple",
    "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   },
@@ -638,17 +638,17 @@
    "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   },
   {
-   "name": "ycj3/Sideload-Apps",
-   "url": "https://github.com/ycj3/Sideload-Apps/releases",
+   "name": "tsoysuhninki/ccterminal-dist",
+   "url": "https://github.com/tsoysuhninki/ccterminal-dist/releases",
    "slug": "apple",
    "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   },
   {
-   "name": "Site not found · GitHub Pages",
-   "url": "https://help.github.com/pages/",
-   "slug": "domain",
-   "reason": "坏数据清理：标题是报错页文本（FIX19）"
+   "name": "ycj3/Sideload-Apps",
+   "url": "https://github.com/ycj3/Sideload-Apps/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   }
  ],
- "updatedAt": "2026-11-27T10:10:33.998Z"
+ "updatedAt": "2026-11-27T16:15:02.601Z"
 }
