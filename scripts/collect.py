@@ -6115,6 +6115,11 @@ APP_DROP_REPOS = frozenset((
 _FIX18_ERRPAGE = re.compile(
     r"could not be found|page not found|404 not found|"
     r"the page you were looking for", re.I)
+# 标题本身就是报错页措辞（FIX19，2026-11-27 站点实测补）：只认整题或
+# 开头就是报错页的写法；用户名/仓库名里带 404 的（如 Mdlee404）不在此列，
+# 因为这里要求 not found 类短语以短语形式出现在标题里且标题整体短。
+_FIX18_ERRTITLE = re.compile(
+    r"site not found|^(page not found|404 not found|not found)\b", re.I)
 _FIX18_DONOTUSE = re.compile(
     r"don'?t use it until further announcement|do not use (it|this) until|"
     r"暂停使用|宣布停止维护|已停止维护并建议", re.I)
@@ -6153,6 +6158,11 @@ def fix18_cleanup(categories, removed_keys):
                 # 全栏：简介是报错页文本 = 坏数据（抓了死页还入库）
                 if _FIX18_ERRPAGE.search(summary):
                     _drop(slug, it, "坏数据清理：简介是报错页文本（FIX18）")
+                    continue
+                # 全栏：标题本身就是报错页 = 坏数据（FIX19）：域名栏混进过
+                # 一条「Site not found · GitHub Pages」、地址还指向帮助页
+                if _FIX18_ERRTITLE.search(name):
+                    _drop(slug, it, "坏数据清理：标题是报错页文本（FIX19）")
                     continue
                 # 全栏：上游自己公告暂停使用/停维护，别再当正常条目挂
                 probe = summary + " " + (it.get("description") or "")[:300]
