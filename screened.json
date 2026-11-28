@@ -410,34 +410,64 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "Tachline",
-   "url": "https://testflight.apple.com/join/uUJHg8nB",
+   "name": "Debit & Credit",
+   "url": "https://testflight.apple.com/join/FvufwHrV",
    "slug": "apple",
-   "reason": "苹果栏：TestFlight 招募结束（连续 2 轮不在来源里）"
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "im-aadi/karmas-world",
-   "url": "https://nodejs.org/",
+   "name": "Neo Monsters",
+   "url": "https://apps.apple.com/us/app/neo-monsters/id983143183",
+   "slug": "apple",
+   "reason": "苹果栏：限免结束（价格回升）"
+  },
+  {
+   "name": "Kingdom Rush Frontiers TD",
+   "url": "https://apps.apple.com/us/app/kingdom-rush-frontiers-td/id598581396?uo=4",
+   "slug": "apple",
+   "reason": "苹果栏：降价结束（价格回到原价）"
+  },
+  {
+   "name": "TypeDraw",
+   "url": "https://apps.apple.com/us/app/typedraw/id6822194774?uo=4",
+   "slug": "apple",
+   "reason": "苹果栏：降价结束（价格回到原价）"
+  },
+  {
+   "name": "JacobHamrac/deskguest",
+   "url": "https://github.com/JacobHamrac/deskguest/releases",
+   "slug": "app",
+   "reason": "连续 6 次验活不通"
+  },
+  {
+   "name": "ThreatFox | User threatcluster",
+   "url": "https://community.abuse.ch",
+   "slug": "domain",
+   "reason": "与域名注册无关的误收录（FIX17 深审清理）"
+  },
+  {
+   "name": "gricatan/devhub-domaines",
+   "url": "https://nodejs.org",
    "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "possibly-is-gay/possibly-is-gay",
-   "url": "https://star-history.com/#possibly-is-gay/possibly-is-gay&Date",
+   "name": "skygreen2001/report",
+   "url": "https://ollama.com",
    "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "defect-technologies/website",
-   "url": "https://nextjs.org",
+   "name": "amanmathur27/astro-search",
+   "url": "https://www.python.org/",
    "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "cdnjs/logs",
-   "url": "https://cdnjs.com",
-   "slug": "service",
-   "reason": "跨栏重复，保留在「domain」栏"
+   "name": "collabray/domain-generator",
+   "url": "https://www.rust-lang.org",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
   },
   {
    "name": "BestCF · CFYes IPV4 优选 IP 清单",
@@ -452,8 +482,26 @@
    "reason": "跨栏重复，保留在「cfip」栏"
   },
   {
+   "name": "Clash Verge Rev 桌面客户端",
+   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
+   "slug": "proxy",
+   "reason": "跨栏重复，保留在「cfip」栏"
+  },
+  {
    "name": "skka3134/TrollStore",
    "url": "https://github.com/skka3134/TrollStore/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "illixion/Apparition",
+   "url": "https://github.com/illixion/Apparition/releases",
+   "slug": "apple",
+   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
+  },
+  {
+   "name": "lgg/awesome-ios-sideloading",
+   "url": "https://github.com/lgg/awesome-ios-sideloading/releases",
    "slug": "apple",
    "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   },
@@ -472,12 +520,6 @@
   {
    "name": "atharvmpatil/Native_books_app_ios-ipados_windows",
    "url": "https://github.com/atharvmpatil/Native_books_app_ios-ipados_windows/releases",
-   "slug": "apple",
-   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
-  },
-  {
-   "name": "illixion/Apparition",
-   "url": "https://github.com/illixion/Apparition/releases",
    "slug": "apple",
    "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   },
@@ -590,12 +632,6 @@
    "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   },
   {
-   "name": "lgg/awesome-ios-sideloading",
-   "url": "https://github.com/lgg/awesome-ios-sideloading/releases",
-   "slug": "apple",
-   "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
-  },
-  {
    "name": "kemi579/PurpleKitApp",
    "url": "https://github.com/kemi579/PurpleKitApp/releases",
    "slug": "apple",
@@ -662,5 +698,5 @@
    "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   }
  ],
- "updatedAt": "2026-11-28T01:14:08.903Z"
+ "updatedAt": "2026-11-28T15:12:39.203Z"
 }
