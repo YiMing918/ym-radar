@@ -279,6 +279,14 @@
   "misses": 0,
   "name": "The House of Tesla"
  },
+ "1256027729": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "Bath & Body Works | B&BW"
+ },
  "1261944766": {
   "first_free_seen": null,
   "last_price": 0.99,
@@ -1071,6 +1079,14 @@
   "misses": 0,
   "name": "Catan Classic"
  },
+ "336860594": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "Victoria's Secret—Bras & More"
+ },
  "338137227": {
   "first_free_seen": "2026-11-25",
   "last_price": 0.0,
@@ -1086,6 +1102,22 @@
   "max_price": 0.0,
   "misses": 0,
   "name": "Macy's: Shop, Save, and Earn"
+ },
+ "342527639": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "The Home Depot"
+ },
+ "342792281": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "Old Navy: Shop for New Clothes"
  },
  "350962117": {
   "first_free_seen": null,
@@ -1129,8 +1161,8 @@
  },
  "364876095": {
   "first_free_seen": null,
-  "last_price": 14.99,
-  "last_seen": "2026-11-25",
+  "last_price": 9.99,
+  "last_seen": "2026-11-28",
   "max_price": 14.99,
   "misses": 0,
   "name": "Jump Desktop (RDP, VNC, Fluid)"
@@ -1190,6 +1222,14 @@
   "max_price": 0.0,
   "misses": 0,
   "name": "MyChart"
+ },
+ "383915209": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "Hollister Co."
  },
  "384830320": {
   "first_free_seen": null,
@@ -1479,6 +1519,14 @@
   "misses": 0,
   "name": "AMap Global"
  },
+ "472014516": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "Kohl's - Shopping & Discounts"
+ },
  "473225145": {
   "first_free_seen": null,
   "last_price": 0.0,
@@ -1750,6 +1798,14 @@
   "max_price": 0.0,
   "misses": 0,
   "name": "DiDi China: Ride Hailing"
+ },
+ "556653197": {
+  "first_free_seen": null,
+  "last_price": 0.0,
+  "last_seen": "2026-11-28",
+  "max_price": 0.0,
+  "misses": 0,
+  "name": "DICK’S Sporting Goods"
  },
  "561930308": {
   "first_free_seen": null,
@@ -2679,6 +2735,14 @@
   "misses": 0,
   "name": "Face Witness"
  },
+ "6823045499": {
+  "first_free_seen": null,
+  "last_price": 2.99,
+  "last_seen": "2026-11-28",
+  "max_price": 2.99,
+  "misses": 0,
+  "name": "IvyPod"
+ },
  "6826478625": {
   "first_free_seen": null,
   "last_price": 5.99,
@@ -2759,10 +2823,18 @@
   "misses": 0,
   "name": "Tap Piano: Wrist Instruments"
  },
+ "6834425201": {
+  "first_free_seen": null,
+  "last_price": 0.99,
+  "last_seen": "2026-11-28",
+  "max_price": 0.99,
+  "misses": 0,
+  "name": "口袋田园"
+ },
  "6834473200": {
   "first_free_seen": null,
-  "last_price": 4.99,
-  "last_seen": "2026-11-26",
+  "last_price": 2.49,
+  "last_seen": "2026-11-28",
   "max_price": 4.99,
   "misses": 0,
   "name": "Hamburger Hill"

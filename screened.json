@@ -200,12 +200,6 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "Downcast",
-   "url": "https://testflight.apple.com/join/81Geh1jh",
-   "slug": "apple",
-   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
-  },
-  {
    "name": "Loopalette",
    "url": "https://testflight.apple.com/join/8Du8Jr5r",
    "slug": "apple",
@@ -410,16 +404,40 @@
    "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
   },
   {
-   "name": "skygreen2001/report",
-   "url": "https://ollama.com",
+   "name": "CaptainLocalAI",
+   "url": "https://testflight.apple.com/join/FVkFHKT6",
+   "slug": "apple",
+   "reason": "苹果栏清理：仓库冒充限免/内购限免/TestFlight"
+  },
+  {
+   "name": "Tachline",
+   "url": "https://testflight.apple.com/join/uUJHg8nB",
+   "slug": "apple",
+   "reason": "苹果栏：TestFlight 招募结束（连续 2 轮不在来源里）"
+  },
+  {
+   "name": "im-aadi/karmas-world",
+   "url": "https://nodejs.org/",
    "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
   },
   {
-   "name": "collabray/domain-generator",
-   "url": "https://www.rust-lang.org",
+   "name": "possibly-is-gay/possibly-is-gay",
+   "url": "https://star-history.com/#possibly-is-gay/possibly-is-gay&Date",
    "slug": "domain",
    "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "defect-technologies/website",
+   "url": "https://nextjs.org",
+   "slug": "domain",
+   "reason": "跨栏重复，保留在「ai」栏"
+  },
+  {
+   "name": "cdnjs/logs",
+   "url": "https://cdnjs.com",
+   "slug": "service",
+   "reason": "跨栏重复，保留在「domain」栏"
   },
   {
    "name": "BestCF · CFYes IPV4 优选 IP 清单",
@@ -431,12 +449,6 @@
    "name": "BestCF · VPS789 TOP20 优选 IP 清单",
    "url": "https://bestcf.pages.dev/vps789/top20.txt",
    "slug": "cfip",
-   "reason": "跨栏重复，保留在「cfip」栏"
-  },
-  {
-   "name": "Clash Verge Rev 桌面客户端",
-   "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases",
-   "slug": "proxy",
    "reason": "跨栏重复，保留在「cfip」栏"
   },
   {
@@ -650,5 +662,5 @@
    "reason": "签名分区清理：与签名无关的应用/资源库/杂项仓库（FIX18）"
   }
  ],
- "updatedAt": "2026-11-27T16:15:02.601Z"
+ "updatedAt": "2026-11-28T01:14:08.903Z"
 }
